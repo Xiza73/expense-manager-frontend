@@ -1,0 +1,55 @@
+import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+
+import { cn } from '@/lib/utils';
+
+export interface FormInputProps<TFieldValues extends FieldValues>
+  extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  error?: string;
+  register: UseFormRegister<TFieldValues>;
+  name: Path<TFieldValues>;
+  placeholder?: string;
+  options: Array<{ value: string; label: string }>;
+}
+
+export const FormSelect = <TFieldValues extends FieldValues>({
+  register,
+  name,
+  error,
+  className,
+  placeholder,
+  options,
+  ...props
+}: FormInputProps<TFieldValues>) => {
+  return (
+    <div className="flex flex-col w-full mb-4">
+      <select
+        className={cn(
+          'w-full border p-2',
+          error ? 'border-red-500' : 'border-gray-300',
+          className,
+        )}
+        {...props}
+        {...register(name)}
+      >
+        {placeholder && (
+          <option
+            value=""
+            disabled
+          >
+            {placeholder}
+          </option>
+        )}
+        {/* <option value="">Select Currency</option> */}
+        {options.map(({ value, label }) => (
+          <option
+            key={value}
+            value={value}
+          >
+            {label}
+          </option>
+        ))}
+      </select>
+      {error && <span className="text-red-500 text-sm">* {error}</span>}
+    </div>
+  );
+};
