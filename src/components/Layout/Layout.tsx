@@ -21,7 +21,7 @@ export const Layout: React.FC<ChildrenProps> = ({ children }) => {
       {isAuthenticated && <AppSidebar />}
       <main className="flex-1 max-w-full">
         {isAuthenticated && <SidebarTrigger open={open} />}
-        {error && <ErrorPage message={error} />}
+        {error && <ErrorPage message={error || ''} />}
         {!error && children}
       </main>
     </SidebarProvider>

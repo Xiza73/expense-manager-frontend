@@ -2,12 +2,7 @@ import { Home, ListCheck, Wallet } from 'lucide-react';
 
 import { AppRoute } from '@/domain/app-route.type';
 
-export const getSidebarData = (
-  accounts: {
-    title: string;
-    path: AppRoute;
-  }[],
-): {
+export const getSidebarData = (): {
   title: string;
   path: AppRoute;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -38,7 +33,5 @@ export const getSidebarData = (
     title: 'My Accounts',
     path: '/account',
     icon: ListCheck,
-    isCollapsible: true,
-    options: accounts,
   },
 ];

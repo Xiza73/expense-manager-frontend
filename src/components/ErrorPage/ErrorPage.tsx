@@ -1,6 +1,7 @@
-import { useNavigate } from '@tanstack/react-router';
+import { useBlocker, useNavigate } from '@tanstack/react-router';
 import { Frown } from 'lucide-react';
 
+import { useStateCallback } from '@/hooks/useStateCallback';
 import { useError } from '@/store/error/useError';
 
 import PageContainer from '../PageContainer';
@@ -13,12 +14,21 @@ export interface ErrorPageProps {
 
 export const ErrorPage: React.FC<ErrorPageProps> = ({ message }) => {
   const navigate = useNavigate();
+  const [block, setBlock] = useStateCallback<boolean>(true);
   const { setError } = useError();
 
-  const handleGoBack = () => {
-    setError(null);
+  useBlocker({
+    shouldBlockFn: () => Boolean(block),
+    enableBeforeUnload: false,
+    withResolver: true,
+  });
 
-    navigate({ to: '/' });
+  const handleGoBack = () => {
+    setBlock(false, async () => {
+      await navigate({ to: '/' });
+
+      setError(null);
+    });
   };
 
   return (

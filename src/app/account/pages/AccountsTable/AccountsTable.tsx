@@ -1,7 +1,64 @@
+import { useEffect } from 'react';
+
+import { CustomTable } from '@/components/CustomTable/CustomTable';
+import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
+import { usePagination } from '@/hooks/usePagination';
+
+import { useGetAccountsQuery } from '../../queries/account.query';
+import { columns } from './columns';
+
 export const AccountsTable: React.FC = () => {
+  const {
+    currentPage,
+    nextEnabled,
+    previousEnabled,
+    pageSize,
+    setNextPage,
+    setPreviousPage,
+    setPage,
+    setTotalPages,
+    totalPages,
+  } = usePagination({
+    initialPage: INITIAL_PAGINATOR.page,
+    initialPageSize: INITIAL_PAGINATOR.limit,
+  });
+
+  const { data: res, refetch } = useGetAccountsQuery({
+    enabled: true,
+    showLoading: false,
+    params: {
+      page: currentPage,
+      limit: pageSize,
+    },
+  });
+
+  useEffect(() => {
+    setTotalPages(res?.pages || 1);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [res?.pages]);
+
+  useEffect(() => {
+    if (res?.data?.length) {
+      refetch();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, pageSize]);
+
+  if (!res) return null;
+
   return (
-    <>
-      <h1>AccountsTable works!</h1>
-    </>
+    <CustomTable
+      data={res?.data || []}
+      columns={columns}
+      previousEnabled={previousEnabled}
+      nextEnabled={nextEnabled}
+      totalPages={totalPages}
+      currentPage={currentPage}
+      setPreviousPage={setPreviousPage}
+      setNextPage={setNextPage}
+      setPage={setPage}
+    />
   );
 };

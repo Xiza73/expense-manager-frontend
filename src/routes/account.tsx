@@ -12,5 +12,5 @@ const Account: React.FC = () => {
 
 export const Route = createFileRoute('/account')({
   component: Account,
-  notFoundComponent: () => <Navigate to="/" />,
+  notFoundComponent: () => <Navigate to="/account" />,
 });

@@ -15,7 +15,6 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
-import { AppRoute } from '@/domain/app-route.type';
 import { useAuth } from '@/store/auth/useAuth';
 
 import {
@@ -33,18 +32,12 @@ import { getSidebarData } from './app-sidebar-data';
 
 export function AppSidebar() {
   const { signOut } = useAuth();
-  const { data: accounts } = useGetAccountsQuery();
 
   const handleSignOut = () => {
     signOut();
   };
 
-  const sidebarData = getSidebarData(
-    (accounts?.data || []).map((account) => ({
-      title: `${account?.month} (${account?.year})`,
-      path: `/account/${account?.id?.toString()}` as AppRoute,
-    })),
-  );
+  const sidebarData = getSidebarData();
 
   return (
     <Sidebar collapsible="icon">

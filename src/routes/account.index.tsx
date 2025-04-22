@@ -1,5 +1,7 @@
-import { createFileRoute, Navigate } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
+
+import AccountsTable from '@/app/account/pages/AccountsTable';
 
 export const Route = createFileRoute('/account/')({
-  component: () => <Navigate to="/account/create" />,
+  component: AccountsTable,
 });

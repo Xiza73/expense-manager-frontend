@@ -4,4 +4,5 @@ export interface ErrorState {
 
 export interface ErrorStore extends ErrorState {
   setError: (error: string | null) => void;
+  setErrorCallback: (error: string | null, callback: () => void) => void;
 }

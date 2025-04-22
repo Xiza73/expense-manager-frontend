@@ -1,5 +1,7 @@
 import { api } from '@/lib/axios';
+import { buildQueryParams } from '@/utils/build-query-params.util';
 
+import { GetAccountsRequest } from '../domain/requests/get-accounts.request';
 import { GetAccountApiResponse } from '../domain/responses/get-account.response';
 import { GetAccountsApiResponse } from '../domain/responses/get-accounts.response';
 
@@ -11,8 +13,12 @@ export const getLatestAccount = async () => {
   return data;
 };
 
-export const getAccounts = async () => {
-  const { data } = await api.get<GetAccountsApiResponse>(`${MODULE}`);
+export const getAccounts = async (request: GetAccountsRequest) => {
+  const queryParams = buildQueryParams(request);
+
+  const { data } = await api.get<GetAccountsApiResponse>(
+    `${MODULE}?${queryParams}`,
+  );
 
   return data;
 };

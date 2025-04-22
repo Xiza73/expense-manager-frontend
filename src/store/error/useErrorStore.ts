@@ -17,6 +17,14 @@ export const useErrorStore = create<ErrorStore>()(
           error,
         }));
       },
+      setErrorCallback: (error: string | null, callback: () => void) => {
+        set((state) => ({
+          ...state,
+          error,
+        }));
+
+        callback();
+      },
     }),
     'ErrorStore',
   ),
