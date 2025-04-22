@@ -1,0 +1,33 @@
+import { useNavigate } from '@tanstack/react-router';
+import { Plus } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+
+export interface GoToTransactionButtonProps {
+  accountId: string;
+}
+
+export const GoToTransactionButton: React.FC<GoToTransactionButtonProps> = ({
+  accountId,
+}) => {
+  const navigate = useNavigate();
+
+  const handleGoToTransaction = () => {
+    navigate({
+      to: '/transaction/create/$accountId',
+      params: {
+        accountId,
+      },
+      replace: true,
+    });
+  };
+
+  return (
+    <Button
+      className="mt-6 ml-auto"
+      onClick={handleGoToTransaction}
+    >
+      <Plus className="w-5 h-5" />
+    </Button>
+  );
+};

@@ -1,14 +1,20 @@
 import { useEffect } from 'react';
 
-import { useGetLatestAccountQuery } from '@/app/account/queries/account.query';
 import { useGetTransactionsQuery } from '@/app/transaction/queries/transaction.query';
 import { CustomTable } from '@/components/CustomTable/CustomTable';
 import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
 import { usePagination } from '@/hooks/usePagination';
 
-import { mainContentColumns } from '../../utils/main-content-columns.util';
+import { Account } from '../../domain/account.interface';
+import { columns } from './columns';
 
-export const MainContent: React.FC = () => {
+export interface AccountInfoContentProps {
+  account: Account;
+}
+
+export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
+  account,
+}) => {
   const {
     currentPage,
     nextEnabled,
@@ -23,8 +29,6 @@ export const MainContent: React.FC = () => {
     initialPage: INITIAL_PAGINATOR.page,
     initialPageSize: INITIAL_PAGINATOR.limit,
   });
-
-  const { data: account } = useGetLatestAccountQuery();
 
   const { data: res, refetch } = useGetTransactionsQuery({
     enabled: Boolean(account?.id),
@@ -55,7 +59,7 @@ export const MainContent: React.FC = () => {
   return (
     <CustomTable
       data={res?.data || []}
-      columns={mainContentColumns}
+      columns={columns}
       previousEnabled={previousEnabled}
       nextEnabled={nextEnabled}
       totalPages={totalPages}

@@ -1,40 +1,21 @@
-import { useNavigate } from '@tanstack/react-router';
-import { Plus } from 'lucide-react';
-
+import { AccountInfoContent } from '@/app/account/components/AccountInfoContent/AccountInfoContent';
+import AccountInfoHeader from '@/app/account/components/AccountInfoHeader';
+import GoToTransactionButton from '@/app/account/components/GoToTransactionButton';
 import { useGetLatestAccountQuery } from '@/app/account/queries/account.query';
 import PageContainer from '@/components/PageContainer';
-import { Button } from '@/components/ui/button';
-
-import MainContent from '../../components/MainContent';
-import MainInfoHeader from '../../components/MainInfoHeader';
 
 export const Main: React.FC = () => {
   const { data: account } = useGetLatestAccountQuery();
 
-  const navigate = useNavigate();
-
-  const handleGoToTransaction = () => {
-    navigate({
-      to: '/transaction/create/$accountId',
-      params: {
-        accountId: account?.id?.toString() || '',
-      },
-      replace: true,
-    });
-  };
-
   if (!account) return null;
+
+  const accountId = account.id.toString();
 
   return (
     <PageContainer>
-      <MainInfoHeader account={account} />
-      <Button
-        className="mt-6 ml-auto"
-        onClick={handleGoToTransaction}
-      >
-        <Plus className="w-5 h-5" />
-      </Button>
-      <MainContent />
+      <AccountInfoHeader account={account} />
+      <GoToTransactionButton accountId={accountId} />
+      <AccountInfoContent account={account} />
     </PageContainer>
   );
 };

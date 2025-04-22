@@ -1,6 +1,11 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useParams } from '@tanstack/react-router';
 
+import PageContainer from '@/components/PageContainer';
+
+import { AccountInfoContent } from '../../components/AccountInfoContent/AccountInfoContent';
+import AccountInfoHeader from '../../components/AccountInfoHeader';
+import GoToTransactionButton from '../../components/GoToTransactionButton';
 import { getAccountQueryOptions } from '../../queries/account.query';
 
 export const Account: React.FC = () => {
@@ -9,9 +14,10 @@ export const Account: React.FC = () => {
   const { data: account } = useSuspenseQuery(getAccountQueryOptions(accountId));
 
   return (
-    <>
-      <h1>Account works!</h1>
-      <pre>{JSON.stringify(account, null, 2)}</pre>
-    </>
+    <PageContainer>
+      <AccountInfoHeader account={account} />
+      <GoToTransactionButton accountId={accountId} />
+      <AccountInfoContent account={account} />
+    </PageContainer>
   );
 };

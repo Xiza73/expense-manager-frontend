@@ -2,11 +2,11 @@ import { Account } from '@/app/account/domain/account.interface';
 import { Text } from '@/components/ui/text';
 import { patternMoney } from '@/utils/money-format.util';
 
-export interface MainInfoHeaderProps {
+export interface AccountInfoHeaderProps {
   account: Account;
 }
 
-export const MainInfoHeader: React.FC<MainInfoHeaderProps> = ({ account }) => {
+export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({ account }) => {
   return (
     <>
       <Text
