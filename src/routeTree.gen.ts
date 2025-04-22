@@ -13,11 +13,14 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TransactionImport } from './routes/transaction'
 import { Route as AuthImport } from './routes/auth'
 import { Route as AccountImport } from './routes/account'
+import { Route as TransactionIndexImport } from './routes/transaction.index'
 import { Route as AuthIndexImport } from './routes/auth.index'
 import { Route as AccountIndexImport } from './routes/account.index'
 import { Route as AccountAccountIdImport } from './routes/account.$accountId'
+import { Route as TransactionCreateAccountIdImport } from './routes/transaction.create.$accountId'
 import { Route as AccountUpdateAccountIdImport } from './routes/account.update.$accountId'
 
 // Create Virtual Routes
@@ -27,6 +30,12 @@ const AuthLoginLazyImport = createFileRoute('/auth/login')()
 const AccountCreateLazyImport = createFileRoute('/account/create')()
 
 // Create/Update Routes
+
+const TransactionRoute = TransactionImport.update({
+  id: '/transaction',
+  path: '/transaction',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AuthRoute = AuthImport.update({
   id: '/auth',
@@ -45,6 +54,12 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const TransactionIndexRoute = TransactionIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TransactionRoute,
+} as any)
 
 const AuthIndexRoute = AuthIndexImport.update({
   id: '/',
@@ -78,6 +93,14 @@ const AccountAccountIdRoute = AccountAccountIdImport.update({
   getParentRoute: () => AccountRoute,
 } as any)
 
+const TransactionCreateAccountIdRoute = TransactionCreateAccountIdImport.update(
+  {
+    id: '/create/$accountId',
+    path: '/create/$accountId',
+    getParentRoute: () => TransactionRoute,
+  } as any,
+)
+
 const AccountUpdateAccountIdRoute = AccountUpdateAccountIdImport.update({
   id: '/update/$accountId',
   path: '/update/$accountId',
@@ -107,6 +130,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/transaction': {
+      id: '/transaction'
+      path: '/transaction'
+      fullPath: '/transaction'
+      preLoaderRoute: typeof TransactionImport
       parentRoute: typeof rootRoute
     }
     '/account/$accountId': {
@@ -144,12 +174,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexImport
       parentRoute: typeof AuthImport
     }
+    '/transaction/': {
+      id: '/transaction/'
+      path: '/'
+      fullPath: '/transaction/'
+      preLoaderRoute: typeof TransactionIndexImport
+      parentRoute: typeof TransactionImport
+    }
     '/account/update/$accountId': {
       id: '/account/update/$accountId'
       path: '/update/$accountId'
       fullPath: '/account/update/$accountId'
       preLoaderRoute: typeof AccountUpdateAccountIdImport
       parentRoute: typeof AccountImport
+    }
+    '/transaction/create/$accountId': {
+      id: '/transaction/create/$accountId'
+      path: '/create/$accountId'
+      fullPath: '/transaction/create/$accountId'
+      preLoaderRoute: typeof TransactionCreateAccountIdImport
+      parentRoute: typeof TransactionImport
     }
   }
 }
@@ -185,16 +229,33 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface TransactionRouteChildren {
+  TransactionIndexRoute: typeof TransactionIndexRoute
+  TransactionCreateAccountIdRoute: typeof TransactionCreateAccountIdRoute
+}
+
+const TransactionRouteChildren: TransactionRouteChildren = {
+  TransactionIndexRoute: TransactionIndexRoute,
+  TransactionCreateAccountIdRoute: TransactionCreateAccountIdRoute,
+}
+
+const TransactionRouteWithChildren = TransactionRoute._addFileChildren(
+  TransactionRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/transaction': typeof TransactionRouteWithChildren
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/account/': typeof AccountIndexRoute
   '/auth/': typeof AuthIndexRoute
+  '/transaction/': typeof TransactionIndexRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
+  '/transaction/create/$accountId': typeof TransactionCreateAccountIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -204,7 +265,9 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginLazyRoute
   '/account': typeof AccountIndexRoute
   '/auth': typeof AuthIndexRoute
+  '/transaction': typeof TransactionIndexRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
+  '/transaction/create/$accountId': typeof TransactionCreateAccountIdRoute
 }
 
 export interface FileRoutesById {
@@ -212,12 +275,15 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/transaction': typeof TransactionRouteWithChildren
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/account/': typeof AccountIndexRoute
   '/auth/': typeof AuthIndexRoute
+  '/transaction/': typeof TransactionIndexRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
+  '/transaction/create/$accountId': typeof TransactionCreateAccountIdRoute
 }
 
 export interface FileRouteTypes {
@@ -226,12 +292,15 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/auth'
+    | '/transaction'
     | '/account/$accountId'
     | '/account/create'
     | '/auth/login'
     | '/account/'
     | '/auth/'
+    | '/transaction/'
     | '/account/update/$accountId'
+    | '/transaction/create/$accountId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -240,18 +309,23 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/account'
     | '/auth'
+    | '/transaction'
     | '/account/update/$accountId'
+    | '/transaction/create/$accountId'
   id:
     | '__root__'
     | '/'
     | '/account'
     | '/auth'
+    | '/transaction'
     | '/account/$accountId'
     | '/account/create'
     | '/auth/login'
     | '/account/'
     | '/auth/'
+    | '/transaction/'
     | '/account/update/$accountId'
+    | '/transaction/create/$accountId'
   fileRoutesById: FileRoutesById
 }
 
@@ -259,12 +333,14 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AccountRoute: typeof AccountRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
+  TransactionRoute: typeof TransactionRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AccountRoute: AccountRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
+  TransactionRoute: TransactionRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -279,7 +355,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/account",
-        "/auth"
+        "/auth",
+        "/transaction"
       ]
     },
     "/": {
@@ -299,6 +376,13 @@ export const routeTree = rootRoute
       "children": [
         "/auth/login",
         "/auth/"
+      ]
+    },
+    "/transaction": {
+      "filePath": "transaction.tsx",
+      "children": [
+        "/transaction/",
+        "/transaction/create/$accountId"
       ]
     },
     "/account/$accountId": {
@@ -321,9 +405,17 @@ export const routeTree = rootRoute
       "filePath": "auth.index.tsx",
       "parent": "/auth"
     },
+    "/transaction/": {
+      "filePath": "transaction.index.tsx",
+      "parent": "/transaction"
+    },
     "/account/update/$accountId": {
       "filePath": "account.update.$accountId.tsx",
       "parent": "/account"
+    },
+    "/transaction/create/$accountId": {
+      "filePath": "transaction.create.$accountId.tsx",
+      "parent": "/transaction"
     }
   }
 }

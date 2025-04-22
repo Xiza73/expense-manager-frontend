@@ -63,3 +63,12 @@ export function moneyToNumber(
   }
   return parseFloat(money);
 }
+
+export const handleMoneyInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const target = e.target as HTMLInputElement;
+
+  target.value = patternMoney(target.value, {
+    lenght: 8,
+    separator: ',',
+  });
+};

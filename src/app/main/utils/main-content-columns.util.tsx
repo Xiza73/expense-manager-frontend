@@ -4,11 +4,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@radix-ui/react-tooltip';
+import { Link } from '@tanstack/react-router';
 import { createColumnHelper } from '@tanstack/react-table';
-import { BanknoteArrowDown, BanknoteArrowUp } from 'lucide-react';
+import { BanknoteArrowDown, BanknoteArrowUp, Edit } from 'lucide-react';
 
 import { Transaction } from '@/app/transaction/domain/transaction.interface';
 import { TransactionType } from '@/app/transaction/domain/transaction-type.enum';
+import { AppRoute } from '@/domain/app-route.type';
 import { patternMoney } from '@/utils/money-format.util';
 
 const columnHelper = createColumnHelper<Transaction>();
@@ -61,5 +63,19 @@ export const mainContentColumns = [
       patternMoney(info.getValue().toString(), {
         prefix: info.row.original.currency,
       }),
+  }),
+  columnHelper.accessor('id', {
+    header: 'Actions',
+    cell: (info) => {
+      const editLink = `/transaction/${info.getValue()}` as AppRoute;
+
+      return (
+        <>
+          <Link to={editLink}>
+            <Edit className="ml-auto" />
+          </Link>
+        </>
+      );
+    },
   }),
 ];

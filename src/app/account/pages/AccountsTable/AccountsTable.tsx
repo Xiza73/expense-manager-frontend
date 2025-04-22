@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { CustomTable } from '@/components/CustomTable/CustomTable';
+import PageContainer from '@/components/PageContainer';
 import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
 import { usePagination } from '@/hooks/usePagination';
 
@@ -49,16 +50,18 @@ export const AccountsTable: React.FC = () => {
   if (!res) return null;
 
   return (
-    <CustomTable
-      data={res?.data || []}
-      columns={columns}
-      previousEnabled={previousEnabled}
-      nextEnabled={nextEnabled}
-      totalPages={totalPages}
-      currentPage={currentPage}
-      setPreviousPage={setPreviousPage}
-      setNextPage={setNextPage}
-      setPage={setPage}
-    />
+    <PageContainer>
+      <CustomTable
+        data={res?.data || []}
+        columns={columns}
+        previousEnabled={previousEnabled}
+        nextEnabled={nextEnabled}
+        totalPages={totalPages}
+        currentPage={currentPage}
+        setPreviousPage={setPreviousPage}
+        setNextPage={setNextPage}
+        setPage={setPage}
+      />
+    </PageContainer>
   );
 };

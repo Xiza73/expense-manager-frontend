@@ -1,19 +1,19 @@
-import { useGetLatestAccountQuery } from '@/app/account/queries/account.query';
+import { Account } from '@/app/account/domain/account.interface';
 import { Text } from '@/components/ui/text';
 import { patternMoney } from '@/utils/money-format.util';
 
-export const MainInfoHeader: React.FC = () => {
-  const { data } = useGetLatestAccountQuery();
+export interface MainInfoHeaderProps {
+  account: Account;
+}
 
-  if (!data) return null;
-
+export const MainInfoHeader: React.FC<MainInfoHeaderProps> = ({ account }) => {
   return (
     <>
       <Text
         as="h2"
         className="text-center"
       >
-        {data.month} - {data.year}
+        {account.month} - {account.year}
       </Text>
       <div className="flex flex-col md:flex-row justify-center md:justify-around w-full text-center">
         <div className="flex flex-col md:justify-start">
@@ -21,14 +21,18 @@ export const MainInfoHeader: React.FC = () => {
             Amount:{' '}
             <strong>
               {' '}
-              {patternMoney(data.amount.toString(), { prefix: data.currency })}
+              {patternMoney(account.amount.toString(), {
+                prefix: account.currency,
+              })}
             </strong>
           </Text>
           <Text as="p">
             Balance:{' '}
             <strong>
               {' '}
-              {patternMoney(data.balance.toString(), { prefix: data.currency })}
+              {patternMoney(account.balance.toString(), {
+                prefix: account.currency,
+              })}
             </strong>
           </Text>
         </div>
@@ -37,8 +41,8 @@ export const MainInfoHeader: React.FC = () => {
             Expense Amount:{' '}
             <strong>
               {' '}
-              {patternMoney(data.expenseAmount.toString(), {
-                prefix: data.currency,
+              {patternMoney(account.expenseAmount.toString(), {
+                prefix: account.currency,
               })}
             </strong>
           </Text>
@@ -46,8 +50,8 @@ export const MainInfoHeader: React.FC = () => {
             Income Amount:{' '}
             <strong>
               {' '}
-              {patternMoney(data.incomeAmount.toString(), {
-                prefix: data.currency,
+              {patternMoney(account.incomeAmount.toString(), {
+                prefix: account.currency,
               })}
             </strong>
           </Text>

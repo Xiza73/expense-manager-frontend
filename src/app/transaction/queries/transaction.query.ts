@@ -1,10 +1,16 @@
 import { QueryParams } from '@/domain/api.interface';
+import { NullResponse } from '@/domain/responses/null.response';
+import { useMutation } from '@/hooks/useMutation';
 import { useQuery } from '@/hooks/useQuery';
 
 import { transactionAdapter } from '../adapters/transaction.adapter';
+import { CreateTransactionRequest } from '../domain/requests/create-transaction.request';
 import { GetTransactionsRequest } from '../domain/requests/get-transactions.request';
 import { GetTransactionsResponse } from '../domain/responses/get-transactions.response';
-import { getTransactions } from '../services/transaction.service';
+import {
+  createTransaction,
+  getTransactions,
+} from '../services/transaction.service';
 
 export const useGetTransactionsQuery = (
   req: QueryParams<GetTransactionsRequest>,
@@ -23,6 +29,19 @@ export const useGetTransactionsQuery = (
       return {
         ...data.responseObject,
         data: transactions,
+      };
+    },
+  });
+
+export const useCreateTransactionMutation = () =>
+  useMutation<NullResponse, CreateTransactionRequest>({
+    showError: true,
+    mutationFn: async (request) => {
+      const data = await createTransaction(request);
+
+      return {
+        message: data.message,
+        success: data.success,
       };
     },
   });
