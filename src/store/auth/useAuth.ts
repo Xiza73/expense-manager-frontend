@@ -24,17 +24,19 @@ export const useAuth = () => {
 
       if (!res || !res.success) throw new Error('Invalid token');
 
-      login(localelStorageUser);
-
       setItem('isAuthenticated', true);
       setItem('userLogged', localelStorageUser);
+
+      login(localelStorageUser);
     } catch (_) {
       setItem('isAuthenticated', false);
       setItem('userLogged', undefined);
-    } finally {
+
       endProcessing();
     }
-  }, [apiSignIn, endProcessing, login]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const signIn = useCallback(
     async (token: string) => {

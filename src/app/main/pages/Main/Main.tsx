@@ -4,7 +4,6 @@ import { Plus } from 'lucide-react';
 import { useGetLatestAccountQuery } from '@/app/account/queries/account.query';
 import PageContainer from '@/components/PageContainer';
 import { Button } from '@/components/ui/button';
-import { AppRoute } from '@/domain/app-route.type';
 
 import MainContent from '../../components/MainContent';
 import MainInfoHeader from '../../components/MainInfoHeader';
@@ -15,7 +14,13 @@ export const Main: React.FC = () => {
   const navigate = useNavigate();
 
   const handleGoToTransaction = () => {
-    navigate({ to: `/transaction/create/${account?.id}` as AppRoute });
+    navigate({
+      to: '/transaction/create/$accountId',
+      params: {
+        accountId: account?.id?.toString() || '',
+      },
+      replace: true,
+    });
   };
 
   if (!account) return null;

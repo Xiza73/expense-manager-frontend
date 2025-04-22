@@ -1,3 +1,5 @@
+import { AnyFunction } from "./any-function.type";
+
 export interface ResponseData<T> {
   success: boolean;
   message: string;
@@ -23,6 +25,7 @@ export interface QueryOptions {
   showSuccess?: boolean;
   showError?: boolean;
   showPageError?: boolean;
+  onSuccess?: AnyFunction;
   showLoading?: boolean;
   enabled?: boolean;
   mutationKey?: string[];

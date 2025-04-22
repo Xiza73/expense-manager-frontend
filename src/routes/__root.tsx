@@ -18,7 +18,9 @@ const AppRoute: React.FC = () => {
 
   useEffect(() => {
     handleCurrentUser();
-  }, [handleCurrentUser]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isProcessing) return <Loader loading />;
 

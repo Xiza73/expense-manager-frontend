@@ -12,7 +12,8 @@ export const useAuthStore = create<AuthStore>()(
   logger<AuthStore>(
     (set) => ({
       ...initialState,
-      login: (user) => set({ isAuthenticated: true, user }),
+      login: (user) =>
+        set({ isAuthenticated: true, isProcessing: false, user }),
       logout: () => set({ isAuthenticated: false, user: undefined }),
       endProcessing: () => set({ isProcessing: false }),
     }),

@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -44,15 +43,18 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export const CreateTransaction: React.FC = () => {
+  const navigate = useNavigate();
+
   const { accountId } = useParams({ from: '/transaction/create/$accountId' });
 
   const { data: account } = useSuspenseQuery(getAccountQueryOptions(accountId));
-  const { data: transactionCreated, mutateAsync: createTransaction } =
-    useCreateTransactionMutation();
+  const { mutateAsync: createTransaction } = useCreateTransactionMutation({
+    onSuccess: () => {
+      navigate({ to: '/' });
+    },
+  });
   const { data: transactionCategories } = useGetTransactionCategoriesQuery();
   const { data: transactionServices } = useGetTransactionServicesQuery();
-
-  const navigate = useNavigate();
 
   const {
     control,
@@ -64,19 +66,12 @@ export const CreateTransaction: React.FC = () => {
     defaultValues: {
       accountId: account?.id.toString(),
       categoryId: '',
+      serviceId: '',
       date: new Date(),
     },
     delayError: 100,
     mode: 'onChange',
   });
-
-  useEffect(() => {
-    if (transactionCreated?.success) {
-      navigate({ to: '/' });
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transactionCreated]);
 
   const onSubmit = (data: FormSchema) => {
     createTransaction({
@@ -172,7 +167,7 @@ export const CreateTransaction: React.FC = () => {
             error={errors.categoryId?.message}
             options={(transactionCategories || []).map((category) => ({
               value: category.id.toString(),
-              label: `${category.name} (${category.id})`,
+              label: category.name,
             }))}
           />
 
