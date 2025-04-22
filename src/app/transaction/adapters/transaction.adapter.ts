@@ -14,7 +14,7 @@ export const transactionAdapter = (
     amount: transaction.amount,
     currency: Currency[transaction.currency],
     type: TransactionType[transaction.type],
-    date: transaction.date,
+    date: new Date(transaction.date),
     paymentMethod: PaymentMethod[transaction.paymentMethod],
     isActive: transaction.isActive,
     category: {

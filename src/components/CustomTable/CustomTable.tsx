@@ -22,7 +22,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
 import { cn } from '@/lib/utils';
+
+import { Skeleton } from '../ui/skeleton';
 
 export interface CustomTableProps<T> {
   data: T[];
@@ -32,6 +35,9 @@ export interface CustomTableProps<T> {
   nextEnabled: boolean;
   totalPages: number;
   currentPage: number;
+  isFetching?: boolean;
+  showSkeleton?: boolean;
+  limit?: number;
   setPreviousPage: () => void;
   setNextPage: () => void;
   setPage: (page: number) => void;
@@ -44,6 +50,9 @@ export const CustomTable = <T extends object>({
   nextEnabled,
   totalPages,
   currentPage,
+  isFetching = false,
+  showSkeleton = true,
+  limit = INITIAL_PAGINATOR.limit,
   setPreviousPage,
   setNextPage,
   setPage,
@@ -54,9 +63,13 @@ export const CustomTable = <T extends object>({
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const skeletonData = Array.from({ length: limit }, (_, i) => ({
+    id: i + 1,
+  }));
+
   return (
     <>
-      <Table className="mt-4">
+      <Table className="max-w-full mt-4">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -77,18 +90,30 @@ export const CustomTable = <T extends object>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <TableCell
-                  key={cell.id}
-                  className="last:text-right"
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
+          {!isFetching &&
+            table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    className="last:text-right"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          {isFetching &&
+            showSkeleton &&
+            skeletonData.map((row) => (
+              <TableRow key={row.id}>
+                {columns.map((_, index) => (
+                  <TableCell key={index}>
+                    <Skeleton className="w-full min-h-7 h-full" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
         </TableBody>
         <TableFooter>
           {table.getFooterGroups().map((footerGroup) => (

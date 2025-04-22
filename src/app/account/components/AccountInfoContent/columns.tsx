@@ -11,11 +11,20 @@ import { BanknoteArrowDown, BanknoteArrowUp, Edit } from 'lucide-react';
 import { Transaction } from '@/app/transaction/domain/transaction.interface';
 import { TransactionType } from '@/app/transaction/domain/transaction-type.enum';
 import { AppRoute } from '@/domain/app-route.type';
+import { getDate } from '@/utils/date.util';
 import { patternMoney } from '@/utils/money-format.util';
 
 const columnHelper = createColumnHelper<Transaction>();
 
-export const columns = [
+export const getColumns = (_currentPage: number, _pageSize: number) => [
+  columnHelper.accessor('date', {
+    header: 'Date',
+    cell: (info) => getDate(info.getValue()),
+  }),
+  // columnHelper.accessor('category.id', {
+  //   header: '#',
+  //   cell: (info) => info.row.index + 1 + (currentPage - 1) * pageSize,
+  // }),
   columnHelper.accessor('name', {
     header: 'Name',
     cell: (info) => info.getValue(),

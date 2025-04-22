@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useGetTransactionsQuery } from '@/app/transaction/queries/transaction.query';
 import { CustomTable } from '@/components/CustomTable/CustomTable';
@@ -6,7 +6,7 @@ import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
 import { usePagination } from '@/hooks/usePagination';
 
 import { Account } from '../../domain/account.interface';
-import { columns } from './columns';
+import { getColumns } from './columns';
 
 export interface AccountInfoContentProps {
   account: Account;
@@ -29,8 +29,13 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     initialPage: INITIAL_PAGINATOR.page,
     initialPageSize: INITIAL_PAGINATOR.limit,
   });
+  const [columns, setColumns] = useState(getColumns(currentPage, pageSize));
 
-  const { data: res, refetch } = useGetTransactionsQuery({
+  const {
+    data: res,
+    isFetching,
+    refetch,
+  } = useGetTransactionsQuery({
     enabled: Boolean(account?.id),
     showLoading: false,
     params: {
@@ -49,6 +54,8 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   useEffect(() => {
     if (res?.data?.length) {
       refetch();
+
+      setColumns(getColumns(currentPage, pageSize));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,6 +71,8 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
       nextEnabled={nextEnabled}
       totalPages={totalPages}
       currentPage={currentPage}
+      isFetching={isFetching}
+      limit={pageSize}
       setPreviousPage={setPreviousPage}
       setNextPage={setNextPage}
       setPage={setPage}

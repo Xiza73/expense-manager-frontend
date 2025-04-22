@@ -30,7 +30,7 @@ export interface Transaction {
   amount: number;
   currency: Currency;
   type: TransactionType;
-  date: string;
+  date: Date;
   paymentMethod: PaymentMethod;
   isActive: boolean;
   category: {
