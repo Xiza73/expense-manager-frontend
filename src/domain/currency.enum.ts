@@ -6,7 +6,7 @@ export const CurrencyKey = {
 export type CurrencyKey = (typeof CurrencyKey)[keyof typeof CurrencyKey];
 
 export const Currency = {
-  [CurrencyKey.PEN]: 'S/.',
+  [CurrencyKey.PEN]: 'S/',
   [CurrencyKey.USD]: '$',
   [CurrencyKey.EUR]: '€',
 } as const;

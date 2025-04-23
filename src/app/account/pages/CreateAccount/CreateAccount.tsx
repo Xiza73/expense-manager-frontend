@@ -4,11 +4,12 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import FormInput from '@/components/FormInput';
+import FormMoney from '@/components/FormMoney';
 import FormSelect from '@/components/FormSelect';
 import PageContainer from '@/components/PageContainer';
 import { Text } from '@/components/ui/text';
 import { commonValidators } from '@/contants/common-validators.constant';
-import { Currency, CurrencyKey } from '@/domain/currency.enum';
+import { CurrencyKey } from '@/domain/currency.enum';
 import { handleMoneyInput, moneyToNumber } from '@/utils/money-format.util';
 
 import { Month, MonthKey } from '../../domain/month.enum';
@@ -41,7 +42,7 @@ export const CreateAccount: React.FC = () => {
     defaultValues: {
       month: MonthKey.JANUARY,
       year: new Date().getFullYear().toString(),
-      currency: CurrencyKey.USD,
+      currency: CurrencyKey.PEN,
       amount: '0',
     },
     delayError: 100,
@@ -98,22 +99,11 @@ export const CreateAccount: React.FC = () => {
             error={errors.description?.message}
           />
 
-          <FormSelect
+          <FormMoney
             register={register}
-            name="currency"
-            placeholder="Select Currency"
-            error={errors.currency?.message}
-            options={Object.values(CurrencyKey).map((currency) => ({
-              value: currency,
-              label: Currency[currency],
-            }))}
-          />
-
-          <FormInput
-            register={register}
-            name="amount"
-            placeholder="Amount"
-            error={errors.amount?.message}
+            currencyName="currency"
+            amountName="amount"
+            error={errors.amount?.message || errors.currency?.message}
             onInput={handleMoneyInput}
             onBlur={handleMoneyInput}
           />

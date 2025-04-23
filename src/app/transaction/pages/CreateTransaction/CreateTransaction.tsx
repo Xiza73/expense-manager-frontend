@@ -7,11 +7,12 @@ import { z } from 'zod';
 import { getAccountQueryOptions } from '@/app/account/queries/account.query';
 import FormDate from '@/components/FormDate';
 import FormInput from '@/components/FormInput';
+import FormMoney from '@/components/FormMoney';
 import FormSelect from '@/components/FormSelect';
 import PageContainer from '@/components/PageContainer';
 import { Text } from '@/components/ui/text';
 import { commonValidators } from '@/contants/common-validators.constant';
-import { Currency, CurrencyKey } from '@/domain/currency.enum';
+import { getCurrencyKey } from '@/domain/currency.enum';
 import { PaymentMethod, PaymentMethodKey } from '@/domain/payment-method.enum';
 import { handleMoneyInput, moneyToNumber } from '@/utils/money-format.util';
 
@@ -63,6 +64,7 @@ export const CreateTransaction: React.FC = () => {
       categoryId: '',
       serviceId: '',
       date: new Date(),
+      currency: getCurrencyKey(account?.currency),
     },
     delayError: 100,
     mode: 'onChange',
@@ -113,24 +115,13 @@ export const CreateTransaction: React.FC = () => {
             error={errors.description?.message}
           />
 
-          <FormInput
+          <FormMoney
             register={register}
-            name="amount"
-            placeholder="Amount"
-            error={errors.amount?.message}
+            currencyName="currency"
+            amountName="amount"
+            error={errors.amount?.message || errors.currency?.message}
             onInput={handleMoneyInput}
             onBlur={handleMoneyInput}
-          />
-
-          <FormSelect
-            register={register}
-            name="currency"
-            placeholder="Select Currency"
-            error={errors.currency?.message}
-            options={Object.values(CurrencyKey).map((currency) => ({
-              value: currency,
-              label: Currency[currency],
-            }))}
           />
 
           <FormSelect
