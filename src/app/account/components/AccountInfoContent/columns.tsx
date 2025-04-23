@@ -1,15 +1,15 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@radix-ui/react-tooltip';
 import { Link } from '@tanstack/react-router';
 import { createColumnHelper } from '@tanstack/react-table';
 import { BanknoteArrowDown, BanknoteArrowUp, Edit } from 'lucide-react';
 
 import { Transaction } from '@/app/transaction/domain/transaction.interface';
 import { TransactionType } from '@/app/transaction/domain/transaction-type.enum';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { AppRoute } from '@/domain/app-route.type';
 import { getDate } from '@/utils/date.util';
 import { patternMoney } from '@/utils/money-format.util';
