@@ -10,10 +10,12 @@ import { getColumns } from './columns';
 
 export interface AccountInfoContentProps {
   account: Account;
+  fromCreateTransaction?: boolean;
 }
 
 export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   account,
+  fromCreateTransaction = false,
 }) => {
   const {
     currentPage,
@@ -29,6 +31,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     initialPage: INITIAL_PAGINATOR.page,
     initialPageSize: INITIAL_PAGINATOR.limit,
   });
+
   const [columns, setColumns] = useState(getColumns(currentPage, pageSize));
 
   const {
@@ -44,6 +47,14 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
       accountId: account?.id,
     },
   });
+
+  useEffect(() => {
+    if (fromCreateTransaction && !res?.data?.length) {
+      refetch();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setTotalPages(res?.pages || 1);

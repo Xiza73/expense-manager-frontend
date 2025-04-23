@@ -1,4 +1,4 @@
-import { QueryOptions, QueryParams } from '@/domain/api.interface';
+import { QueryParams } from '@/domain/api.interface';
 import { NullResponse } from '@/domain/responses/null.response';
 import { useMutation } from '@/hooks/useMutation';
 import { useQuery } from '@/hooks/useQuery';
@@ -33,9 +33,8 @@ export const useGetTransactionsQuery = (
     },
   });
 
-export const useCreateTransactionMutation = (options: QueryOptions) =>
+export const useCreateTransactionMutation = () =>
   useMutation<NullResponse, CreateTransactionRequest>({
-    ...options,
     showError: true,
     showSuccess: true,
     mutationFn: async (request) => {

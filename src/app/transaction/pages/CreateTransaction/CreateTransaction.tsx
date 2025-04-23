@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -44,11 +45,8 @@ export const CreateTransaction: React.FC = () => {
   const { accountId } = useParams({ from: '/transaction/create/$accountId' });
 
   const { data: account } = useSuspenseQuery(getAccountQueryOptions(accountId));
-  const { mutateAsync: createTransaction } = useCreateTransactionMutation({
-    onSuccess: () => {
-      navigate({ to: '/' });
-    },
-  });
+  const { data: transactionCreated, mutateAsync: createTransaction } =
+    useCreateTransactionMutation();
   const { data: transactionCategories } = useGetTransactionCategoriesQuery();
   const { data: transactionServices } = useGetTransactionServicesQuery();
 
@@ -70,8 +68,21 @@ export const CreateTransaction: React.FC = () => {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: FormSchema) => {
-    createTransaction({
+  useEffect(() => {
+    if (transactionCreated?.success) {
+      navigate({
+        from: '/transaction/create/$accountId',
+        to: '/account/$accountId',
+        params: { accountId },
+        search: { wasCreated: true },
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transactionCreated]);
+
+  const onSubmit = async (data: FormSchema) => {
+    await createTransaction({
       ...data,
       date: data.date.toISOString(),
       amount: moneyToNumber(data.amount),
