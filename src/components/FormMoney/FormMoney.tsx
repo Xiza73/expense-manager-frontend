@@ -10,6 +10,7 @@ export interface FormMoneyProps<TFieldValues extends FieldValues>
   register: UseFormRegister<TFieldValues>;
   currencyName: Path<TFieldValues>;
   amountName: Path<TFieldValues>;
+  disabledCurrency?: boolean;
 }
 
 export const FormMoney = <TFieldValues extends FieldValues>({
@@ -17,6 +18,7 @@ export const FormMoney = <TFieldValues extends FieldValues>({
   currencyName,
   amountName,
   error,
+  disabledCurrency = false,
   ...props
 }: FormMoneyProps<TFieldValues>) => {
   return (
@@ -24,9 +26,11 @@ export const FormMoney = <TFieldValues extends FieldValues>({
       <div className="relative">
         <select
           className={cn(
-            'border p-2 pr-6 appearance-none',
+            'border p-2 appearance-none',
+            disabledCurrency ? 'cursor-auto pr-2' : 'pr-6',
             error ? 'border-red-500' : 'border-gray-300',
           )}
+          disabled={disabledCurrency}
           {...register(currencyName)}
         >
           {Object.values(CurrencyKey).map((currency) => (
@@ -38,9 +42,11 @@ export const FormMoney = <TFieldValues extends FieldValues>({
             </option>
           ))}
         </select>
-        <div className="absolute right-1 top-0 bottom-0 flex items-center justify-center pointer-events-none">
-          <ChevronsUpDown className="w-5 h-5 text-gray-500" />
-        </div>
+        {!disabledCurrency && (
+          <div className="absolute right-1 top-0 bottom-0 flex items-center justify-center pointer-events-none">
+            <ChevronsUpDown className="w-5 h-5 text-gray-500" />
+          </div>
+        )}
       </div>
       <input
         className={cn(

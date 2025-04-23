@@ -131,6 +131,7 @@ export const CreateTransaction: React.FC = () => {
             currencyName="currency"
             amountName="amount"
             error={errors.amount?.message || errors.currency?.message}
+            disabledCurrency
             onInput={handleMoneyInput}
             onBlur={handleMoneyInput}
           />
