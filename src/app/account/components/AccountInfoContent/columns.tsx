@@ -4,6 +4,7 @@ import { BanknoteArrowDown, BanknoteArrowUp, Edit } from 'lucide-react';
 
 import { Transaction } from '@/app/transaction/domain/transaction.interface';
 import { TransactionType } from '@/app/transaction/domain/transaction-type.enum';
+import TruncateTooltipText from '@/components/TruncateTooltipText';
 import {
   Tooltip,
   TooltipContent,
@@ -27,11 +28,11 @@ export const getColumns = (_currentPage: number, _pageSize: number) => [
   // }),
   columnHelper.accessor('name', {
     header: 'Name',
-    cell: (info) => info.getValue(),
+    cell: (info) => <TruncateTooltipText text={info.getValue()} />,
   }),
   columnHelper.accessor('description', {
     header: 'Description',
-    cell: (info) => info.getValue(),
+    cell: (info) => <TruncateTooltipText text={info.getValue() || ''} />,
   }),
   columnHelper.accessor('category.name', {
     header: 'Category',
@@ -42,7 +43,7 @@ export const getColumns = (_currentPage: number, _pageSize: number) => [
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor('paymentMethod', {
-    header: 'Payment Method',
+    header: 'With',
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor('type', {
