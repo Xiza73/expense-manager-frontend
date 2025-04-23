@@ -1,13 +1,13 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import { QueryOptions, QueryParams } from '@/domain/api.interface';
-import { NullResponse } from '@/domain/responses/null.response';
+import { QueryParams } from '@/domain/api.interface';
 import { useMutation } from '@/hooks/useMutation';
 import { useQuery } from '@/hooks/useQuery';
 
 import { accountAdapter } from '../adapters/account.adapter';
 import { CreateAccountRequest } from '../domain/requests/create-account.request';
 import { GetAccountsRequest } from '../domain/requests/get-accounts.request';
+import { CreateAccountResponse } from '../domain/responses/create-account.response';
 import { GetAccountResponse } from '../domain/responses/get-account.response';
 import { GetAccountsResponse } from '../domain/responses/get-accounts.response';
 import {
@@ -60,17 +60,16 @@ export const getAccountQueryOptions = (id: string) =>
     },
   });
 
-export const useCreateAccountMutation = (options?: QueryOptions) =>
-  useMutation<NullResponse, CreateAccountRequest>({
-    ...options,
+export const useCreateAccountMutation = () =>
+  useMutation<CreateAccountResponse, CreateAccountRequest>({
     showError: true,
     showSuccess: true,
     mutationFn: async (request) => {
       const data = await createAccount(request);
 
       return {
+        id: data.responseObject.id,
         message: data.message,
-        success: data.success,
       };
     },
   });

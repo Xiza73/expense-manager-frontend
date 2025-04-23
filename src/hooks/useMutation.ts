@@ -22,7 +22,7 @@ interface UseMutationProps<T, K> {
   mutationKey?: string[];
 }
 
-export const useMutation = <T extends { message: string }, K = object>({
+export const useMutation = <T extends { message?: string }, K = object>({
   mutationFn,
   onSuccess = noopFunction,
   onError = noopFunction,

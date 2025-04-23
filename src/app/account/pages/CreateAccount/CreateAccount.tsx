@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from '@tanstack/react-router';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -27,11 +28,8 @@ type FormData = z.infer<typeof formSchema>;
 export const CreateAccount: React.FC = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: createAccount } = useCreateAccountMutation({
-    onSuccess: () => {
-      navigate({ to: '/' });
-    },
-  });
+  const { data: accountCreated, mutateAsync: createAccount } =
+    useCreateAccountMutation();
 
   const {
     register,
@@ -48,6 +46,18 @@ export const CreateAccount: React.FC = () => {
     delayError: 100,
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    if (accountCreated?.id) {
+      navigate({
+        to: '/account/$accountId',
+        replace: true,
+        params: { accountId: accountCreated.id },
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountCreated]);
 
   const onSubmit = async (data: FormData) => {
     await createAccount({
