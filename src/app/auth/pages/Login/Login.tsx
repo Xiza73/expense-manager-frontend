@@ -7,13 +7,11 @@ import PageContainer from '@/components/PageContainer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import ZodInputPassword from '@/components/ZodInputPassword';
+import { commonValidators } from '@/contants/common-validators.constant';
 import { useAuth } from '@/store/auth/useAuth';
 
 const formSchema = z.object({
-  token: z
-    .string({ message: '' })
-    .min(1, 'Token is required')
-    .max(36, 'Token must be 36 characters long'),
+  token: commonValidators.token,
 });
 type FormData = z.infer<typeof formSchema>;
 

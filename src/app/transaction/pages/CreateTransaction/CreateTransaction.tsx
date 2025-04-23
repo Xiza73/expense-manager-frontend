@@ -10,6 +10,7 @@ import FormInput from '@/components/FormInput';
 import FormSelect from '@/components/FormSelect';
 import PageContainer from '@/components/PageContainer';
 import { Text } from '@/components/ui/text';
+import { commonValidators } from '@/contants/common-validators.constant';
 import { Currency, CurrencyKey } from '@/domain/currency.enum';
 import { PaymentMethod, PaymentMethodKey } from '@/domain/payment-method.enum';
 import { handleMoneyInput, moneyToNumber } from '@/utils/money-format.util';
@@ -23,22 +24,16 @@ import { useGetTransactionCategoriesQuery } from '../../queries/transaction-cate
 import { useGetTransactionServicesQuery } from '../../queries/transaction-service.query';
 
 const formSchema = z.object({
-  name: z.string().min(3),
+  name: commonValidators.minCharacters(3),
   description: z.string().optional(),
-  amount: z
-    .string()
-    .min(1, 'Amount is required')
-    .refine((value) => {
-      const numberValue = moneyToNumber(value, ',');
-      return !isNaN(numberValue) && numberValue > 0;
-    }, 'Invalid amount'),
-  currency: z.nativeEnum(CurrencyKey),
-  type: z.nativeEnum(TransactionTypeKey),
-  paymentMethod: z.nativeEnum(PaymentMethodKey),
-  date: z.date(),
-  categoryId: z.string().min(1, 'Category is required'),
-  serviceId: z.string().min(1, 'Service is required'),
-  accountId: z.string(),
+  amount: commonValidators.money,
+  currency: commonValidators.currency,
+  type: commonValidators.transactionType,
+  paymentMethod: commonValidators.paymentMethod,
+  date: commonValidators.date,
+  categoryId: commonValidators.id('Category'),
+  serviceId: commonValidators.id('Service'),
+  accountId: commonValidators.id('Account'),
 });
 type FormSchema = z.infer<typeof formSchema>;
 

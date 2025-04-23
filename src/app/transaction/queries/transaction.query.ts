@@ -37,6 +37,7 @@ export const useCreateTransactionMutation = (options: QueryOptions) =>
   useMutation<NullResponse, CreateTransactionRequest>({
     ...options,
     showError: true,
+    showSuccess: true,
     mutationFn: async (request) => {
       const data = await createTransaction(request);
 
