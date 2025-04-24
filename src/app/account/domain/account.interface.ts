@@ -7,6 +7,7 @@ export interface ApiAccount {
   description?: string;
   month: MonthKey;
   year: number;
+  date: string;
   currency: CurrencyKey;
   amount: number;
   balance: number;
@@ -19,6 +20,7 @@ export interface Account {
   description?: string;
   month: Month;
   year: number;
+  date: Date;
   currency: Currency;
   amount: number;
   balance: number;

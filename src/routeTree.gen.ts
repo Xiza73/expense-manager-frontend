@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as TransactionImport } from './routes/transaction'
 import { Route as AuthImport } from './routes/auth'
 import { Route as AccountImport } from './routes/account'
+import { Route as IndexImport } from './routes/index'
 import { Route as TransactionIndexImport } from './routes/transaction.index'
 import { Route as AuthIndexImport } from './routes/auth.index'
 import { Route as AccountIndexImport } from './routes/account.index'
@@ -25,7 +26,6 @@ import { Route as AccountUpdateAccountIdImport } from './routes/account.update.$
 
 // Create Virtual Routes
 
-const IndexLazyImport = createFileRoute('/')()
 const AuthLoginLazyImport = createFileRoute('/auth/login')()
 const AccountCreateLazyImport = createFileRoute('/account/create')()
 
@@ -49,11 +49,11 @@ const AccountRoute = AccountImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexLazyRoute = IndexLazyImport.update({
+const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 
 const TransactionIndexRoute = TransactionIndexImport.update({
   id: '/',
@@ -115,7 +115,7 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
+      preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/account': {
@@ -244,7 +244,7 @@ const TransactionRouteWithChildren = TransactionRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
   '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/transaction': typeof TransactionRouteWithChildren
@@ -259,7 +259,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
@@ -272,7 +272,7 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
   '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/transaction': typeof TransactionRouteWithChildren
@@ -330,14 +330,14 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
+  IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   TransactionRoute: typeof TransactionRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexLazyRoute: IndexLazyRoute,
+  IndexRoute: IndexRoute,
   AccountRoute: AccountRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   TransactionRoute: TransactionRouteWithChildren,
@@ -360,7 +360,7 @@ export const routeTree = rootRoute
       ]
     },
     "/": {
-      "filePath": "index.lazy.tsx"
+      "filePath": "index.tsx"
     },
     "/account": {
       "filePath": "account.tsx",

@@ -1,4 +1,5 @@
-import { createLazyFileRoute, Navigate } from '@tanstack/react-router';
+import { createFileRoute, Navigate } from '@tanstack/react-router';
+import { z } from 'zod';
 
 import Main from '@/app/main/pages/Main';
 import PrivateRoute from '@/components/Route/PrivateRoute';
@@ -11,7 +12,12 @@ export const Index: React.FC = () => {
   );
 };
 
-export const Route = createLazyFileRoute('/')({
+const accountIdSearchSchema = z.object({
+  wasCreated: z.boolean().optional(),
+});
+
+export const Route = createFileRoute('/')({
+  validateSearch: accountIdSearchSchema,
   component: Index,
   notFoundComponent: () => <Navigate to="/" />,
 });

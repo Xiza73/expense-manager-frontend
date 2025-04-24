@@ -20,12 +20,16 @@ export interface FormDateProps<TFieldValues extends FieldValues>
   error?: string;
   control: Control<TFieldValues>;
   name: Path<TFieldValues>;
+  disableNavigation?: boolean;
+  defaultMonth?: Date;
 }
 
 export const FormDate = <TFieldValues extends FieldValues>({
   control,
   name,
   error,
+  disableNavigation = false,
+  defaultMonth,
   ...props
 }: FormDateProps<TFieldValues>) => {
   return (
@@ -53,6 +57,9 @@ export const FormDate = <TFieldValues extends FieldValues>({
             <Calendar
               mode="single"
               selected={date}
+              defaultMonth={defaultMonth}
+              disableNavigation={disableNavigation}
+              showOutsideDays={!disableNavigation}
               onSelect={onChange}
               initialFocus
             />

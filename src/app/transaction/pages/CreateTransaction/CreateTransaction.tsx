@@ -61,7 +61,7 @@ export const CreateTransaction: React.FC = () => {
       accountId: account?.id.toString(),
       categoryId: '',
       serviceId: '',
-      date: new Date(),
+      date: account?.date,
       currency: getCurrencyKey(account?.currency),
     },
     delayError: 100,
@@ -69,6 +69,7 @@ export const CreateTransaction: React.FC = () => {
   });
 
   useEffect(() => {
+    // TODO: if it default to the latest account
     if (transactionCreated?.success) {
       navigate({
         from: '/transaction/create/$accountId',
@@ -184,6 +185,8 @@ export const CreateTransaction: React.FC = () => {
             control={control}
             name="date"
             error={errors.date?.message}
+            defaultMonth={account.date}
+            disableNavigation
           />
         </div>
         <div className="flex justify-center w-full p-4 mt-2 bg-gray-100">
