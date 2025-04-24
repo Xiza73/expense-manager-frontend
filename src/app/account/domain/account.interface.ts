@@ -13,6 +13,7 @@ export interface ApiAccount {
   balance: number;
   expenseAmount: number;
   incomeAmount: number;
+  isDefault: boolean;
 }
 
 export interface Account {
@@ -26,4 +27,5 @@ export interface Account {
   balance: number;
   expenseAmount: number;
   incomeAmount: number;
+  isDefault: boolean;
 }

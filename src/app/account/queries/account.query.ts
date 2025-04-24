@@ -1,8 +1,10 @@
 import { queryOptions } from '@tanstack/react-query';
 
 import { QueryParams } from '@/domain/api.interface';
+import { NullResponse } from '@/domain/responses/null.response';
 import { useMutation } from '@/hooks/useMutation';
 import { useQuery } from '@/hooks/useQuery';
+import { queryClient } from '@/main';
 
 import { accountAdapter } from '../adapters/account.adapter';
 import { CreateAccountRequest } from '../domain/requests/create-account.request';
@@ -15,6 +17,7 @@ import {
   getAccount,
   getAccounts,
   getLatestAccount,
+  setDefaultAccount,
 } from '../services/account.service';
 
 export const useGetLatestAccountQuery = () =>
@@ -64,12 +67,33 @@ export const useCreateAccountMutation = () =>
   useMutation<CreateAccountResponse, CreateAccountRequest>({
     showError: true,
     showSuccess: true,
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['get-latest-account'] });
+    },
     mutationFn: async (request) => {
       const data = await createAccount(request);
 
       return {
         id: data.responseObject.id,
         message: data.message,
+      };
+    },
+  });
+
+export const useSetDefaultAccountMutation = () =>
+  useMutation<NullResponse, string>({
+    showError: true,
+    showSuccess: true,
+    showLoader: false,
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['get-latest-account'] });
+    },
+    mutationFn: async (id) => {
+      const data = await setDefaultAccount(id);
+
+      return {
+        message: data.message,
+        success: data.success,
       };
     },
   });

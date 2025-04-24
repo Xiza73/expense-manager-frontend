@@ -17,6 +17,7 @@ interface UseMutationProps<T, K> {
   onSettled?: AnyFunction;
   showSuccess?: boolean;
   showError?: boolean;
+  showLoader?: boolean;
   customSuccessMessage?: string;
   customErrorMessage?: string;
   mutationKey?: string[];
@@ -29,6 +30,7 @@ export const useMutation = <T extends { message?: string }, K = object>({
   onSettled = noopFunction,
   showSuccess,
   showError,
+  showLoader = true,
   customSuccessMessage,
   customErrorMessage,
   mutationKey,
@@ -39,7 +41,7 @@ export const useMutation = <T extends { message?: string }, K = object>({
     ...(mutationKey && { mutationKey }),
     mutationFn,
     onMutate: () => {
-      pushLoader();
+      if (showLoader) pushLoader();
     },
     onSuccess: (data: T) => {
       if (showSuccess)
@@ -62,7 +64,7 @@ export const useMutation = <T extends { message?: string }, K = object>({
     onSettled: () => {
       onSettled();
 
-      popLoader();
+      if (showLoader) popLoader();
     },
   });
 };

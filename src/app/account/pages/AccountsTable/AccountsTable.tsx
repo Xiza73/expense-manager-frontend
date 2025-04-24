@@ -5,8 +5,11 @@ import PageContainer from '@/components/PageContainer';
 import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
 import { usePagination } from '@/hooks/usePagination';
 
-import { useGetAccountsQuery } from '../../queries/account.query';
-import { columns } from './columns';
+import {
+  useGetAccountsQuery,
+  useSetDefaultAccountMutation,
+} from '../../queries/account.query';
+import { getColumns } from './columns';
 
 export const AccountsTable: React.FC = () => {
   const {
@@ -24,7 +27,11 @@ export const AccountsTable: React.FC = () => {
     initialPageSize: INITIAL_PAGINATOR.limit,
   });
 
-  const { data: res, refetch } = useGetAccountsQuery({
+  const {
+    data: res,
+    refetch,
+    isFetching,
+  } = useGetAccountsQuery({
     enabled: true,
     showLoading: false,
     params: {
@@ -32,6 +39,19 @@ export const AccountsTable: React.FC = () => {
       limit: pageSize,
     },
   });
+
+  const { data: defaultRes, mutateAsync: setDefaultAccount } =
+    useSetDefaultAccountMutation();
+
+  useEffect(() => {
+    if (defaultRes?.success) {
+      refetch();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultRes?.success]);
+
+  const columns = getColumns(setDefaultAccount);
 
   useEffect(() => {
     setTotalPages(res?.pages || 1);
@@ -54,6 +74,8 @@ export const AccountsTable: React.FC = () => {
       <CustomTable
         data={res?.data || []}
         columns={columns}
+        showSkeleton
+        isFetching={isFetching}
         previousEnabled={previousEnabled}
         nextEnabled={nextEnabled}
         totalPages={totalPages}

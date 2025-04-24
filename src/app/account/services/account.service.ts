@@ -1,3 +1,4 @@
+import { NullApiResponse } from '@/domain/responses/null.response';
 import { api } from '@/lib/axios';
 import { buildQueryParams } from '@/utils/build-query-params.util';
 
@@ -36,6 +37,12 @@ export const createAccount = async (request: CreateAccountRequest) => {
     `${MODULE}`,
     request,
   );
+
+  return data;
+};
+
+export const setDefaultAccount = async (id: string) => {
+  const { data } = await api.patch<NullApiResponse>(`${MODULE}/default/${id}`);
 
   return data;
 };
