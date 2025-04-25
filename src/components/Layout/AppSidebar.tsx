@@ -1,7 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { ChevronUp, User2 } from 'lucide-react';
 
-import { useGetAccountsQuery } from '@/app/account/queries/account.query';
 import {
   Sidebar,
   SidebarContent,
