@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useNavigate, useParams } from '@tanstack/react-router';
+import { useNavigate, useParams, useSearch } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -43,12 +43,18 @@ export const CreateTransaction: React.FC = () => {
   const navigate = useNavigate();
 
   const { accountId } = useParams({ from: '/transaction/create/$accountId' });
+  const { redirect } = useSearch({ from: '/transaction/create/$accountId' });
 
   const { data: account } = useSuspenseQuery(getAccountQueryOptions(accountId));
   const { data: transactionCreated, mutateAsync: createTransaction } =
     useCreateTransactionMutation();
   const { data: transactionCategories } = useGetTransactionCategoriesQuery();
   const { data: transactionServices } = useGetTransactionServicesQuery();
+
+  const dateNow = new Date();
+  const isSameMonthAndYear =
+    dateNow.getMonth() === account?.date.getMonth() &&
+    dateNow.getFullYear() === account?.date.getFullYear();
 
   const {
     control,
@@ -61,7 +67,7 @@ export const CreateTransaction: React.FC = () => {
       accountId: account?.id.toString(),
       categoryId: '',
       serviceId: '',
-      date: account?.date,
+      date: isSameMonthAndYear ? new Date() : account?.date,
       currency: getCurrencyKey(account?.currency),
     },
     delayError: 100,
@@ -73,7 +79,7 @@ export const CreateTransaction: React.FC = () => {
     if (transactionCreated?.success) {
       navigate({
         from: '/transaction/create/$accountId',
-        to: '/account/$accountId',
+        to: redirect === 'main' ? '/' : `/account/$accountId`,
         params: { accountId },
         search: { wasCreated: true },
       });
@@ -185,8 +191,8 @@ export const CreateTransaction: React.FC = () => {
             control={control}
             name="date"
             error={errors.date?.message}
-            defaultMonth={account.date}
             disableNavigation
+            {...(isSameMonthAndYear ? {} : { defaultMonth: account?.date })}
           />
         </div>
         <div className="flex justify-center w-full p-4 mt-2 bg-gray-100">

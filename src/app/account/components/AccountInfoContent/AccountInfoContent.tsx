@@ -10,12 +10,10 @@ import { getColumns } from './columns';
 
 export interface AccountInfoContentProps {
   account: Account;
-  fromCreateTransaction?: boolean;
 }
 
 export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   account,
-  fromCreateTransaction = false,
 }) => {
   const {
     currentPage,
@@ -49,7 +47,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   });
 
   useEffect(() => {
-    if (fromCreateTransaction && !res?.data?.length) {
+    if (!res?.data?.length) {
       refetch();
     }
 

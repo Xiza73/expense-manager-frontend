@@ -57,7 +57,7 @@ export const FormDate = <TFieldValues extends FieldValues>({
             <Calendar
               mode="single"
               selected={date}
-              defaultMonth={defaultMonth}
+              {...(defaultMonth && { defaultMonth })}
               disableNavigation={disableNavigation}
               showOutsideDays={!disableNavigation}
               onSelect={onChange}

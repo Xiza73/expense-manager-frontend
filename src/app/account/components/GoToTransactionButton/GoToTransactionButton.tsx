@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/button';
 
 export interface GoToTransactionButtonProps {
   accountId: string;
+  redirect?: 'main' | 'custom';
 }
 
 export const GoToTransactionButton: React.FC<GoToTransactionButtonProps> = ({
   accountId,
+  redirect,
 }) => {
   const navigate = useNavigate();
 
@@ -19,6 +21,9 @@ export const GoToTransactionButton: React.FC<GoToTransactionButtonProps> = ({
         accountId,
       },
       replace: true,
+      search: {
+        ...(redirect === 'main' && { redirect }),
+      },
     });
   };
 
