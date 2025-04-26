@@ -8,6 +8,10 @@ export type PatterOptions = {
   prefix?: Currency;
 };
 
+export const getNumberSymbol = (num: number) => {
+  return num < 0 ? '-' : '';
+};
+
 export const moneyFormat = (
   value: string,
   currency: Currency,

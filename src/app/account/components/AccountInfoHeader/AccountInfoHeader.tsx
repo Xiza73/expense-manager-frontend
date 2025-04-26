@@ -1,12 +1,14 @@
 import { Account } from '@/app/account/domain/account.interface';
 import { Text } from '@/components/ui/text';
-import { patternMoney } from '@/utils/money-format.util';
+import { getNumberSymbol, patternMoney } from '@/utils/money-format.util';
 
 export interface AccountInfoHeaderProps {
   account: Account;
 }
 
-export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({ account }) => {
+export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
+  account,
+}) => {
   return (
     <>
       <Text
@@ -16,11 +18,10 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({ account })
         {account.month} - {account.year}
       </Text>
       <div className="flex flex-col md:flex-row justify-center md:justify-around w-full text-center">
-        <div className="flex flex-col md:justify-start">
+        <div className="flex flex-col md:justify-start md:text-left">
           <Text as="p">
             Amount:{' '}
             <strong>
-              {' '}
               {patternMoney(account.amount.toString(), {
                 prefix: account.currency,
               })}
@@ -29,7 +30,7 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({ account })
           <Text as="p">
             Balance:{' '}
             <strong>
-              {' '}
+              {getNumberSymbol(account.balance)}{' '}
               {patternMoney(account.balance.toString(), {
                 prefix: account.currency,
               })}
