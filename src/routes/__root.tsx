@@ -3,6 +3,7 @@ import { lazy, useEffect } from 'react';
 
 import Layout from '@/components/Layout';
 import Loader from '@/components/Loader';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { useAuth } from '@/store/auth/useAuth';
 
 const TanStackRouterDevtools = !import.meta.env.DEV
@@ -25,10 +26,15 @@ const AppRoute: React.FC = () => {
   if (isProcessing) return <Loader loading />;
 
   return (
-    <Layout>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </Layout>
+    <SidebarProvider
+      open
+      defaultOpen={false}
+    >
+      <Layout>
+        <Outlet />
+        <TanStackRouterDevtools />
+      </Layout>
+    </SidebarProvider>
   );
 };
 

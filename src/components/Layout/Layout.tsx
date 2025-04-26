@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { ChildrenProps } from '@/domain/children-props.interface';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/store/auth/useAuth';
@@ -11,21 +11,24 @@ import { AppSidebar } from './AppSidebar';
 
 export const Layout: React.FC<ChildrenProps> = ({ children }) => {
   const isMobile = useIsMobile();
-  const [open, setOpen] = useState(isMobile);
+  const { openMobile, setOpenMobile } = useSidebar();
   const { isAuthenticated } = useAuth();
   const { error } = useError();
 
+  useEffect(() => {
+    if (!isAuthenticated) setOpenMobile(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
+
   return (
-    <SidebarProvider
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <>
       {isAuthenticated && <AppSidebar />}
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
-        {isAuthenticated && isMobile && <SidebarTrigger open={open} />}
+        {isAuthenticated && isMobile && <SidebarTrigger open={openMobile} />}
         {error && <ErrorPage message={error || ''} />}
         {!error && children}
       </main>
-    </SidebarProvider>
+    </>
   );
 };
