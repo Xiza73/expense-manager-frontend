@@ -8,8 +8,11 @@ export type PatterOptions = {
   prefix?: Currency;
 };
 
-export const moneyFormat = (value: string, currency: Currency) => {
-  const maxLength = 7;
+export const moneyFormat = (
+  value: string,
+  currency: Currency,
+  maxLength: number = 5,
+) => {
   value = value.replace(/[^0-9.]/g, '');
   value = value.replace(/^\./g, '');
   value = value.replace(/\.{2,}/g, '.');
@@ -55,20 +58,25 @@ export function moneyToNumber(
   money: string,
   separator: Separator = ',',
 ): number {
-  money = money.replace(/[^0-9,.]/g, '');
-  if (separator === '.') {
-    money = money.replace(/\./g, '').replace(/,/g, '.');
-  } else {
-    money = money.replace(/,/g, '');
+  try {
+    money = money.replace(/[^0-9,.]/g, '');
+    if (separator === '.') {
+      money = money.replace(/\./g, '').replace(/,/g, '.');
+    } else {
+      money = money.replace(/,/g, '');
+    }
+
+    return parseFloat(money);
+  } catch (_) {
+    return 0;
   }
-  return parseFloat(money);
 }
 
 export const handleMoneyInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   const target = e.target as HTMLInputElement;
 
   target.value = patternMoney(target.value, {
-    lenght: 8,
+    lenght: 5,
     separator: ',',
   });
 };
