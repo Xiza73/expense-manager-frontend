@@ -15,6 +15,7 @@ import { Text } from '@/components/ui/text';
 import { commonValidators } from '@/contants/common-validators.constant';
 import { getCurrencyKey } from '@/domain/currency.enum';
 import { PaymentMethod, PaymentMethodKey } from '@/domain/payment-method.enum';
+import { getOnlyDate } from '@/utils/date.util';
 import { handleMoneyInput, moneyToNumber } from '@/utils/money-format.util';
 
 import {
@@ -91,7 +92,7 @@ export const CreateTransaction: React.FC = () => {
   const onSubmit = async (data: FormSchema) => {
     await createTransaction({
       ...data,
-      date: data.date.toISOString(),
+      date: getOnlyDate(data.date),
       amount: moneyToNumber(data.amount),
       accountId: Number(data.accountId),
       categoryId: Number(data.categoryId),
