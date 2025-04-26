@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -21,17 +20,12 @@ export const Login: React.FC = () => {
   const {
     register,
     handleSubmit,
-    trigger,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(formSchema),
     delayError: 100,
     mode: 'onChange',
   });
-
-  useEffect(() => {
-    trigger();
-  }, [trigger]);
 
   const onSubmit = async (data: FormData) => {
     await signIn(data.token);
