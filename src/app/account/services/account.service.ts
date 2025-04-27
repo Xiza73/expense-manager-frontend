@@ -3,6 +3,7 @@ import { api } from '@/lib/axios';
 import { buildQueryParams } from '@/utils/build-query-params.util';
 
 import { CreateAccountRequest } from '../domain/requests/create-account.request';
+import { EditAccountRequest } from '../domain/requests/edit-account.request';
 import { GetAccountsRequest } from '../domain/requests/get-accounts.request';
 import { CreateAccountApiResponse } from '../domain/responses/create-account.response';
 import { GetAccountApiResponse } from '../domain/responses/get-account.response';
@@ -43,6 +44,12 @@ export const createAccount = async (request: CreateAccountRequest) => {
 
 export const setDefaultAccount = async (id: string) => {
   const { data } = await api.patch<NullApiResponse>(`${MODULE}/default/${id}`);
+
+  return data;
+};
+
+export const updateAccount = async ({ id, ...request }: EditAccountRequest) => {
+  const { data } = await api.put<NullApiResponse>(`${MODULE}/${id}`, request);
 
   return data;
 };

@@ -8,6 +8,7 @@ import { queryClient } from '@/main';
 
 import { accountAdapter } from '../adapters/account.adapter';
 import { CreateAccountRequest } from '../domain/requests/create-account.request';
+import { EditAccountRequest } from '../domain/requests/edit-account.request';
 import { GetAccountsRequest } from '../domain/requests/get-accounts.request';
 import { CreateAccountResponse } from '../domain/responses/create-account.response';
 import { GetAccountResponse } from '../domain/responses/get-account.response';
@@ -19,6 +20,7 @@ import {
   getAccounts,
   getLatestAccount,
   setDefaultAccount,
+  updateAccount,
 } from '../services/account.service';
 
 export const useGetLatestAccountQuery = () =>
@@ -95,6 +97,20 @@ export const useSetDefaultAccountMutation = () =>
       return {
         message: data.message,
         success: data.success,
+      };
+    },
+  });
+
+export const useEditAccountMutation = () =>
+  useMutation<NullResponse, EditAccountRequest>({
+    showError: true,
+    showSuccess: true,
+    mutationFn: async (request) => {
+      const data = await updateAccount(request);
+
+      return {
+        success: data.success,
+        message: data.message,
       };
     },
   });
