@@ -1,8 +1,6 @@
-import { Link } from '@tanstack/react-router';
 import { createColumnHelper } from '@tanstack/react-table';
-import { SquareArrowOutUpRight, Star } from 'lucide-react';
+import { Edit, SquareArrowOutUpRight, Star, Trash } from 'lucide-react';
 
-import { AppRoute } from '@/domain/app-route.type';
 import { cn } from '@/lib/utils';
 import { patternMoney } from '@/utils/money-format.util';
 
@@ -10,7 +8,19 @@ import { Account } from '../../domain/account.interface';
 
 const columnHelper = createColumnHelper<Account>();
 
-export const getColumns = (setDefaultAccount: (id: string) => void) => [
+interface ColumnsProps {
+  setDefaultAccount: (id: string) => void;
+  goToEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+  showAccount: (id: string) => void;
+}
+
+export const getColumns = ({
+  setDefaultAccount,
+  goToEdit,
+  onDelete,
+  showAccount,
+}: ColumnsProps) => [
   columnHelper.accessor('month', {
     header: 'Month',
     cell: (info) => info.getValue(),
@@ -36,13 +46,14 @@ export const getColumns = (setDefaultAccount: (id: string) => void) => [
   columnHelper.accessor('id', {
     header: 'Actions',
     cell: (info) => {
-      const link = `/account/${info.getValue()}` as AppRoute;
+      const id = info.getValue().toString();
       const isDefault = info.row.original.isDefault;
 
       return (
-        <div className="w-full flex justify-end gap-2">
+        <div className="w-full flex justify-end gap-2 items-center">
           <Star
             className={cn(
+              'size-6',
               isDefault ? 'text-yellow-500 fill-current' : '',
               isDefault ? 'pointer-events-none' : 'cursor-pointer',
             )}
@@ -52,9 +63,18 @@ export const getColumns = (setDefaultAccount: (id: string) => void) => [
               setDefaultAccount(info.getValue().toString());
             }}
           />
-          <Link to={link}>
-            <SquareArrowOutUpRight />
-          </Link>
+          <SquareArrowOutUpRight
+            onClick={() => showAccount(id)}
+            className="cursor-pointer size-6"
+          />
+          <Edit
+            onClick={() => goToEdit(id)}
+            className="cursor-pointer size-6"
+          />
+          <Trash
+            onClick={() => onDelete(id)}
+            className="cursor-pointer size-6"
+          />
         </div>
       );
     },

@@ -14,6 +14,7 @@ import { GetAccountResponse } from '../domain/responses/get-account.response';
 import { GetAccountsResponse } from '../domain/responses/get-accounts.response';
 import {
   createAccount,
+  deleteAccount,
   getAccount,
   getAccounts,
   getLatestAccount,
@@ -90,6 +91,24 @@ export const useSetDefaultAccountMutation = () =>
     },
     mutationFn: async (id) => {
       const data = await setDefaultAccount(id);
+
+      return {
+        message: data.message,
+        success: data.success,
+      };
+    },
+  });
+
+export const useDeleteAccountMutation = () =>
+  useMutation<NullResponse, string>({
+    showError: true,
+    showSuccess: true,
+    showLoader: false,
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['get-accounts'] });
+    },
+    mutationFn: async (id) => {
+      const data = await deleteAccount(id);
 
       return {
         message: data.message,

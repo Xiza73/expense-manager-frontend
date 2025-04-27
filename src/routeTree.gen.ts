@@ -24,6 +24,7 @@ import { Route as AccountAccountIdImport } from './routes/account.$accountId'
 import { Route as TransactionEditTransactionIdImport } from './routes/transaction.edit.$transactionId'
 import { Route as TransactionCreateAccountIdImport } from './routes/transaction.create.$accountId'
 import { Route as AccountUpdateAccountIdImport } from './routes/account.update.$accountId'
+import { Route as AccountEditAccountIdImport } from './routes/account.edit.$accountId'
 
 // Create Virtual Routes
 
@@ -115,6 +116,12 @@ const AccountUpdateAccountIdRoute = AccountUpdateAccountIdImport.update({
   getParentRoute: () => AccountRoute,
 } as any)
 
+const AccountEditAccountIdRoute = AccountEditAccountIdImport.update({
+  id: '/edit/$accountId',
+  path: '/edit/$accountId',
+  getParentRoute: () => AccountRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -189,6 +196,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TransactionIndexImport
       parentRoute: typeof TransactionImport
     }
+    '/account/edit/$accountId': {
+      id: '/account/edit/$accountId'
+      path: '/edit/$accountId'
+      fullPath: '/account/edit/$accountId'
+      preLoaderRoute: typeof AccountEditAccountIdImport
+      parentRoute: typeof AccountImport
+    }
     '/account/update/$accountId': {
       id: '/account/update/$accountId'
       path: '/update/$accountId'
@@ -219,6 +233,7 @@ interface AccountRouteChildren {
   AccountAccountIdRoute: typeof AccountAccountIdRoute
   AccountCreateLazyRoute: typeof AccountCreateLazyRoute
   AccountIndexRoute: typeof AccountIndexRoute
+  AccountEditAccountIdRoute: typeof AccountEditAccountIdRoute
   AccountUpdateAccountIdRoute: typeof AccountUpdateAccountIdRoute
 }
 
@@ -226,6 +241,7 @@ const AccountRouteChildren: AccountRouteChildren = {
   AccountAccountIdRoute: AccountAccountIdRoute,
   AccountCreateLazyRoute: AccountCreateLazyRoute,
   AccountIndexRoute: AccountIndexRoute,
+  AccountEditAccountIdRoute: AccountEditAccountIdRoute,
   AccountUpdateAccountIdRoute: AccountUpdateAccountIdRoute,
 }
 
@@ -271,6 +287,7 @@ export interface FileRoutesByFullPath {
   '/account/': typeof AccountIndexRoute
   '/auth/': typeof AuthIndexRoute
   '/transaction/': typeof TransactionIndexRoute
+  '/account/edit/$accountId': typeof AccountEditAccountIdRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
   '/transaction/create/$accountId': typeof TransactionCreateAccountIdRoute
   '/transaction/edit/$transactionId': typeof TransactionEditTransactionIdRoute
@@ -284,6 +301,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountIndexRoute
   '/auth': typeof AuthIndexRoute
   '/transaction': typeof TransactionIndexRoute
+  '/account/edit/$accountId': typeof AccountEditAccountIdRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
   '/transaction/create/$accountId': typeof TransactionCreateAccountIdRoute
   '/transaction/edit/$transactionId': typeof TransactionEditTransactionIdRoute
@@ -301,6 +319,7 @@ export interface FileRoutesById {
   '/account/': typeof AccountIndexRoute
   '/auth/': typeof AuthIndexRoute
   '/transaction/': typeof TransactionIndexRoute
+  '/account/edit/$accountId': typeof AccountEditAccountIdRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
   '/transaction/create/$accountId': typeof TransactionCreateAccountIdRoute
   '/transaction/edit/$transactionId': typeof TransactionEditTransactionIdRoute
@@ -319,6 +338,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/auth/'
     | '/transaction/'
+    | '/account/edit/$accountId'
     | '/account/update/$accountId'
     | '/transaction/create/$accountId'
     | '/transaction/edit/$transactionId'
@@ -331,6 +351,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/auth'
     | '/transaction'
+    | '/account/edit/$accountId'
     | '/account/update/$accountId'
     | '/transaction/create/$accountId'
     | '/transaction/edit/$transactionId'
@@ -346,6 +367,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/auth/'
     | '/transaction/'
+    | '/account/edit/$accountId'
     | '/account/update/$accountId'
     | '/transaction/create/$accountId'
     | '/transaction/edit/$transactionId'
@@ -391,6 +413,7 @@ export const routeTree = rootRoute
         "/account/$accountId",
         "/account/create",
         "/account/",
+        "/account/edit/$accountId",
         "/account/update/$accountId"
       ]
     },
@@ -432,6 +455,10 @@ export const routeTree = rootRoute
     "/transaction/": {
       "filePath": "transaction.index.tsx",
       "parent": "/transaction"
+    },
+    "/account/edit/$accountId": {
+      "filePath": "account.edit.$accountId.tsx",
+      "parent": "/account"
     },
     "/account/update/$accountId": {
       "filePath": "account.update.$accountId.tsx",

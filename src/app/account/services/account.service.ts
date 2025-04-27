@@ -46,3 +46,9 @@ export const setDefaultAccount = async (id: string) => {
 
   return data;
 };
+
+export const deleteAccount = async (id: string) => {
+  const { data } = await api.delete<NullApiResponse>(`${MODULE}/${id}`);
+
+  return data;
+};
