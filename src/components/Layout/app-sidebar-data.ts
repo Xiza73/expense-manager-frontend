@@ -1,4 +1,4 @@
-import { Home, ListCheck, Wallet } from 'lucide-react';
+import { Home, Wallet } from 'lucide-react';
 
 import { AppRoute } from '@/domain/app-route.type';
 
@@ -18,20 +18,8 @@ export const getSidebarData = (): {
     icon: Home,
   },
   {
-    title: 'Account',
-    path: '/account',
-    icon: Wallet,
-    isCollapsible: true,
-    options: [
-      {
-        title: 'Add Account',
-        path: '/account/create',
-      },
-    ],
-  },
-  {
     title: 'My Accounts',
     path: '/account',
-    icon: ListCheck,
+    icon: Wallet,
   },
 ];
