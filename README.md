@@ -2,6 +2,16 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀 Version 0.2.0 – Released on 27th April, 2025
+
+**What's New:**
+
+✏️ **Edit Accounts** — You can now modify any account details with ease.
+
+🗑️ **Delete Accounts** — Made a wrong entry? Now you can remove accounts instantly.
+
+---
+
 ### 🚀 Version 0.1.0 – Released on 26th April, 2025
 
 **What's New:**
