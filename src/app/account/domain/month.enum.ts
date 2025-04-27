@@ -28,3 +28,9 @@ export const Month = {
   [MonthKey.DECEMBER]: 'December',
 } as const;
 export type Month = (typeof Month)[keyof typeof Month];
+
+export const getMonthKey = (month: Month): MonthKey => {
+  return Object.values(MonthKey).find(
+    (key) => Month[key] === month,
+  ) as MonthKey;
+};

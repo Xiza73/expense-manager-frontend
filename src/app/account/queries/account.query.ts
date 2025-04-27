@@ -8,16 +8,19 @@ import { queryClient } from '@/main';
 
 import { accountAdapter } from '../adapters/account.adapter';
 import { CreateAccountRequest } from '../domain/requests/create-account.request';
+import { EditAccountRequest } from '../domain/requests/edit-account.request';
 import { GetAccountsRequest } from '../domain/requests/get-accounts.request';
 import { CreateAccountResponse } from '../domain/responses/create-account.response';
 import { GetAccountResponse } from '../domain/responses/get-account.response';
 import { GetAccountsResponse } from '../domain/responses/get-accounts.response';
 import {
   createAccount,
+  deleteAccount,
   getAccount,
   getAccounts,
   getLatestAccount,
   setDefaultAccount,
+  updateAccount,
 } from '../services/account.service';
 
 export const useGetLatestAccountQuery = () =>
@@ -90,6 +93,38 @@ export const useSetDefaultAccountMutation = () =>
     },
     mutationFn: async (id) => {
       const data = await setDefaultAccount(id);
+
+      return {
+        message: data.message,
+        success: data.success,
+      };
+    },
+  });
+
+export const useEditAccountMutation = () =>
+  useMutation<NullResponse, EditAccountRequest>({
+    showError: true,
+    showSuccess: true,
+    mutationFn: async (request) => {
+      const data = await updateAccount(request);
+
+      return {
+        success: data.success,
+        message: data.message,
+      };
+    },
+  });
+
+export const useDeleteAccountMutation = () =>
+  useMutation<NullResponse, string>({
+    showError: true,
+    showSuccess: true,
+    showLoader: false,
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['get-accounts'] });
+    },
+    mutationFn: async (id) => {
+      const data = await deleteAccount(id);
 
       return {
         message: data.message,
