@@ -96,13 +96,12 @@ export const UpdateTransaction: React.FC = () => {
   });
 
   useEffect(() => {
-    // TODO: if it default to the latest account
     if (transactionUpdated?.success) {
       navigate({
         from: '/transaction/edit/$transactionId',
         to: redirect === 'main' ? '/' : `/account/$accountId`,
         params: { accountId: transaction?.account.id.toString() },
-        search: { wasCreated: true },
+        search: { method: 'edt' },
       });
     }
 

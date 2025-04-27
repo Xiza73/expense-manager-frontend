@@ -76,13 +76,12 @@ export const CreateTransaction: React.FC = () => {
   });
 
   useEffect(() => {
-    // TODO: if it default to the latest account
     if (transactionCreated?.success) {
       navigate({
         from: '/transaction/create/$accountId',
         to: redirect === 'main' ? '/' : `/account/$accountId`,
         params: { accountId },
-        search: { wasCreated: true },
+        search: { method: 'crt' },
       });
     }
 

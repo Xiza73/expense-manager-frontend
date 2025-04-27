@@ -15,10 +15,12 @@ import { getColumns } from './columns';
 
 export interface AccountInfoContentProps {
   account: Account;
+  redirect?: 'main' | 'custom';
 }
 
 export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   account,
+  redirect,
 }) => {
   const navigate = useNavigate();
   const { openModal } = useModal();
@@ -29,6 +31,9 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     navigate({
       to: '/transaction/edit/$transactionId',
       params: { transactionId: id },
+      search: {
+        ...(redirect === 'main' && { redirect }),
+      },
     });
   };
 
