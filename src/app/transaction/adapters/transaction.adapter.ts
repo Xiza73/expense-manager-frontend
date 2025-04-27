@@ -1,6 +1,7 @@
 import { Currency } from '@/domain/currency.enum';
 import { PaymentMethod } from '@/domain/payment-method.enum';
 
+import { GetTransactionResponse } from '../domain/responses/get-transaction.response';
 import { ApiTransaction, Transaction } from '../domain/transaction.interface';
 import { TransactionType } from '../domain/transaction-type.enum';
 
@@ -24,6 +25,17 @@ export const transactionAdapter = (
     service: {
       id: transaction.service.id,
       name: transaction.service.name,
+    },
+  };
+};
+
+export const getTransactionAdapter = (
+  transaction: ApiTransaction,
+): GetTransactionResponse => {
+  return {
+    ...transactionAdapter(transaction),
+    account: {
+      id: transaction.account.id,
     },
   };
 };

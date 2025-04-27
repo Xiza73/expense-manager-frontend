@@ -20,7 +20,7 @@ export const Modal: React.FC<ModalProps> = ({ open }) => {
     description,
     primaryLabel,
     primaryAction,
-    secondaryLabel = 'Cerrar',
+    secondaryLabel = 'Cancel',
     secondaryAction = noopFunction,
     closeModal,
     showCloseIcon,

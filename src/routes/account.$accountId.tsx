@@ -8,7 +8,7 @@ import { queryClient } from '@/main';
 import { getAxiosError } from '@/utils/get-axios-error.util';
 
 const accountIdSearchSchema = z.object({
-  wasCreated: z.boolean().optional(),
+  method: z.enum(['crt', 'edt']).optional(),
 });
 
 export const Route = createFileRoute('/account/$accountId')({

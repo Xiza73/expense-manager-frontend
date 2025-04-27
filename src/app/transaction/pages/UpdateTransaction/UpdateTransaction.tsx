@@ -14,15 +14,23 @@ import PageContainer from '@/components/PageContainer';
 import { Text } from '@/components/ui/text';
 import { commonValidators } from '@/contants/common-validators.constant';
 import { getCurrencyKey } from '@/domain/currency.enum';
-import { PaymentMethod, PaymentMethodKey } from '@/domain/payment-method.enum';
+import {
+  getPaymentMethodKey,
+  PaymentMethod,
+  PaymentMethodKey,
+} from '@/domain/payment-method.enum';
 import { getOnlyDate } from '@/utils/date.util';
 import { handleMoneyInput, moneyToNumber } from '@/utils/money-format.util';
 
 import {
+  getTransactionTypeKey,
   TransactionType,
   TransactionTypeKey,
 } from '../../domain/transaction-type.enum';
-import { useCreateTransactionMutation } from '../../queries/transaction.query';
+import {
+  getTransactionQueryOptions,
+  useUpdateTransactionMutation,
+} from '../../queries/transaction.query';
 import { useGetTransactionCategoriesQuery } from '../../queries/transaction-category.query';
 import { useGetTransactionServicesQuery } from '../../queries/transaction-service.query';
 
@@ -40,15 +48,22 @@ const formSchema = z.object({
 });
 type FormSchema = z.infer<typeof formSchema>;
 
-export const CreateTransaction: React.FC = () => {
+export const UpdateTransaction: React.FC = () => {
   const navigate = useNavigate();
 
-  const { accountId } = useParams({ from: '/transaction/create/$accountId' });
-  const { redirect } = useSearch({ from: '/transaction/create/$accountId' });
+  const { transactionId } = useParams({
+    from: '/transaction/edit/$transactionId',
+  });
+  const { redirect } = useSearch({ from: '/transaction/edit/$transactionId' });
 
-  const { data: account } = useSuspenseQuery(getAccountQueryOptions(accountId));
-  const { data: transactionCreated, mutateAsync: createTransaction } =
-    useCreateTransactionMutation();
+  const { data: transaction } = useSuspenseQuery(
+    getTransactionQueryOptions(transactionId),
+  );
+  const { data: account } = useSuspenseQuery(
+    getAccountQueryOptions(transaction?.account.id.toString()),
+  );
+  const { data: transactionUpdated, mutateAsync: updateTransaction } =
+    useUpdateTransactionMutation();
   const { data: transactionCategories } = useGetTransactionCategoriesQuery();
   const { data: transactionServices } = useGetTransactionServicesQuery();
 
@@ -65,31 +80,37 @@ export const CreateTransaction: React.FC = () => {
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      accountId: account?.id.toString(),
-      categoryId: '',
-      serviceId: '',
-      date: isSameMonthAndYear ? new Date() : account?.date,
-      currency: getCurrencyKey(account?.currency),
+      name: transaction?.name ?? '',
+      description: transaction?.description ?? '',
+      amount: transaction?.amount.toString() ?? '0',
+      currency: getCurrencyKey(account?.currency) ?? '',
+      type: getTransactionTypeKey(transaction?.type) ?? '',
+      paymentMethod: getPaymentMethodKey(transaction?.paymentMethod) ?? '',
+      date: transaction?.date ?? '',
+      categoryId: transaction?.category.id.toString() ?? '',
+      serviceId: transaction?.service.id.toString() ?? '',
+      accountId: account?.id.toString() ?? '',
     },
     delayError: 100,
     mode: 'onChange',
   });
 
   useEffect(() => {
-    if (transactionCreated?.success) {
+    if (transactionUpdated?.success) {
       navigate({
-        from: '/transaction/create/$accountId',
+        from: '/transaction/edit/$transactionId',
         to: redirect === 'main' ? '/' : `/account/$accountId`,
-        params: { accountId },
-        search: { method: 'crt' },
+        params: { accountId: transaction?.account.id.toString() },
+        search: { method: 'edt' },
       });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transactionCreated]);
+  }, [transactionUpdated]);
 
   const onSubmit = async (data: FormSchema) => {
-    await createTransaction({
+    await updateTransaction({
+      id: transactionId,
       ...data,
       date: getOnlyDate(data.date),
       amount: moneyToNumber(data.amount),
@@ -107,13 +128,13 @@ export const CreateTransaction: React.FC = () => {
             as="h1"
             className="text-center"
           >
-            Create Transaction
+            Edit Transaction
           </Text>
           <Text
             as="p"
             className="text-center"
           >
-            Fill the form below to create a new transaction on{' '}
+            Fill the form below to edit a transaction on{' '}
             <strong>
               {account?.month} - {account?.year}
             </strong>
@@ -200,7 +221,7 @@ export const CreateTransaction: React.FC = () => {
             type="submit"
             className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
           >
-            Create Transaction
+            Edit Transaction
           </button>
         </div>
       </form>

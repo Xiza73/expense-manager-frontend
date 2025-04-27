@@ -1,6 +1,5 @@
-import { Link } from '@tanstack/react-router';
 import { createColumnHelper } from '@tanstack/react-table';
-import { BanknoteArrowDown, BanknoteArrowUp, Edit } from 'lucide-react';
+import { BanknoteArrowDown, BanknoteArrowUp, Edit, Trash } from 'lucide-react';
 
 import { Transaction } from '@/app/transaction/domain/transaction.interface';
 import { TransactionType } from '@/app/transaction/domain/transaction-type.enum';
@@ -11,13 +10,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { AppRoute } from '@/domain/app-route.type';
 import { getDate } from '@/utils/date.util';
 import { patternMoney } from '@/utils/money-format.util';
 
 const columnHelper = createColumnHelper<Transaction>();
 
-export const getColumns = (_currentPage: number, _pageSize: number) => [
+interface ColumnsProps {
+  goToEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+}
+
+export const getColumns = ({ goToEdit, onDelete }: ColumnsProps) => [
   columnHelper.accessor('date', {
     header: 'Date',
     cell: (info) => getDate(info.getValue()),
@@ -77,14 +80,19 @@ export const getColumns = (_currentPage: number, _pageSize: number) => [
   columnHelper.accessor('id', {
     header: 'Actions',
     cell: (info) => {
-      const editLink = `/transaction/${info.getValue()}` as AppRoute;
+      const id = info.getValue().toString();
 
       return (
-        <>
-          <Link to={editLink}>
-            <Edit className="ml-auto" />
-          </Link>
-        </>
+        <div className="w-full flex justify-end gap-2">
+          <Edit
+            onClick={() => goToEdit(id)}
+            className="cursor-pointer"
+          />
+          <Trash
+            onClick={() => onDelete(id)}
+            className="cursor-pointer"
+          />
+        </div>
       );
     },
   }),

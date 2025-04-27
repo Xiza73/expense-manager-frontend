@@ -1,20 +1,53 @@
+import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 
-import { useGetTransactionsQuery } from '@/app/transaction/queries/transaction.query';
+import {
+  useDeleteTransactionMutation,
+  useGetTransactionsQuery,
+} from '@/app/transaction/queries/transaction.query';
 import { CustomTable } from '@/components/CustomTable/CustomTable';
 import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
 import { usePagination } from '@/hooks/usePagination';
+import { useModal } from '@/store/modal/useModal';
 
 import { Account } from '../../domain/account.interface';
 import { getColumns } from './columns';
 
 export interface AccountInfoContentProps {
   account: Account;
+  redirect?: 'main' | 'custom';
 }
 
 export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   account,
+  redirect,
 }) => {
+  const navigate = useNavigate();
+  const { openModal } = useModal();
+
+  const { mutateAsync: deleteTransaction } = useDeleteTransactionMutation();
+
+  const goToEdit = (id: string) => {
+    navigate({
+      to: '/transaction/edit/$transactionId',
+      params: { transactionId: id },
+      search: {
+        ...(redirect === 'main' && { redirect }),
+      },
+    });
+  };
+
+  const onDelete = (id: string) => {
+    openModal({
+      title: 'Delete Transaction',
+      description: 'Are you sure you want to delete this transaction?',
+      primaryLabel: 'Delete',
+      primaryAction: async () => {
+        await deleteTransaction(id);
+      },
+    });
+  };
+
   const {
     currentPage,
     nextEnabled,
@@ -30,7 +63,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     initialPageSize: INITIAL_PAGINATOR.limit,
   });
 
-  const [columns, setColumns] = useState(getColumns(currentPage, pageSize));
+  const [columns, setColumns] = useState(getColumns({ goToEdit, onDelete }));
 
   const {
     data: res,
@@ -64,7 +97,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     if (res?.data?.length) {
       refetch();
 
-      setColumns(getColumns(currentPage, pageSize));
+      setColumns(getColumns({ goToEdit, onDelete }));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

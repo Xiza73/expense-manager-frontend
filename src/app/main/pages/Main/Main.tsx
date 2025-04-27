@@ -11,17 +11,17 @@ export const Main: React.FC = () => {
   const navigate = useNavigate();
   const { data: account, refetch } = useGetLatestAccountQuery();
 
-  const { wasCreated } = useSearch({ from: '/' });
+  const { method } = useSearch({ from: '/' });
 
   useEffect(() => {
-    if (wasCreated) {
+    if (method === 'crt' || method === 'edt') {
       refetch();
 
       navigate({ to: '/' });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wasCreated]);
+  }, [method]);
 
   if (!account) return null;
 
@@ -34,7 +34,10 @@ export const Main: React.FC = () => {
         accountId={accountId}
         redirect="main"
       />
-      <AccountInfoContent account={account} />
+      <AccountInfoContent
+        account={account}
+        redirect="main"
+      />
     </PageContainer>
   );
 };

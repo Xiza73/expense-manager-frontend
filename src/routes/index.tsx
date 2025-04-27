@@ -13,7 +13,7 @@ export const Index: React.FC = () => {
 };
 
 const accountIdSearchSchema = z.object({
-  wasCreated: z.boolean().optional(),
+  method: z.enum(['crt', 'edt']).optional(),
 });
 
 export const Route = createFileRoute('/')({
