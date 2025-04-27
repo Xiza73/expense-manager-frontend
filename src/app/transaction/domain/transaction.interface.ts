@@ -21,6 +21,9 @@ export interface ApiTransaction {
     id: number;
     name: string;
   };
+  account: {
+    id: number;
+  };
 }
 
 export interface Transaction {

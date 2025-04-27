@@ -9,3 +9,11 @@ export const TransactionType = {
 } as const;
 export type TransactionType =
   (typeof TransactionType)[keyof typeof TransactionType];
+
+export const getTransactionTypeKey = (
+  type: TransactionType,
+): TransactionTypeKey => {
+  return Object.keys(TransactionType).find(
+    (key) => TransactionType[key as TransactionTypeKey] === type,
+  ) as TransactionTypeKey;
+};
