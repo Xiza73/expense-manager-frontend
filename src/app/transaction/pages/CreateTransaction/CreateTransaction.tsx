@@ -119,6 +119,16 @@ export const CreateTransaction: React.FC = () => {
             </strong>
           </Text>
 
+          <FormMoney
+            register={register}
+            currencyName="currency"
+            amountName="amount"
+            error={errors.amount?.message || errors.currency?.message}
+            disabledCurrency
+            onInput={handleMoneyInput}
+            onBlur={handleMoneyInput}
+          />
+
           <FormInput
             register={register}
             name="name"
@@ -131,16 +141,6 @@ export const CreateTransaction: React.FC = () => {
             name="description"
             placeholder="Description"
             error={errors.description?.message}
-          />
-
-          <FormMoney
-            register={register}
-            currencyName="currency"
-            amountName="amount"
-            error={errors.amount?.message || errors.currency?.message}
-            disabledCurrency
-            onInput={handleMoneyInput}
-            onBlur={handleMoneyInput}
           />
 
           <FormSelect

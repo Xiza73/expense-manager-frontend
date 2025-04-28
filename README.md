@@ -2,6 +2,16 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀 Version 0.3.0 – Released on 27th April, 2025
+
+**What's New:**
+
+🌱 **Pre charge Categories** — You can now have different categories pre-charged for your transactions.
+
+🌱 **Pre charge Services** — You can now have different services pre-charged for your transactions.
+
+---
+
 ### 🚀 Version 0.2.0 – Released on 27th April, 2025
 
 **What's New:**
