@@ -15,3 +15,24 @@ export const getOnlyDate = (date: Date) => {
 
   return `${year}-${month}-${day}`;
 };
+
+export const getDayMonth = (date: Date) => {
+  const monthNumber = date.getMonth() + 1;
+  const dayNumber = date.getDate();
+  let month = '';
+  let day = '';
+
+  if (monthNumber < 10) {
+    month = `0${monthNumber}`;
+  } else {
+    month = monthNumber.toString();
+  }
+
+  if (dayNumber < 10) {
+    day = `0${dayNumber}`;
+  } else {
+    day = dayNumber.toString();
+  }
+
+  return `${month}/${day}`;
+};
