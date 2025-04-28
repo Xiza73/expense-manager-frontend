@@ -2,6 +2,14 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀Version 0.4.0 – Released on 28th April, 2025
+
+**What's New:**
+
+📈 **Charts** — You can now see the remaining amount on this month and the expenses and income of the account.
+
+---
+
 ### 🚀 Version 0.3.0 – Released on 27th April, 2025
 
 **What's New:**
