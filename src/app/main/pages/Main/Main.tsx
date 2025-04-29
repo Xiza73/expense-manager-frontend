@@ -10,6 +10,8 @@ import { useGetLatestAccountQuery } from '@/app/account/queries/account.query';
 import PageContainer from '@/components/PageContainer';
 import { Button } from '@/components/ui/button';
 
+import FirstAccount from '../../components/FirstAccount';
+
 export const Main: React.FC = () => {
   const navigate = useNavigate();
   const { method } = useSearch({ from: '/' });
@@ -32,7 +34,7 @@ export const Main: React.FC = () => {
     setShowChart(!showChart);
   };
 
-  if (!account) return null;
+  if (!account) return <FirstAccount />;
 
   const accountId = account.id.toString();
 

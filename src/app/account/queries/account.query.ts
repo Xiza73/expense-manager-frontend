@@ -26,6 +26,7 @@ import {
 export const useGetLatestAccountQuery = () =>
   useQuery<GetAccountResponse>({
     queryKey: ['get-latest-account'],
+    showLoading: true,
     queryFn: async () => {
       const data = await getLatestAccount();
 
