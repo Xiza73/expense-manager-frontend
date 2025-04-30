@@ -33,7 +33,7 @@ import { getSidebarData } from './app-sidebar-data';
 export function AppSidebar() {
   const { t } = useTranslation();
 
-  const { signOut } = useAuth();
+  const { user, signOut } = useAuth();
 
   const handleSignOut = () => {
     signOut();
@@ -99,7 +99,7 @@ export function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="cursor-pointer">
-                  <User2 /> User
+                  <User2 /> {user?.alias || 'User'}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

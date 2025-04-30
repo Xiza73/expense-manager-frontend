@@ -16,6 +16,7 @@ export const useSignInMutation = (query?: QueryBody<SignInRequest>) =>
         ...data,
         responseObject: {
           token: '',
+          alias: data.responseObject.alias,
           isActive: true,
         },
       };

@@ -2,6 +2,18 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀Version 0.4.1 – Released on 29th April, 2025
+
+**What's New:**
+
+🔡**Languages** — Added Spanish language support.
+
+**Fixes:**
+
+🐛**Bug Fixes** — Fixed a bug that caused the chart to not update when the account was changed.
+
+---
+
 ### 🚀Version 0.4.0 – Released on 28th April, 2025
 
 **What's New:**
