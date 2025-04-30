@@ -6,11 +6,11 @@
 
 **What's New:**
 
-🔡**Languages** — Added Spanish language support.
+🔡 **Languages** — Added Spanish language support.
 
 **Fixes:**
 
-🐛**Bug Fixes** — Fixed a bug that caused the chart to not update when the account was changed.
+🐛 **Bug Fixes** — Fixed a bug that caused the chart to not update when the account was changed.
 
 ---
 
