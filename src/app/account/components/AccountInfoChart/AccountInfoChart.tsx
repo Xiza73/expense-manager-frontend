@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import randomColor from 'randomcolor';
+import { useEffect } from 'react';
 
 import { TransactionType } from '@/app/transaction/domain/transaction-type.enum';
 import { useGetTransactionsQuery } from '@/app/transaction/queries/transaction.query';
@@ -17,15 +18,20 @@ export interface AccountInfoChartProps {
 export const AccountInfoChart: React.FC<AccountInfoChartProps> = ({
   account,
 }) => {
-  const { data: response } = useGetTransactionsQuery({
+  const { data: response, refetch } = useGetTransactionsQuery({
     enabled: Boolean(account?.id),
+
     showLoading: false,
     params: {
-      page: 1,
-      limit: 10,
       accountId: account.id,
     },
   });
+
+  useEffect(() => {
+    refetch();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!response) return null;
 

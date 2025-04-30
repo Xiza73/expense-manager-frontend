@@ -1,5 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
 import { Pencil, Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { Account } from '@/app/account/domain/account.interface';
 import { Text } from '@/components/ui/text';
@@ -13,6 +14,8 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
   account,
 }) => {
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const handleGoToEdit = () => {
     navigate({
@@ -31,7 +34,7 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
           as="h2"
           className="text-center"
         >
-          {account.month} - {account.year}
+          {t(account.month)} - {account.year}
         </Text>
         <Pencil
           className="pb-1 cursor-pointer"
@@ -41,7 +44,7 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
       <div className="flex flex-col md:flex-row justify-center md:justify-around w-full text-center">
         <div className="flex flex-col md:justify-start md:text-left">
           <Text as="p">
-            Amount:{' '}
+            {t('amount')}:{' '}
             <strong>
               {patternMoney(account.amount.toString(), {
                 prefix: account.currency,
@@ -49,7 +52,7 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
             </strong>
           </Text>
           <Text as="p">
-            Balance:{' '}
+            {t('balance')}:{' '}
             <strong>
               {getNumberSymbol(account.balance)}{' '}
               {patternMoney(account.balance.toString(), {
@@ -60,7 +63,7 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
         </div>
         <div className="flex flex-col md:justify-end md:text-right">
           <Text as="p">
-            Expense Amount:{' '}
+            {t('expenseAmount')}:{' '}
             <strong>
               {' '}
               {patternMoney(account.expenseAmount.toString(), {
@@ -69,7 +72,7 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
             </strong>
           </Text>
           <Text as="p">
-            Income Amount:{' '}
+            {t('incomeAmount')}:{' '}
             <strong>
               {' '}
               {patternMoney(account.incomeAmount.toString(), {

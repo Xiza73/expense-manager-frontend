@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import PageContainer from '@/components/PageContainer';
@@ -15,6 +16,8 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export const Login: React.FC = () => {
+  const { t } = useTranslation();
+
   const { signIn } = useAuth();
 
   const {
@@ -37,10 +40,8 @@ export const Login: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent>
             <div className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4">
-              <h1 className="text-2xl font-bold">Login</h1>
-              <p className="text-sm text-gray-500">
-                Please enter a valid token to access the application.
-              </p>
+              <h1 className="text-2xl font-bold">{t('login')}</h1>
+              <p className="text-sm text-gray-500">{t('login_description')}</p>
               <ZodInputPassword
                 register={register}
                 name="token"
@@ -56,7 +57,7 @@ export const Login: React.FC = () => {
               className="w-full"
               onClick={handleSubmit(onSubmit)}
             >
-              Login
+              {t('login')}
             </Button>
           </CardFooter>
         </form>

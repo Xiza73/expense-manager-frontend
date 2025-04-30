@@ -9,13 +9,13 @@ export enum PaymentMethodKey {
 }
 
 export const PaymentMethod = {
-  [PaymentMethodKey.CASH]: 'Cash',
-  [PaymentMethodKey.BANK_TRANSFER]: 'Bank Transfer',
-  [PaymentMethodKey.CREDIT_CARD]: 'Credit Card',
-  [PaymentMethodKey.DEBIT_CARD]: 'Debit Card',
-  [PaymentMethodKey.PAYPAL]: 'Paypal',
-  [PaymentMethodKey.CRYPTOCURRENCY]: 'Cryptocurrency',
-  [PaymentMethodKey.YAPE_PLIN]: 'Yape/Plin',
+  [PaymentMethodKey.CASH]: 'cash',
+  [PaymentMethodKey.BANK_TRANSFER]: 'bank_transfer',
+  [PaymentMethodKey.CREDIT_CARD]: 'credit_card',
+  [PaymentMethodKey.DEBIT_CARD]: 'debit_card',
+  [PaymentMethodKey.PAYPAL]: 'paypal',
+  [PaymentMethodKey.CRYPTOCURRENCY]: 'cryptocurrency',
+  [PaymentMethodKey.YAPE_PLIN]: 'yape_plin',
 } as const;
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod];
 

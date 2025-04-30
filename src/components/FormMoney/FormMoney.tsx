@@ -1,5 +1,6 @@
 import { ChevronsUpDown } from 'lucide-react';
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { Currency, CurrencyKey } from '@/domain/currency.enum';
 import { cn } from '@/lib/utils';
@@ -21,6 +22,8 @@ export const FormMoney = <TFieldValues extends FieldValues>({
   disabledCurrency = false,
   ...props
 }: FormMoneyProps<TFieldValues>) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex w-full flex-wrap mb-4">
       <div className="relative">
@@ -57,7 +60,9 @@ export const FormMoney = <TFieldValues extends FieldValues>({
         {...props}
         {...register(amountName)}
       />
-      {error && <span className="text-red-500 text-sm w-full">* {error}</span>}
+      {error && (
+        <span className="text-red-500 text-sm w-full">* {t(error)}</span>
+      )}
     </div>
   );
 };

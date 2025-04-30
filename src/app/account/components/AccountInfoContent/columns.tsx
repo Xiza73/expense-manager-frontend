@@ -16,13 +16,14 @@ import { patternMoney } from '@/utils/money-format.util';
 const columnHelper = createColumnHelper<Transaction>();
 
 interface ColumnsProps {
+  t: (key: string) => string;
   goToEdit: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export const getColumns = ({ goToEdit, onDelete }: ColumnsProps) => [
+export const getColumns = ({ goToEdit, onDelete, t }: ColumnsProps) => [
   columnHelper.accessor('date', {
-    header: 'Date',
+    header: t('date'),
     cell: (info) => getDate(info.getValue()),
   }),
   // columnHelper.accessor('category.id', {
@@ -30,27 +31,27 @@ export const getColumns = ({ goToEdit, onDelete }: ColumnsProps) => [
   //   cell: (info) => info.row.index + 1 + (currentPage - 1) * pageSize,
   // }),
   columnHelper.accessor('name', {
-    header: 'Name',
+    header: t('name'),
     cell: (info) => <TruncateTooltipText text={info.getValue()} />,
   }),
   columnHelper.accessor('description', {
-    header: 'Description',
+    header: t('description'),
     cell: (info) => <TruncateTooltipText text={info.getValue() || ''} />,
   }),
   columnHelper.accessor('category.name', {
-    header: 'Category',
-    cell: (info) => info.getValue(),
+    header: t('category'),
+    cell: (info) => t(info.getValue()),
   }),
   columnHelper.accessor('service.name', {
-    header: 'Service',
-    cell: (info) => info.getValue(),
+    header: t('service'),
+    cell: (info) => t(info.getValue()),
   }),
   columnHelper.accessor('paymentMethod', {
-    header: 'With',
-    cell: (info) => info.getValue(),
+    header: t('with'),
+    cell: (info) => t(info.getValue()),
   }),
   columnHelper.accessor('type', {
-    header: 'Type',
+    header: t('type'),
     cell: (info) => {
       return (
         <TooltipProvider>
@@ -63,7 +64,7 @@ export const getColumns = ({ goToEdit, onDelete }: ColumnsProps) => [
               )}
             </TooltipTrigger>
             <TooltipContent>
-              <p>{info.getValue()}</p>
+              <p>{t(info.getValue())}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -71,14 +72,14 @@ export const getColumns = ({ goToEdit, onDelete }: ColumnsProps) => [
     },
   }),
   columnHelper.accessor('amount', {
-    header: 'Amount',
+    header: t('amount'),
     cell: (info) =>
       patternMoney(info.getValue().toString(), {
         prefix: info.row.original.currency,
       }),
   }),
   columnHelper.accessor('id', {
-    header: 'Actions',
+    header: t('actions'),
     cell: (info) => {
       const id = info.getValue().toString();
 

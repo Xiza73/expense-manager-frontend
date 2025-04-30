@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { ChevronUp, User2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Sidebar,
@@ -30,7 +31,9 @@ import {
 import { getSidebarData } from './app-sidebar-data';
 
 export function AppSidebar() {
-  const { signOut } = useAuth();
+  const { t } = useTranslation();
+
+  const { user, signOut } = useAuth();
 
   const handleSignOut = () => {
     signOut();
@@ -42,7 +45,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Expense Manager</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('expense_manager')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {sidebarData.map(
@@ -52,7 +55,7 @@ export function AppSidebar() {
                       <SidebarMenuButton asChild>
                         <Link to={path}>
                           <Icon />
-                          <span>{title}</span>
+                          <span>{t(title)}</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -66,7 +69,7 @@ export function AppSidebar() {
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton>
                             <Icon />
-                            <span>{title}</span>
+                            <span>{t(title)}</span>
                           </SidebarMenuButton>
                         </CollapsibleTrigger>
                         <CollapsibleContent>
@@ -75,7 +78,7 @@ export function AppSidebar() {
                               <SidebarMenuSubItem>
                                 <SidebarMenuButton asChild>
                                   <Link to={path}>
-                                    <span>{title}</span>
+                                    <span>{t(title)}</span>
                                   </Link>
                                 </SidebarMenuButton>
                               </SidebarMenuSubItem>
@@ -96,7 +99,7 @@ export function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="cursor-pointer">
-                  <User2 /> User
+                  <User2 /> {user?.alias || 'User'}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -108,7 +111,7 @@ export function AppSidebar() {
                   onClick={handleSignOut}
                   className="cursor-pointer"
                 >
-                  <span>Sign out</span>
+                  <span>{t('sign_out')}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

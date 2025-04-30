@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import FormInput from '@/components/FormInput';
@@ -27,6 +28,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export const CreateAccount: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { data: accountCreated, mutateAsync: createAccount } =
     useCreateAccountMutation();
@@ -75,37 +77,37 @@ export const CreateAccount: React.FC = () => {
             as="h1"
             className="text-center"
           >
-            Create Account
+            {t('create_account')}
           </Text>
           <Text
             as="p"
             className="text-center"
           >
-            Fill the form below to create a new account
+            {t('create_account_description')}
           </Text>
 
           <FormSelect
             register={register}
             name="month"
-            placeholder="Month"
+            placeholder={t('select_month')}
             error={errors.month?.message}
             options={Object.values(MonthKey).map((month) => ({
               value: month,
-              label: Month[month],
+              label: t(Month[month]),
             }))}
           />
 
           <FormInput
             register={register}
             name="year"
-            placeholder="Year"
+            placeholder={t('year')}
             error={errors.year?.message}
           />
 
           <FormInput
             register={register}
             name="description"
-            placeholder="Description"
+            placeholder={t('description')}
             error={errors.description?.message}
           />
 
@@ -123,7 +125,7 @@ export const CreateAccount: React.FC = () => {
             type="submit"
             className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
           >
-            Create Account
+            {t('create_account')}
           </button>
         </div>
       </form>

@@ -1,6 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { Plus } from 'lucide-react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { CustomTable } from '@/components/CustomTable/CustomTable';
 import PageContainer from '@/components/PageContainer';
@@ -17,6 +18,8 @@ import {
 import { getColumns } from './columns';
 
 export const AccountsTable: React.FC = () => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const { openModal } = useModal();
 
@@ -106,6 +109,7 @@ export const AccountsTable: React.FC = () => {
   };
 
   const columns = getColumns({
+    t,
     setDefaultAccount,
     goToEdit,
     onDelete,
