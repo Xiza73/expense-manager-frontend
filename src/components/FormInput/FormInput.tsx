@@ -1,4 +1,5 @@
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/lib/utils';
 
@@ -16,6 +17,8 @@ export const FormInput = <TFieldValues extends FieldValues>({
   className,
   ...props
 }: FormInputProps<TFieldValues>) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col w-full mb-4">
       <input
@@ -27,7 +30,7 @@ export const FormInput = <TFieldValues extends FieldValues>({
         {...props}
         {...register(name)}
       />
-      {error && <span className="text-red-500 text-sm">* {error}</span>}
+      {error && <span className="text-red-500 text-sm">* {t(error)}</span>}
     </div>
   );
 };

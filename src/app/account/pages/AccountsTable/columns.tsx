@@ -9,6 +9,7 @@ import { Account } from '../../domain/account.interface';
 const columnHelper = createColumnHelper<Account>();
 
 interface ColumnsProps {
+  t: (key: string) => string;
   setDefaultAccount: (id: string) => void;
   goToEdit: (id: string) => void;
   onDelete: (id: string) => void;
@@ -16,35 +17,36 @@ interface ColumnsProps {
 }
 
 export const getColumns = ({
+  t,
   setDefaultAccount,
   goToEdit,
   onDelete,
   showAccount,
 }: ColumnsProps) => [
   columnHelper.accessor('month', {
-    header: 'Month',
-    cell: (info) => info.getValue(),
+    header: t('month'),
+    cell: (info) => t(info.getValue()),
   }),
   columnHelper.accessor('year', {
-    header: 'Year',
+    header: t('year'),
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor('balance', {
-    header: 'Balance',
+    header: t('balance'),
     cell: (info) =>
       patternMoney(info.getValue().toString(), {
         prefix: info.row.original.currency,
       }),
   }),
   columnHelper.accessor('amount', {
-    header: 'Amount',
+    header: t('amount'),
     cell: (info) =>
       patternMoney(info.getValue().toString(), {
         prefix: info.row.original.currency,
       }),
   }),
   columnHelper.accessor('id', {
-    header: 'Actions',
+    header: t('actions'),
     cell: (info) => {
       const id = info.getValue().toString();
       const isDefault = info.row.original.isDefault;

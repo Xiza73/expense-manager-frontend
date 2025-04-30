@@ -1,10 +1,10 @@
-'use client';
-
 import { PopoverProps } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
+import { enUS, es } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
 import * as React from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -32,6 +32,13 @@ export const FormDate = <TFieldValues extends FieldValues>({
   defaultMonth,
   ...props
 }: FormDateProps<TFieldValues>) => {
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation();
+
+  const formatStr = language === 'es' ? `dd 'de' MMMM, yyyy` : 'PPP';
+
   return (
     <Controller
       control={control}
@@ -47,7 +54,13 @@ export const FormDate = <TFieldValues extends FieldValues>({
               )}
             >
               <CalendarIcon className="mr-2" />
-              {date ? format(date, 'PPP') : <span>Pick a date</span>}
+              {date ? (
+                format(date, formatStr, {
+                  locale: language === 'es' ? es : enUS,
+                })
+              ) : (
+                <span>Pick a date</span>
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent
@@ -64,7 +77,7 @@ export const FormDate = <TFieldValues extends FieldValues>({
               initialFocus
             />
           </PopoverContent>
-          {error && <span className="text-red-500 text-sm">* {error}</span>}
+          {error && <span className="text-red-500 text-sm">* {t(error)}</span>}
         </Popover>
       )}
     />

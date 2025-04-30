@@ -14,18 +14,18 @@ export enum MonthKey {
 }
 
 export const Month = {
-  [MonthKey.JANUARY]: 'January',
-  [MonthKey.FEBRUARY]: 'February',
-  [MonthKey.MARCH]: 'March',
-  [MonthKey.APRIL]: 'April',
-  [MonthKey.MAY]: 'May',
-  [MonthKey.JUNE]: 'June',
-  [MonthKey.JULY]: 'July',
-  [MonthKey.AUGUST]: 'August',
-  [MonthKey.SEPTEMBER]: 'September',
-  [MonthKey.OCTOBER]: 'October',
-  [MonthKey.NOVEMBER]: 'November',
-  [MonthKey.DECEMBER]: 'December',
+  [MonthKey.JANUARY]: 'january',
+  [MonthKey.FEBRUARY]: 'february',
+  [MonthKey.MARCH]: 'march',
+  [MonthKey.APRIL]: 'april',
+  [MonthKey.MAY]: 'may',
+  [MonthKey.JUNE]: 'june',
+  [MonthKey.JULY]: 'july',
+  [MonthKey.AUGUST]: 'august',
+  [MonthKey.SEPTEMBER]: 'september',
+  [MonthKey.OCTOBER]: 'october',
+  [MonthKey.NOVEMBER]: 'november',
+  [MonthKey.DECEMBER]: 'december',
 } as const;
 export type Month = (typeof Month)[keyof typeof Month];
 

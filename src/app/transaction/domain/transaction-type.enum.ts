@@ -4,8 +4,8 @@ export enum TransactionTypeKey {
 }
 
 export const TransactionType = {
-  [TransactionTypeKey.EXPENSE]: 'Expense',
-  [TransactionTypeKey.INCOME]: 'Income',
+  [TransactionTypeKey.EXPENSE]: 'expense',
+  [TransactionTypeKey.INCOME]: 'income',
 } as const;
 export type TransactionType =
   (typeof TransactionType)[keyof typeof TransactionType];

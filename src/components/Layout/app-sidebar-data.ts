@@ -13,12 +13,12 @@ export const getSidebarData = (): {
   }[];
 }[] => [
   {
-    title: 'Home',
+    title: 'home',
     path: '/',
     icon: Home,
   },
   {
-    title: 'My Accounts',
+    title: 'my_accounts',
     path: '/account',
     icon: Wallet,
   },

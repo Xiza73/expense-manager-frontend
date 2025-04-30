@@ -7,30 +7,29 @@ import { PaymentMethodKey } from '@/domain/payment-method.enum';
 import { moneyToNumber } from '@/utils/money-format.util';
 
 export const commonValidators = {
-  minCharacters: (min: number) =>
-    z.string().min(min, `Must be at least ${min} characters`),
+  minCharacters: (min: number) => z.string().min(min, 'too_low'),
   money: z
     .string()
-    .min(1, 'Please enter a valid amount')
+    .min(1, 'enter_valid_amount')
     .refine((value) => {
       const numberValue = moneyToNumber(value, ',');
       return !isNaN(numberValue) && numberValue > 0;
-    }, 'Invalid amount'),
+    }, 'invalid_amount'),
   currency: z.nativeEnum(CurrencyKey, {
-    invalid_type_error: 'Invalid currency',
-    required_error: 'Currency is required',
+    invalid_type_error: 'invalid_currency',
+    required_error: 'currency_is_required',
   }),
   transactionType: z.nativeEnum(TransactionTypeKey, {
-    invalid_type_error: 'Invalid transaction type',
-    required_error: 'Transaction type is required',
+    invalid_type_error: 'invalid_transaction_type',
+    required_error: 'transaction_type_is_required',
   }),
   paymentMethod: z.nativeEnum(PaymentMethodKey, {
-    invalid_type_error: 'Invalid payment method',
-    required_error: 'Payment method is required',
+    invalid_type_error: 'invalid_payment_method',
+    required_error: 'payment_method_is_required',
   }),
   month: z.nativeEnum(MonthKey, {
-    invalid_type_error: 'Invalid month',
-    required_error: 'Month is required',
+    invalid_type_error: 'invalid_month',
+    required_error: 'month_is_required',
   }),
   date: z.date(),
   year: z
@@ -39,24 +38,24 @@ export const commonValidators = {
       const isValid = Number.isInteger(Number(value));
 
       return isValid;
-    }, 'Year must be a number')
+    }, 'year_must_be_number')
     .refine((value) => {
       const year = Number(value);
       const maxYear = new Date().getFullYear() + 1;
 
       return year >= 1900 && year <= maxYear;
-    }, `Year must be between 1900 and ${new Date().getFullYear() + 1}`),
-  id: (name: string) =>
+    }, 'year_must_be_between'),
+  id: (_name: string) =>
     z
       .string()
-      .min(1, `${name} is required`)
+      .min(1, 'is_required')
       .refine((value) => {
         const isValid = Number.isInteger(Number(value));
 
         return isValid;
-      }, `${name} must be a number`),
+      }, 'id_must_be_number'),
   token: z
     .string({ message: '' })
-    .min(1, 'Token is required')
-    .max(36, 'Token must be 36 characters long'),
+    .min(1, 'token_is_required')
+    .max(36, 'token_must_be_36_characters_long'),
 };

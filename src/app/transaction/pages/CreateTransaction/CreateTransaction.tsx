@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate, useParams, useSearch } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import { getAccountQueryOptions } from '@/app/account/queries/account.query';
@@ -42,6 +43,7 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export const CreateTransaction: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { accountId } = useParams({ from: '/transaction/create/$accountId' });
   const { redirect } = useSearch({ from: '/transaction/create/$accountId' });
@@ -102,20 +104,20 @@ export const CreateTransaction: React.FC = () => {
   return (
     <PageContainer>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4">
+        <div className="flex flex-col items-center justify-center w-full md:max-w-xl h-full p-4 space-y-4">
           <Text
             as="h1"
             className="text-center"
           >
-            Create Transaction
+            {t('create_transaction')}
           </Text>
           <Text
             as="p"
             className="text-center"
           >
-            Fill the form below to create a new transaction on{' '}
+            {t('create_transaction_description')}
             <strong>
-              {account?.month} - {account?.year}
+              {t(account?.month)} - {account?.year}
             </strong>
           </Text>
 
@@ -132,58 +134,58 @@ export const CreateTransaction: React.FC = () => {
           <FormInput
             register={register}
             name="name"
-            placeholder="Name"
+            placeholder={t('name')}
             error={errors.name?.message}
           />
 
           <FormInput
             register={register}
             name="description"
-            placeholder="Description"
+            placeholder={t('description')}
             error={errors.description?.message}
           />
 
           <FormSelect
             register={register}
             name="type"
-            placeholder="Select Transaction Type"
+            placeholder={t('select_transaction_type')}
             error={errors.type?.message}
             options={Object.values(TransactionTypeKey).map((type) => ({
               value: type,
-              label: TransactionType[type],
+              label: t(TransactionType[type]),
             }))}
           />
 
           <FormSelect
             register={register}
             name="paymentMethod"
-            placeholder="Select Payment Method"
+            placeholder={t('select_payment_method')}
             error={errors.paymentMethod?.message}
             options={Object.values(PaymentMethodKey).map((method) => ({
               value: method,
-              label: PaymentMethod[method],
+              label: t(PaymentMethod[method]),
             }))}
           />
 
           <FormSelect
             register={register}
             name="categoryId"
-            placeholder="Select Category"
+            placeholder={t('select_category')}
             error={errors.categoryId?.message}
             options={(transactionCategories || []).map((category) => ({
               value: category.id.toString(),
-              label: category.name,
+              label: t(category.name),
             }))}
           />
 
           <FormSelect
             register={register}
             name="serviceId"
-            placeholder="Select Service"
+            placeholder={t('select_service')}
             error={errors.serviceId?.message}
             options={(transactionServices || []).map((service) => ({
               value: service.id.toString(),
-              label: service.name,
+              label: t(service.name),
             }))}
           />
 
@@ -200,7 +202,7 @@ export const CreateTransaction: React.FC = () => {
             type="submit"
             className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
           >
-            Create Transaction
+            {t('create_transaction')}
           </button>
         </div>
       </form>

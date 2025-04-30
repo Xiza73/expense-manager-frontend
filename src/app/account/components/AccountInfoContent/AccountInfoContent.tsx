@@ -1,5 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   useDeleteTransactionMutation,
@@ -22,6 +23,8 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   account,
   redirect,
 }) => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const { openModal } = useModal();
 
@@ -63,7 +66,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     initialPageSize: INITIAL_PAGINATOR.limit,
   });
 
-  const [columns, setColumns] = useState(getColumns({ goToEdit, onDelete }));
+  const [columns, setColumns] = useState(getColumns({ goToEdit, onDelete, t }));
 
   const {
     data: res,
@@ -97,7 +100,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     if (res?.data?.length) {
       refetch();
 
-      setColumns(getColumns({ goToEdit, onDelete }));
+      setColumns(getColumns({ goToEdit, onDelete, t }));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

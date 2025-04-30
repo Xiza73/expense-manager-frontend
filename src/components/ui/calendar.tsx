@@ -1,6 +1,8 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import * as React from 'react';
 import { DayPicker } from 'react-day-picker';
+import { enUS, es } from 'react-day-picker/locale';
+import { useTranslation } from 'react-i18next';
 
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -12,9 +14,16 @@ function Calendar({
   disableNavigation = false,
   ...props
 }: React.ComponentProps<typeof DayPicker>) {
+  const {
+    i18n: { language },
+  } = useTranslation();
+
+  const locale = language === 'es' ? es : enUS;
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      locale={locale}
       className={cn('p-3', className)}
       classNames={{
         months: 'flex flex-col sm:flex-row gap-2',
