@@ -77,5 +77,8 @@
   "is_required": "El valor es obligatorio",
   "token_must_be_36_characters_long": "El token debe tener 36 caracteres",
   "create_account": "Crear Cuenta",
-  "create_account_description": "Rellene el siguiente formulario para crear una nueva cuenta."
+  "create_account_description": "Rellene el siguiente formulario para crear una nueva cuenta.",
+  "oops_something_went_wrong": "¡Ups! Algo salió mal",
+  "go_back_home": "Volver a la página de inicio",
+  "first_account": "Crea tu primera cuenta y comienza a rastrear tus gastos."
 }

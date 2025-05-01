@@ -1,5 +1,6 @@
 import { useBlocker, useNavigate } from '@tanstack/react-router';
 import { Frown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { useStateCallback } from '@/hooks/useStateCallback';
 import { useError } from '@/store/error/useError';
@@ -13,6 +14,8 @@ export interface ErrorPageProps {
 }
 
 export const ErrorPage: React.FC<ErrorPageProps> = ({ message }) => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const [block, setBlock] = useStateCallback<boolean>(true);
   const { setError } = useError();
@@ -38,21 +41,21 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ message }) => {
         as="h1"
         className="text-center"
       >
-        Oops! Something went wrong
+        {t('oops_something_went_wrong')}
       </Text>
       {message && (
         <Text
           as="p"
           className="mt-2 text-center"
         >
-          {message}
+          {t(message)}
         </Text>
       )}
       <Button
         className="mt-6"
         onClick={handleGoBack}
       >
-        Go back home
+        {t('go_back_home')}
       </Button>
     </PageContainer>
   );

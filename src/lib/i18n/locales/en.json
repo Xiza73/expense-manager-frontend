@@ -77,5 +77,8 @@
   "is_required": "Value is required",
   "token_must_be_36_characters_long": "Token must be 36 characters long",
   "create_account": "Create Account",
-  "create_account_description": "Fill the form below to create a new account."
+  "create_account_description": "Fill the form below to create a new account.",
+  "oops_something_went_wrong": "Oops! Something went wrong",
+  "go_back_home": "Go back home",
+  "first_account": "Create your first account and start tracking your expenses."
 }
