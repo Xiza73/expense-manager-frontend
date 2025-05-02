@@ -3,8 +3,10 @@ import { Pencil, Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { Account } from '@/app/account/domain/account.interface';
+import { CustomTable } from '@/components/CustomTable/CustomTable';
 import { Text } from '@/components/ui/text';
-import { getNumberSymbol, patternMoney } from '@/utils/money-format.util';
+
+import { getColumns, InfoHeaderData } from './columns';
 
 export interface AccountInfoHeaderProps {
   account: Account;
@@ -24,6 +26,22 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
     });
   };
 
+  const columns = getColumns({ t });
+
+  const data: InfoHeaderData[] = [
+    {
+      amount: account.amount,
+      balance: account.balance,
+      expenseAmount: account.expenseAmount,
+      incomeAmount: account.incomeAmount,
+      idealDailyExpenditure: account.idealDailyExpenditure,
+      realDailyExpenditure: account.realDailyExpenditure,
+      realDaysSpent: account.realDaysSpent,
+      daysInDebt: account.daysInDebt,
+      currency: account.currency,
+    },
+  ];
+
   return (
     <>
       <div className="flex flex-wrap justify-center w-full gap-2 items-center">
@@ -41,47 +59,14 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
           onClick={handleGoToEdit}
         />
       </div>
-      <div className="flex flex-col md:flex-row justify-center md:justify-around w-full text-center">
-        <div className="flex flex-col md:justify-start md:text-left">
-          <Text as="p">
-            {t('amount')}:{' '}
-            <strong>
-              {patternMoney(account.amount.toString(), {
-                prefix: account.currency,
-              })}
-            </strong>
-          </Text>
-          <Text as="p">
-            {t('balance')}:{' '}
-            <strong>
-              {getNumberSymbol(account.balance)}{' '}
-              {patternMoney(account.balance.toString(), {
-                prefix: account.currency,
-              })}
-            </strong>
-          </Text>
-        </div>
-        <div className="flex flex-col md:justify-end md:text-right">
-          <Text as="p">
-            {t('expenseAmount')}:{' '}
-            <strong>
-              {' '}
-              {patternMoney(account.expenseAmount.toString(), {
-                prefix: account.currency,
-              })}
-            </strong>
-          </Text>
-          <Text as="p">
-            {t('incomeAmount')}:{' '}
-            <strong>
-              {' '}
-              {patternMoney(account.incomeAmount.toString(), {
-                prefix: account.currency,
-              })}
-            </strong>
-          </Text>
-        </div>
-      </div>
+      <CustomTable
+        withPagination={false}
+        withFooter={false}
+        data={data}
+        columns={columns}
+        currentPage={1}
+        totalPages={1}
+      />
     </>
   );
 };
