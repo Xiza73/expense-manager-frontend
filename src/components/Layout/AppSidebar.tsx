@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useAuth } from '@/store/auth/useAuth';
 import { useDarkMode } from '@/store/darkMode/useDarkMode';
+import { setItem } from '@/utils/local-storage.util';
 
 import {
   Collapsible,
@@ -46,6 +47,7 @@ export function AppSidebar() {
     const nextLanguage = currentLanguage === 'en' ? 'es' : 'en';
 
     changeLanguage(nextLanguage);
+    setItem('i18nextLng', nextLanguage);
   };
 
   const handleSignOut = () => {
