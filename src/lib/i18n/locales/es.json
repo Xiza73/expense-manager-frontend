@@ -102,5 +102,7 @@
   "edit_service": "Editar Servicio",
   "edit_service_description": "Rellene el siguiente formulario para editar un servicio.",
   "edit_account": "Editar Cuenta",
-  "edit_account_description": "Rellene el siguiente formulario para editar una cuenta."
+  "edit_account_description": "Rellene el siguiente formulario para editar una cuenta.",
+  "language": "Idioma",
+  "dark_mode": "Modo oscuro"
 }

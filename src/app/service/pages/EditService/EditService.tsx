@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import { useUpdateTransactionServiceMutation } from '@/app/transaction/queries/transaction-service.query';
+import FormContainer from '@/components/FormContainer';
 import FormInput from '@/components/FormInput';
 import PageContainer from '@/components/PageContainer';
-import { Text } from '@/components/ui/text';
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -62,37 +62,20 @@ export const EditService: React.FC = () => {
 
   return (
     <PageContainer>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4">
-          <Text
-            as="h1"
-            className="text-center"
-          >
-            {t('edit_service')}
-          </Text>
-          <Text
-            as="p"
-            className="text-center"
-          >
-            {t('edit_service_description')}
-          </Text>
-
-          <FormInput
-            register={register}
-            name="name"
-            placeholder={t('name')}
-            error={errors.name?.message}
-          />
-        </div>
-        <div className="flex justify-center w-full p-4 mt-2 bg-gray-100">
-          <button
-            type="submit"
-            className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-          >
-            {t('edit_service')}
-          </button>
-        </div>
-      </form>
+      <FormContainer
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        title={t('edit_service')}
+        description={t('edit_service_description')}
+        buttonText={t('edit_service')}
+      >
+        <FormInput
+          register={register}
+          name="name"
+          placeholder={t('name')}
+          error={errors.name?.message}
+        />
+      </FormContainer>
     </PageContainer>
   );
 };

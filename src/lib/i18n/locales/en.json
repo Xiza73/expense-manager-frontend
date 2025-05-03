@@ -102,5 +102,7 @@
   "edit_service": "Edit Service",
   "edit_service_description": "Fill the form below to edit a service.",
   "edit_account": "Edit Account",
-  "edit_account_description": "Fill the form below to edit an account."
+  "edit_account_description": "Fill the form below to edit an account.",
+  "language": "Language",
+  "dark_mode": "Dark Mode"
 }

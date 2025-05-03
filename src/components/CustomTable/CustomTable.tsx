@@ -155,7 +155,7 @@ export const CustomTable = <T extends object>({
               <PaginationItem key={i}>
                 <PaginationLink
                   className={cn(
-                    i + 1 === currentPage && 'font-bold bg-gray-200',
+                    i + 1 === currentPage && 'font-bold bg-gray-200 dark:bg-gray-700',
                     i + 1 !== currentPage && 'cursor-pointer',
                   )}
                   onClick={() => setPage(i + 1)}

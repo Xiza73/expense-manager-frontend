@@ -39,7 +39,7 @@ export const FormSelect = <TFieldValues extends FieldValues>({
           <option
             value=""
             disabled
-            className="text-muted-foreground"
+            className="text-muted-foreground dark:text-muted-foreground"
           >
             {placeholder}
           </option>
@@ -48,6 +48,7 @@ export const FormSelect = <TFieldValues extends FieldValues>({
           <option
             key={value}
             value={value}
+            className="text-black dark:text-muted"
           >
             {label}
           </option>
