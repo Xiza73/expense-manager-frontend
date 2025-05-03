@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate, useParams, useSearch } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import { getAccountQueryOptions } from '@/app/account/queries/account.query';
@@ -49,6 +50,8 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export const UpdateTransaction: React.FC = () => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const { transactionId } = useParams({
@@ -128,13 +131,13 @@ export const UpdateTransaction: React.FC = () => {
             as="h1"
             className="text-center"
           >
-            Edit Transaction
+            {t('edit_transaction')}
           </Text>
           <Text
             as="p"
             className="text-center"
           >
-            Fill the form below to edit a transaction on{' '}
+            {t('edit_transaction_description')}
             <strong>
               {account?.month} - {account?.year}
             </strong>
@@ -171,7 +174,7 @@ export const UpdateTransaction: React.FC = () => {
             error={errors.type?.message}
             options={Object.values(TransactionTypeKey).map((type) => ({
               value: type,
-              label: TransactionType[type],
+              label: t(TransactionType[type]),
             }))}
           />
 
@@ -182,7 +185,7 @@ export const UpdateTransaction: React.FC = () => {
             error={errors.paymentMethod?.message}
             options={Object.values(PaymentMethodKey).map((method) => ({
               value: method,
-              label: PaymentMethod[method],
+              label: t(PaymentMethod[method]),
             }))}
           />
 
@@ -193,7 +196,7 @@ export const UpdateTransaction: React.FC = () => {
             error={errors.categoryId?.message}
             options={(transactionCategories || []).map((category) => ({
               value: category.id.toString(),
-              label: category.name,
+              label: t(category.name),
             }))}
           />
 
@@ -204,7 +207,7 @@ export const UpdateTransaction: React.FC = () => {
             error={errors.serviceId?.message}
             options={(transactionServices || []).map((service) => ({
               value: service.id.toString(),
-              label: service.name,
+              label: t(service.name),
             }))}
           />
 
@@ -221,7 +224,7 @@ export const UpdateTransaction: React.FC = () => {
             type="submit"
             className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
           >
-            Edit Transaction
+            {t('edit_transaction')}
           </button>
         </div>
       </form>

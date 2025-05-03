@@ -1,4 +1,4 @@
-import { Home, Wallet } from 'lucide-react';
+import { Home, Server, Wallet } from 'lucide-react';
 
 import { AppRoute } from '@/domain/app-route.type';
 
@@ -21,5 +21,10 @@ export const getSidebarData = (): {
     title: 'my_accounts',
     path: '/account',
     icon: Wallet,
+  },
+  {
+    title: 'services',
+    path: '/service',
+    icon: Server,
   },
 ];

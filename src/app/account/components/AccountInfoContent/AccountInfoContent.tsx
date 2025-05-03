@@ -42,9 +42,9 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
 
   const onDelete = (id: string) => {
     openModal({
-      title: 'Delete Transaction',
-      description: 'Are you sure you want to delete this transaction?',
-      primaryLabel: 'Delete',
+      title: t('delete_transaction'),
+      description: t('delete_transaction_description'),
+      primaryLabel: t('delete'),
       primaryAction: async () => {
         await deleteTransaction(id);
       },

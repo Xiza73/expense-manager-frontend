@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import FormInput from '@/components/FormInput';
@@ -30,6 +31,8 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export const EditAccount: React.FC = () => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const { accountId } = useParams({
@@ -90,13 +93,13 @@ export const EditAccount: React.FC = () => {
             as="h1"
             className="text-center"
           >
-            Edit Account
+            {t('edit_account')}
           </Text>
           <Text
             as="p"
             className="text-center"
           >
-            Fill the form below to create a new account
+            {t('edit_account_description')}
           </Text>
 
           <FormSelect
@@ -106,7 +109,7 @@ export const EditAccount: React.FC = () => {
             error={errors.month?.message}
             options={Object.values(MonthKey).map((month) => ({
               value: month,
-              label: Month[month],
+              label: t(Month[month]),
             }))}
           />
 
@@ -138,7 +141,7 @@ export const EditAccount: React.FC = () => {
             type="submit"
             className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
           >
-            Edit Account
+            {t('edit_account')}
           </button>
         </div>
       </form>
