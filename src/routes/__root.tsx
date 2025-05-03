@@ -1,6 +1,7 @@
 import { createRootRoute, Navigate, Outlet } from '@tanstack/react-router';
 import { lazy, useEffect } from 'react';
 
+import ErrorBoundary from '@/components/ErrorBoundary';
 import Layout from '@/components/Layout';
 import Loader from '@/components/Loader';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -40,8 +41,13 @@ const AppRoute: React.FC = () => {
 
 export const Route = createRootRoute({
   component: AppRoute,
-  errorComponent: ({ error }) => {
-    return <div> 404 - {error.message}</div>;
+  errorComponent: ({ error, reset }) => {
+    return (
+      <ErrorBoundary
+        error={error}
+        reset={reset}
+      />
+    );
   },
   notFoundComponent: () => <Navigate to="/" />,
 });

@@ -11,7 +11,7 @@ const editTransactionSearchSchema = z.object({
 
 export const Route = createFileRoute('/transaction/edit/$transactionId')({
   loader: async ({ params }) => {
-    return queryClient.ensureQueryData(
+    return await queryClient.ensureQueryData(
       getTransactionQueryOptions(params.transactionId),
     );
   },
