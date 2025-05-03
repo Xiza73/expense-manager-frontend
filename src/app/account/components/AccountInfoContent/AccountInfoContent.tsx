@@ -3,11 +3,16 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
+  GetTransactionsFieldOrder,
+  GetTransactionsRequest,
+} from '@/app/transaction/domain/requests/get-transactions.request';
+import {
   useDeleteTransactionMutation,
   useGetTransactionsQuery,
 } from '@/app/transaction/queries/transaction.query';
 import { CustomTable } from '@/components/CustomTable/CustomTable';
 import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
+import { getNextOrder, Order } from '@/domain/order.enum';
 import { usePagination } from '@/hooks/usePagination';
 import { useModal } from '@/store/modal/useModal';
 
@@ -66,7 +71,41 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     initialPageSize: INITIAL_PAGINATOR.limit,
   });
 
-  const [columns, setColumns] = useState(getColumns({ goToEdit, onDelete, t }));
+  const [search, setSearch] = useState<GetTransactionsRequest>({
+    accountId: account.id,
+  });
+
+  const handleSearch = (value: GetTransactionsFieldOrder, order?: Order) => {
+    if (search.fieldOrder !== value) {
+      setSearch((prev) => ({
+        ...prev,
+        fieldOrder: value,
+        order: Order.ASC,
+      }));
+
+      return;
+    }
+
+    const newOrder = getNextOrder(order || 'NULL');
+    const fieldOrder = newOrder ? value : undefined;
+
+    setSearch((prev) => ({
+      ...prev,
+      fieldOrder,
+      order: newOrder,
+    }));
+  };
+
+  const [columns, setColumns] = useState(
+    getColumns({
+      fieldOrder: search.fieldOrder,
+      order: search.order,
+      goToEdit,
+      onDelete,
+      handleSearch,
+      t,
+    }),
+  );
 
   const {
     data: res,
@@ -78,7 +117,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     params: {
       page: currentPage,
       limit: pageSize,
-      accountId: account?.id,
+      ...search,
     },
   });
 
@@ -100,11 +139,20 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     if (res?.data?.length) {
       refetch();
 
-      setColumns(getColumns({ goToEdit, onDelete, t }));
+      setColumns(
+        getColumns({
+          fieldOrder: search.fieldOrder,
+          order: search.order,
+          goToEdit,
+          onDelete,
+          handleSearch,
+          t,
+        }),
+      );
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, search]);
 
   if (!res) return null;
 
