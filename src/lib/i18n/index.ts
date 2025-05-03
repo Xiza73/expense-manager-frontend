@@ -1,6 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+import { getItem } from '@/utils/local-storage.util';
+
 import enLang from './locales/en.json';
 import esLang from './locales/es.json';
 
@@ -18,7 +20,7 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
-    lng: 'es',
+    lng: getItem<string>('i18nextLng') || 'es',
 
     interpolation: {
       escapeValue: false, // react already safes from xss

@@ -1,8 +1,10 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import { BanknoteArrowDown, BanknoteArrowUp, Edit, Trash } from 'lucide-react';
 
+import { GetTransactionsFieldOrder } from '@/app/transaction/domain/requests/get-transactions.request';
 import { Transaction } from '@/app/transaction/domain/transaction.interface';
 import { TransactionType } from '@/app/transaction/domain/transaction-type.enum';
+import OrderArea from '@/components/OrderArea';
 import TruncateTooltipText from '@/components/TruncateTooltipText';
 import {
   Tooltip,
@@ -10,28 +12,51 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { Order } from '@/domain/order.enum';
 import { getDate } from '@/utils/date.util';
 import { patternMoney } from '@/utils/money-format.util';
 
 const columnHelper = createColumnHelper<Transaction>();
 
 interface ColumnsProps {
+  order?: Order;
+  fieldOrder?: GetTransactionsFieldOrder;
   t: (key: string) => string;
   goToEdit: (id: string) => void;
   onDelete: (id: string) => void;
+  handleSearch: (value: GetTransactionsFieldOrder, order?: Order) => void;
 }
 
-export const getColumns = ({ goToEdit, onDelete, t }: ColumnsProps) => [
+export const getColumns = ({
+  order,
+  fieldOrder,
+  t,
+  goToEdit,
+  onDelete,
+  handleSearch,
+}: ColumnsProps) => [
   columnHelper.accessor('date', {
-    header: t('date'),
+    header: () => (
+      <OrderArea
+        label={t('date')}
+        fieldOrder={fieldOrder}
+        currentField={GetTransactionsFieldOrder.DATE}
+        order={order}
+        handleSearch={handleSearch}
+      />
+    ),
     cell: (info) => getDate(info.getValue()),
   }),
-  // columnHelper.accessor('category.id', {
-  //   header: '#',
-  //   cell: (info) => info.row.index + 1 + (currentPage - 1) * pageSize,
-  // }),
   columnHelper.accessor('name', {
-    header: t('name'),
+    header: () => (
+      <OrderArea
+        label={t('name')}
+        fieldOrder={fieldOrder}
+        currentField={GetTransactionsFieldOrder.NAME}
+        order={order}
+        handleSearch={handleSearch}
+      />
+    ),
     cell: (info) => <TruncateTooltipText text={info.getValue()} />,
   }),
   columnHelper.accessor('description', {
@@ -39,19 +64,51 @@ export const getColumns = ({ goToEdit, onDelete, t }: ColumnsProps) => [
     cell: (info) => <TruncateTooltipText text={info.getValue() || ''} />,
   }),
   columnHelper.accessor('category.name', {
-    header: t('category'),
+    header: () => (
+      <OrderArea
+        label={t('category')}
+        fieldOrder={fieldOrder}
+        currentField={GetTransactionsFieldOrder.CATEGORY}
+        order={order}
+        handleSearch={handleSearch}
+      />
+    ),
     cell: (info) => t(info.getValue()),
   }),
   columnHelper.accessor('service.name', {
-    header: t('service'),
+    header: () => (
+      <OrderArea
+        label={t('service')}
+        fieldOrder={fieldOrder}
+        currentField={GetTransactionsFieldOrder.SERVICE}
+        order={order}
+        handleSearch={handleSearch}
+      />
+    ),
     cell: (info) => t(info.getValue()),
   }),
   columnHelper.accessor('paymentMethod', {
-    header: t('with'),
+    header: () => (
+      <OrderArea
+        label={t('with')}
+        fieldOrder={fieldOrder}
+        currentField={GetTransactionsFieldOrder.PAYMENT_METHOD}
+        order={order}
+        handleSearch={handleSearch}
+      />
+    ),
     cell: (info) => t(info.getValue()),
   }),
   columnHelper.accessor('type', {
-    header: t('type'),
+    header: () => (
+      <OrderArea
+        label={t('type')}
+        fieldOrder={fieldOrder}
+        currentField={GetTransactionsFieldOrder.TYPE}
+        order={order}
+        handleSearch={handleSearch}
+      />
+    ),
     cell: (info) => {
       return (
         <TooltipProvider>
@@ -72,7 +129,15 @@ export const getColumns = ({ goToEdit, onDelete, t }: ColumnsProps) => [
     },
   }),
   columnHelper.accessor('amount', {
-    header: t('amount'),
+    header: () => (
+      <OrderArea
+        label={t('amount')}
+        fieldOrder={fieldOrder}
+        currentField={GetTransactionsFieldOrder.AMOUNT}
+        order={order}
+        handleSearch={handleSearch}
+      />
+    ),
     cell: (info) =>
       patternMoney(info.getValue().toString(), {
         prefix: info.row.original.currency,

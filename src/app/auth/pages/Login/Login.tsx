@@ -36,18 +36,22 @@ export const Login: React.FC = () => {
 
   return (
     <PageContainer className="justify-center">
-      <Card className="bg-gray-100">
+      <Card className="bg-gray-100 dark:bg-gray-900">
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent>
             <div className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4">
-              <h1 className="text-2xl font-bold">{t('login')}</h1>
-              <p className="text-sm text-gray-500">{t('login_description')}</p>
+              <h1 className="text-2xl font-bold dark:text-white">
+                {t('login')}
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {t('login_description')}
+              </p>
               <ZodInputPassword
                 register={register}
                 name="token"
                 placeholder="********"
                 containerClassName="w-full"
-                error={errors.token?.message}
+                error={t(errors.token?.message || '')}
               />
             </div>
           </CardContent>

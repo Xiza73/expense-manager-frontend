@@ -2,7 +2,19 @@
 
 ## 📝 Changelog – Latest Updates
 
-### 🚀Version 0.5.1 – Released on 03th May, 2025
+### 🚀 Version 0.6.0 – Released on 03th May, 2025
+
+**What's New:**
+
+🔃 **Ordering** — You can now order your transactions by date, name, category, service, payment method, type and amount.
+
+**Fixes:**
+
+🐛 **Bug Fixes** — Fixed some colors on dark mode and other visual bugs.
+
+---
+
+### 🚀 Version 0.5.1 – Released on 03th May, 2025
 
 **What's New:**
 
@@ -14,7 +26,7 @@
 
 ---
 
-### 🚀Version 0.5.0 – Released on 03th May, 2025
+### 🚀 Version 0.5.0 – Released on 03th May, 2025
 
 **What's New:**
 
@@ -30,7 +42,7 @@
 
 ---
 
-### 🚀Version 0.4.1 – Released on 29th April, 2025
+### 🚀 Version 0.4.1 – Released on 29th April, 2025
 
 **What's New:**
 
@@ -42,7 +54,7 @@
 
 ---
 
-### 🚀Version 0.4.0 – Released on 28th April, 2025
+### 🚀 Version 0.4.0 – Released on 28th April, 2025
 
 **What's New:**
 
