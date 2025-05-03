@@ -2,6 +2,22 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀Version 0.5.0 – Released on 03th May, 2025
+
+**What's New:**
+
+🧰 **Own Services** — You can now create and manage your own services.
+
+🌐 **Multi-Language** — Added multi-language support.
+
+🌙 **Dark Mode** — Added dark mode support.
+
+**Fixes:**
+
+🐛**Bug Fixes** — Some minor bug fixes.
+
+---
+
 ### 🚀Version 0.4.1 – Released on 29th April, 2025
 
 **What's New:**
