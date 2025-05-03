@@ -13,6 +13,10 @@ export interface ApiAccount {
   balance: number;
   expenseAmount: number;
   incomeAmount: number;
+  idealDailyExpenditure: number;
+  realDailyExpenditure: number;
+  realDaysSpent: number;
+  daysInDebt: number;
   isDefault: boolean;
 }
 
@@ -27,5 +31,9 @@ export interface Account {
   balance: number;
   expenseAmount: number;
   incomeAmount: number;
+  idealDailyExpenditure: number;
+  realDailyExpenditure: number;
+  realDaysSpent: number;
+  daysInDebt: number;
   isDefault: boolean;
 }

@@ -3,15 +3,16 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate, useParams, useSearch } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import { getAccountQueryOptions } from '@/app/account/queries/account.query';
+import FormContainer from '@/components/FormContainer';
 import FormDate from '@/components/FormDate';
 import FormInput from '@/components/FormInput';
 import FormMoney from '@/components/FormMoney';
 import FormSelect from '@/components/FormSelect';
 import PageContainer from '@/components/PageContainer';
-import { Text } from '@/components/ui/text';
 import { commonValidators } from '@/contants/common-validators.constant';
 import { getCurrencyKey } from '@/domain/currency.enum';
 import {
@@ -49,6 +50,8 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export const UpdateTransaction: React.FC = () => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const { transactionId } = useParams({
@@ -122,109 +125,89 @@ export const UpdateTransaction: React.FC = () => {
 
   return (
     <PageContainer>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4">
-          <Text
-            as="h1"
-            className="text-center"
-          >
-            Edit Transaction
-          </Text>
-          <Text
-            as="p"
-            className="text-center"
-          >
-            Fill the form below to edit a transaction on{' '}
-            <strong>
-              {account?.month} - {account?.year}
-            </strong>
-          </Text>
+      <FormContainer
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        title={t('edit_transaction')}
+        description={t('edit_transaction_description')}
+        buttonText={t('edit_transaction')}
+      >
+        <FormInput
+          register={register}
+          name="name"
+          placeholder="Name"
+          error={errors.name?.message}
+        />
 
-          <FormInput
-            register={register}
-            name="name"
-            placeholder="Name"
-            error={errors.name?.message}
-          />
+        <FormInput
+          register={register}
+          name="description"
+          placeholder="Description"
+          error={errors.description?.message}
+        />
 
-          <FormInput
-            register={register}
-            name="description"
-            placeholder="Description"
-            error={errors.description?.message}
-          />
+        <FormMoney
+          register={register}
+          currencyName="currency"
+          amountName="amount"
+          error={errors.amount?.message || errors.currency?.message}
+          disabledCurrency
+          onInput={handleMoneyInput}
+          onBlur={handleMoneyInput}
+        />
 
-          <FormMoney
-            register={register}
-            currencyName="currency"
-            amountName="amount"
-            error={errors.amount?.message || errors.currency?.message}
-            disabledCurrency
-            onInput={handleMoneyInput}
-            onBlur={handleMoneyInput}
-          />
+        <FormSelect
+          register={register}
+          name="type"
+          placeholder="Select Transaction Type"
+          error={errors.type?.message}
+          options={Object.values(TransactionTypeKey).map((type) => ({
+            value: type,
+            label: t(TransactionType[type]),
+          }))}
+        />
 
-          <FormSelect
-            register={register}
-            name="type"
-            placeholder="Select Transaction Type"
-            error={errors.type?.message}
-            options={Object.values(TransactionTypeKey).map((type) => ({
-              value: type,
-              label: TransactionType[type],
-            }))}
-          />
+        <FormSelect
+          register={register}
+          name="paymentMethod"
+          placeholder="Select Payment Method"
+          error={errors.paymentMethod?.message}
+          options={Object.values(PaymentMethodKey).map((method) => ({
+            value: method,
+            label: t(PaymentMethod[method]),
+          }))}
+        />
 
-          <FormSelect
-            register={register}
-            name="paymentMethod"
-            placeholder="Select Payment Method"
-            error={errors.paymentMethod?.message}
-            options={Object.values(PaymentMethodKey).map((method) => ({
-              value: method,
-              label: PaymentMethod[method],
-            }))}
-          />
+        <FormSelect
+          register={register}
+          name="categoryId"
+          placeholder="Select Category"
+          error={errors.categoryId?.message}
+          options={(transactionCategories || []).map((category) => ({
+            value: category.id.toString(),
+            label: t(category.name),
+          }))}
+        />
 
-          <FormSelect
-            register={register}
-            name="categoryId"
-            placeholder="Select Category"
-            error={errors.categoryId?.message}
-            options={(transactionCategories || []).map((category) => ({
-              value: category.id.toString(),
-              label: category.name,
-            }))}
-          />
+        <FormSelect
+          register={register}
+          name="serviceId"
+          placeholder="Select Service"
+          error={errors.serviceId?.message}
+          options={(transactionServices || []).map((service) => ({
+            value: service.id.toString(),
+            label: t(service.name),
+          }))}
+        />
 
-          <FormSelect
-            register={register}
-            name="serviceId"
-            placeholder="Select Service"
-            error={errors.serviceId?.message}
-            options={(transactionServices || []).map((service) => ({
-              value: service.id.toString(),
-              label: service.name,
-            }))}
-          />
-
-          <FormDate
-            control={control}
-            name="date"
-            error={errors.date?.message}
-            disableNavigation
-            {...(isSameMonthAndYear ? {} : { defaultMonth: account?.date })}
-          />
-        </div>
-        <div className="flex justify-center w-full p-4 mt-2 bg-gray-100">
-          <button
-            type="submit"
-            className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-          >
-            Edit Transaction
-          </button>
-        </div>
-      </form>
+        <FormDate
+          control={control}
+          name="date"
+          error={errors.date?.message}
+          disableNavigation
+          {...(isSameMonthAndYear ? {} : { defaultMonth: account?.date })}
+        />
+      </FormContainer>
     </PageContainer>
   );
 };

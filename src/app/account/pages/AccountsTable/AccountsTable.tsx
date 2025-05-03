@@ -92,9 +92,9 @@ export const AccountsTable: React.FC = () => {
 
   const onDelete = (id: string) => {
     openModal({
-      title: 'Delete Account',
-      description: 'Are you sure you want to delete this account?',
-      primaryLabel: 'Delete',
+      title: t('delete_account'),
+      description: t('delete_account_description'),
+      primaryLabel: t('delete'),
       primaryAction: async () => {
         await deleteAccount(id);
       },

@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { useTranslation } from 'react-i18next';
 
 import { useModal } from '@/store/modal/useModal';
 import { noopFunction } from '@/utils/noop-function.util';
@@ -13,6 +14,8 @@ export interface ModalProps {
 }
 
 export const Modal: React.FC<ModalProps> = ({ open }) => {
+  const { t } = useTranslation();
+
   const {
     isOpen,
     component,
@@ -20,7 +23,7 @@ export const Modal: React.FC<ModalProps> = ({ open }) => {
     description,
     primaryLabel,
     primaryAction,
-    secondaryLabel = 'Cancel',
+    secondaryLabel = t('cancel'),
     secondaryAction = noopFunction,
     closeModal,
     showCloseIcon,

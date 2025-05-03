@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { ChevronUp, User2 } from 'lucide-react';
+import { ChevronUp, Languages, Moon, Sun, User2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -16,6 +16,7 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { useAuth } from '@/store/auth/useAuth';
+import { useDarkMode } from '@/store/darkMode/useDarkMode';
 
 import {
   Collapsible,
@@ -28,12 +29,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import { Separator } from '../ui/separator';
 import { getSidebarData } from './app-sidebar-data';
 
 export function AppSidebar() {
-  const { t } = useTranslation();
+  const {
+    t,
+    i18n: { language, changeLanguage },
+  } = useTranslation();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   const { user, signOut } = useAuth();
+
+  const toggleLanguage = () => {
+    const currentLanguage = language;
+    const nextLanguage = currentLanguage === 'en' ? 'es' : 'en';
+
+    changeLanguage(nextLanguage);
+  };
 
   const handleSignOut = () => {
     signOut();
@@ -89,6 +102,25 @@ export function AppSidebar() {
                     </Collapsible>
                   ),
               )}
+              <Separator />
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className="cursor-pointer"
+                  onClick={toggleLanguage}
+                >
+                  <Languages />
+                  <span>{t('language')}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className="cursor-pointer"
+                  onClick={toggleDarkMode}
+                >
+                  {isDarkMode ? <Moon /> : <Sun />}
+                  <span>{t('dark_mode')}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

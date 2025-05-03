@@ -14,20 +14,24 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TransactionImport } from './routes/transaction'
+import { Route as ServicetImport } from './routes/servicet'
 import { Route as AuthImport } from './routes/auth'
 import { Route as AccountImport } from './routes/account'
 import { Route as IndexImport } from './routes/index'
 import { Route as TransactionIndexImport } from './routes/transaction.index'
+import { Route as ServiceIndexImport } from './routes/service.index'
 import { Route as AuthIndexImport } from './routes/auth.index'
 import { Route as AccountIndexImport } from './routes/account.index'
 import { Route as AccountAccountIdImport } from './routes/account.$accountId'
 import { Route as TransactionEditTransactionIdImport } from './routes/transaction.edit.$transactionId'
 import { Route as TransactionCreateAccountIdImport } from './routes/transaction.create.$accountId'
+import { Route as ServiceEditServiceIdImport } from './routes/service.edit.$serviceId'
 import { Route as AccountUpdateAccountIdImport } from './routes/account.update.$accountId'
 import { Route as AccountEditAccountIdImport } from './routes/account.edit.$accountId'
 
 // Create Virtual Routes
 
+const ServiceCreateLazyImport = createFileRoute('/service/create')()
 const AuthLoginLazyImport = createFileRoute('/auth/login')()
 const AccountCreateLazyImport = createFileRoute('/account/create')()
 
@@ -36,6 +40,12 @@ const AccountCreateLazyImport = createFileRoute('/account/create')()
 const TransactionRoute = TransactionImport.update({
   id: '/transaction',
   path: '/transaction',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ServicetRoute = ServicetImport.update({
+  id: '/servicet',
+  path: '/servicet',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -63,6 +73,12 @@ const TransactionIndexRoute = TransactionIndexImport.update({
   getParentRoute: () => TransactionRoute,
 } as any)
 
+const ServiceIndexRoute = ServiceIndexImport.update({
+  id: '/service/',
+  path: '/service/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AuthIndexRoute = AuthIndexImport.update({
   id: '/',
   path: '/',
@@ -74,6 +90,14 @@ const AccountIndexRoute = AccountIndexImport.update({
   path: '/',
   getParentRoute: () => AccountRoute,
 } as any)
+
+const ServiceCreateLazyRoute = ServiceCreateLazyImport.update({
+  id: '/service/create',
+  path: '/service/create',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/service.create.lazy').then((d) => d.Route),
+)
 
 const AuthLoginLazyRoute = AuthLoginLazyImport.update({
   id: '/login',
@@ -109,6 +133,12 @@ const TransactionCreateAccountIdRoute = TransactionCreateAccountIdImport.update(
     getParentRoute: () => TransactionRoute,
   } as any,
 )
+
+const ServiceEditServiceIdRoute = ServiceEditServiceIdImport.update({
+  id: '/service/edit/$serviceId',
+  path: '/service/edit/$serviceId',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AccountUpdateAccountIdRoute = AccountUpdateAccountIdImport.update({
   id: '/update/$accountId',
@@ -147,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
+    '/servicet': {
+      id: '/servicet'
+      path: '/servicet'
+      fullPath: '/servicet'
+      preLoaderRoute: typeof ServicetImport
+      parentRoute: typeof rootRoute
+    }
     '/transaction': {
       id: '/transaction'
       path: '/transaction'
@@ -175,6 +212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginLazyImport
       parentRoute: typeof AuthImport
     }
+    '/service/create': {
+      id: '/service/create'
+      path: '/service/create'
+      fullPath: '/service/create'
+      preLoaderRoute: typeof ServiceCreateLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/account/': {
       id: '/account/'
       path: '/'
@@ -188,6 +232,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/'
       preLoaderRoute: typeof AuthIndexImport
       parentRoute: typeof AuthImport
+    }
+    '/service/': {
+      id: '/service/'
+      path: '/service'
+      fullPath: '/service'
+      preLoaderRoute: typeof ServiceIndexImport
+      parentRoute: typeof rootRoute
     }
     '/transaction/': {
       id: '/transaction/'
@@ -209,6 +260,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/account/update/$accountId'
       preLoaderRoute: typeof AccountUpdateAccountIdImport
       parentRoute: typeof AccountImport
+    }
+    '/service/edit/$serviceId': {
+      id: '/service/edit/$serviceId'
+      path: '/service/edit/$serviceId'
+      fullPath: '/service/edit/$serviceId'
+      preLoaderRoute: typeof ServiceEditServiceIdImport
+      parentRoute: typeof rootRoute
     }
     '/transaction/create/$accountId': {
       id: '/transaction/create/$accountId'
@@ -280,29 +338,37 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/servicet': typeof ServicetRoute
   '/transaction': typeof TransactionRouteWithChildren
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
+  '/service/create': typeof ServiceCreateLazyRoute
   '/account/': typeof AccountIndexRoute
   '/auth/': typeof AuthIndexRoute
+  '/service': typeof ServiceIndexRoute
   '/transaction/': typeof TransactionIndexRoute
   '/account/edit/$accountId': typeof AccountEditAccountIdRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
+  '/service/edit/$serviceId': typeof ServiceEditServiceIdRoute
   '/transaction/create/$accountId': typeof TransactionCreateAccountIdRoute
   '/transaction/edit/$transactionId': typeof TransactionEditTransactionIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/servicet': typeof ServicetRoute
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
+  '/service/create': typeof ServiceCreateLazyRoute
   '/account': typeof AccountIndexRoute
   '/auth': typeof AuthIndexRoute
+  '/service': typeof ServiceIndexRoute
   '/transaction': typeof TransactionIndexRoute
   '/account/edit/$accountId': typeof AccountEditAccountIdRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
+  '/service/edit/$serviceId': typeof ServiceEditServiceIdRoute
   '/transaction/create/$accountId': typeof TransactionCreateAccountIdRoute
   '/transaction/edit/$transactionId': typeof TransactionEditTransactionIdRoute
 }
@@ -312,15 +378,19 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/servicet': typeof ServicetRoute
   '/transaction': typeof TransactionRouteWithChildren
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
+  '/service/create': typeof ServiceCreateLazyRoute
   '/account/': typeof AccountIndexRoute
   '/auth/': typeof AuthIndexRoute
+  '/service/': typeof ServiceIndexRoute
   '/transaction/': typeof TransactionIndexRoute
   '/account/edit/$accountId': typeof AccountEditAccountIdRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
+  '/service/edit/$serviceId': typeof ServiceEditServiceIdRoute
   '/transaction/create/$accountId': typeof TransactionCreateAccountIdRoute
   '/transaction/edit/$transactionId': typeof TransactionEditTransactionIdRoute
 }
@@ -331,28 +401,36 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/auth'
+    | '/servicet'
     | '/transaction'
     | '/account/$accountId'
     | '/account/create'
     | '/auth/login'
+    | '/service/create'
     | '/account/'
     | '/auth/'
+    | '/service'
     | '/transaction/'
     | '/account/edit/$accountId'
     | '/account/update/$accountId'
+    | '/service/edit/$serviceId'
     | '/transaction/create/$accountId'
     | '/transaction/edit/$transactionId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/servicet'
     | '/account/$accountId'
     | '/account/create'
     | '/auth/login'
+    | '/service/create'
     | '/account'
     | '/auth'
+    | '/service'
     | '/transaction'
     | '/account/edit/$accountId'
     | '/account/update/$accountId'
+    | '/service/edit/$serviceId'
     | '/transaction/create/$accountId'
     | '/transaction/edit/$transactionId'
   id:
@@ -360,15 +438,19 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/auth'
+    | '/servicet'
     | '/transaction'
     | '/account/$accountId'
     | '/account/create'
     | '/auth/login'
+    | '/service/create'
     | '/account/'
     | '/auth/'
+    | '/service/'
     | '/transaction/'
     | '/account/edit/$accountId'
     | '/account/update/$accountId'
+    | '/service/edit/$serviceId'
     | '/transaction/create/$accountId'
     | '/transaction/edit/$transactionId'
   fileRoutesById: FileRoutesById
@@ -378,14 +460,22 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
+  ServicetRoute: typeof ServicetRoute
   TransactionRoute: typeof TransactionRouteWithChildren
+  ServiceCreateLazyRoute: typeof ServiceCreateLazyRoute
+  ServiceIndexRoute: typeof ServiceIndexRoute
+  ServiceEditServiceIdRoute: typeof ServiceEditServiceIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRoute: AccountRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
+  ServicetRoute: ServicetRoute,
   TransactionRoute: TransactionRouteWithChildren,
+  ServiceCreateLazyRoute: ServiceCreateLazyRoute,
+  ServiceIndexRoute: ServiceIndexRoute,
+  ServiceEditServiceIdRoute: ServiceEditServiceIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -401,7 +491,11 @@ export const routeTree = rootRoute
         "/",
         "/account",
         "/auth",
-        "/transaction"
+        "/servicet",
+        "/transaction",
+        "/service/create",
+        "/service/",
+        "/service/edit/$serviceId"
       ]
     },
     "/": {
@@ -424,6 +518,9 @@ export const routeTree = rootRoute
         "/auth/"
       ]
     },
+    "/servicet": {
+      "filePath": "servicet.tsx"
+    },
     "/transaction": {
       "filePath": "transaction.tsx",
       "children": [
@@ -444,6 +541,9 @@ export const routeTree = rootRoute
       "filePath": "auth.login.lazy.tsx",
       "parent": "/auth"
     },
+    "/service/create": {
+      "filePath": "service.create.lazy.tsx"
+    },
     "/account/": {
       "filePath": "account.index.tsx",
       "parent": "/account"
@@ -451,6 +551,9 @@ export const routeTree = rootRoute
     "/auth/": {
       "filePath": "auth.index.tsx",
       "parent": "/auth"
+    },
+    "/service/": {
+      "filePath": "service.index.tsx"
     },
     "/transaction/": {
       "filePath": "transaction.index.tsx",
@@ -463,6 +566,9 @@ export const routeTree = rootRoute
     "/account/update/$accountId": {
       "filePath": "account.update.$accountId.tsx",
       "parent": "/account"
+    },
+    "/service/edit/$serviceId": {
+      "filePath": "service.edit.$serviceId.tsx"
     },
     "/transaction/create/$accountId": {
       "filePath": "transaction.create.$accountId.tsx",

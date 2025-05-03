@@ -5,11 +5,11 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
+import FormContainer from '@/components/FormContainer';
 import FormInput from '@/components/FormInput';
 import FormMoney from '@/components/FormMoney';
 import FormSelect from '@/components/FormSelect';
 import PageContainer from '@/components/PageContainer';
-import { Text } from '@/components/ui/text';
 import { commonValidators } from '@/contants/common-validators.constant';
 import { CurrencyKey } from '@/domain/currency.enum';
 import { handleMoneyInput, moneyToNumber } from '@/utils/money-format.util';
@@ -71,64 +71,47 @@ export const CreateAccount: React.FC = () => {
 
   return (
     <PageContainer>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4">
-          <Text
-            as="h1"
-            className="text-center"
-          >
-            {t('create_account')}
-          </Text>
-          <Text
-            as="p"
-            className="text-center"
-          >
-            {t('create_account_description')}
-          </Text>
+      <FormContainer
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        title={t('create_account')}
+        description={t('create_account_description')}
+        buttonText={t('create_account')}
+      >
+        <FormSelect
+          register={register}
+          name="month"
+          placeholder={t('select_month')}
+          error={errors.month?.message}
+          options={Object.values(MonthKey).map((month) => ({
+            value: month,
+            label: t(Month[month]),
+          }))}
+        />
 
-          <FormSelect
-            register={register}
-            name="month"
-            placeholder={t('select_month')}
-            error={errors.month?.message}
-            options={Object.values(MonthKey).map((month) => ({
-              value: month,
-              label: t(Month[month]),
-            }))}
-          />
+        <FormInput
+          register={register}
+          name="year"
+          placeholder={t('year')}
+          error={errors.year?.message}
+        />
 
-          <FormInput
-            register={register}
-            name="year"
-            placeholder={t('year')}
-            error={errors.year?.message}
-          />
+        <FormInput
+          register={register}
+          name="description"
+          placeholder={t('description')}
+          error={errors.description?.message}
+        />
 
-          <FormInput
-            register={register}
-            name="description"
-            placeholder={t('description')}
-            error={errors.description?.message}
-          />
-
-          <FormMoney
-            register={register}
-            currencyName="currency"
-            amountName="amount"
-            error={errors.amount?.message || errors.currency?.message}
-            onInput={handleMoneyInput}
-            onBlur={handleMoneyInput}
-          />
-        </div>
-        <div className="flex justify-center w-full p-4 mt-2 bg-gray-100">
-          <button
-            type="submit"
-            className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-          >
-            {t('create_account')}
-          </button>
-        </div>
-      </form>
+        <FormMoney
+          register={register}
+          currencyName="currency"
+          amountName="amount"
+          error={errors.amount?.message || errors.currency?.message}
+          onInput={handleMoneyInput}
+          onBlur={handleMoneyInput}
+        />
+      </FormContainer>
     </PageContainer>
   );
 };

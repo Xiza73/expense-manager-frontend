@@ -29,7 +29,7 @@ export const GoToTransactionButton: React.FC<GoToTransactionButtonProps> = ({
 
   return (
     <Button
-      className="mt-6 ml-auto"
+      className="ml-auto"
       onClick={handleGoToTransaction}
     >
       <Plus className="w-5 h-5" />
