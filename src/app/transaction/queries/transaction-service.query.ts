@@ -46,6 +46,11 @@ export const useCreateTransactionServiceMutation = () =>
   useMutation<NullResponse, CreateTransactionServiceRequest>({
     showError: true,
     showSuccess: true,
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['get-transaction-services'],
+      });
+    },
     mutationFn: async (request) => {
       const data = await createTransactionService(request);
 
@@ -60,6 +65,11 @@ export const useUpdateTransactionServiceMutation = () =>
   useMutation<NullResponse, UpdateTransactionServiceRequest>({
     showError: true,
     showSuccess: true,
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['get-transaction-services'],
+      });
+    },
     mutationFn: async (request) => {
       const data = await updateTransactionService(request);
 

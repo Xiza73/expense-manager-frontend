@@ -2,6 +2,18 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀Version 0.5.1 – Released on 03th May, 2025
+
+**What's New:**
+
+🔢 **Recalculate Real Days Spent** — Real days spent is now calculated based on the current, past and future months.
+
+**Fixes:**
+
+🐛 **Bug Fixes** — Update Transaction didn't change the category and service.
+
+---
+
 ### 🚀Version 0.5.0 – Released on 03th May, 2025
 
 **What's New:**
@@ -14,7 +26,7 @@
 
 **Fixes:**
 
-🐛**Bug Fixes** — Some minor bug fixes.
+🐛 **Bug Fixes** — Some minor bug fixes.
 
 ---
 
