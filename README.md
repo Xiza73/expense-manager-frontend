@@ -14,7 +14,7 @@
 
 **Fixes:**
 
-🐛**Bug Fixes** — Some minor bug fixes.
+🐛 **Bug Fixes** — Some minor bug fixes.
 
 ---
 

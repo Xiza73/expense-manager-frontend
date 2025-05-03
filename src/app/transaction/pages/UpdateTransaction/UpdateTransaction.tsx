@@ -29,7 +29,7 @@ import {
   TransactionTypeKey,
 } from '../../domain/transaction-type.enum';
 import {
-  getTransactionQueryOptions,
+  useGetTransactionSuspense,
   useUpdateTransactionMutation,
 } from '../../queries/transaction.query';
 import { useGetTransactionCategoriesQuery } from '../../queries/transaction-category.query';
@@ -59,9 +59,8 @@ export const UpdateTransaction: React.FC = () => {
   });
   const { redirect } = useSearch({ from: '/transaction/edit/$transactionId' });
 
-  const { data: transaction } = useSuspenseQuery(
-    getTransactionQueryOptions(transactionId),
-  );
+  const { data: transaction } = useGetTransactionSuspense(transactionId);
+
   const { data: account } = useSuspenseQuery(
     getAccountQueryOptions(transaction?.account.id.toString()),
   );
@@ -79,6 +78,7 @@ export const UpdateTransaction: React.FC = () => {
     control,
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -110,6 +110,15 @@ export const UpdateTransaction: React.FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactionUpdated]);
+
+  useEffect(() => {
+    if (transaction) {
+      setValue('categoryId', transaction.category.id.toString());
+      setValue('serviceId', transaction.service.id.toString());
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transaction, transactionCategories, transactionServices]);
 
   const onSubmit = async (data: FormSchema) => {
     await updateTransaction({

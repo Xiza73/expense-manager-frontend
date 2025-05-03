@@ -2,6 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { QueryParams } from '@/domain/api.interface';
 import { NullResponse } from '@/domain/responses/null.response';
+import { useQueryOptions } from '@/hooks/queryOptions';
 import { useMutation } from '@/hooks/useMutation';
 import { useQuery } from '@/hooks/useQuery';
 import { queryClient } from '@/main';
@@ -25,7 +26,7 @@ import {
 
 export const getTransactionQueryOptions = (id: string) =>
   queryOptions<GetTransactionResponse>({
-    queryKey: ['get-transactions', id],
+    queryKey: ['get-transaction', id],
     queryFn: async () => {
       const data = await getTransaction(id);
 
@@ -33,6 +34,11 @@ export const getTransactionQueryOptions = (id: string) =>
 
       return transaction;
     },
+  });
+
+export const useGetTransactionSuspense = (id: string) =>
+  useQueryOptions<GetTransactionResponse>({
+    queryOptions: getTransactionQueryOptions(id),
   });
 
 export const useGetTransactionsQuery = (
@@ -74,6 +80,11 @@ export const useUpdateTransactionMutation = () =>
   useMutation<NullResponse, UpdateTransactionRequest>({
     showError: true,
     showSuccess: true,
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['get-transaction'],
+      });
+    },
     mutationFn: async (request) => {
       const data = await updateTransaction(request);
 
