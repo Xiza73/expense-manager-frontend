@@ -65,10 +65,7 @@ export const Account: React.FC = () => {
               <ChartArea className="w-5 h-5" />
             )}
           </Button>
-          <GoToTransactionButton
-            accountId={accountId}
-            redirect="main"
-          />
+          <GoToTransactionButton accountId={accountId} />
         </div>
       </div>
       {showChart && <AccountInfoChart account={account} />}

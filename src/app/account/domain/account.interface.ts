@@ -5,8 +5,9 @@ import { Month, MonthKey } from './month.enum';
 export interface ApiAccount {
   id: number;
   description?: string;
-  month: MonthKey;
-  year: number;
+  isMonthly: boolean;
+  month?: MonthKey;
+  year?: number;
   date: string;
   currency: CurrencyKey;
   amount: number;
@@ -23,8 +24,9 @@ export interface ApiAccount {
 export interface Account {
   id: number;
   description?: string;
-  month: Month;
-  year: number;
+  isMonthly: boolean;
+  month?: Month;
+  year?: number;
   date: Date;
   currency: Currency;
   amount: number;

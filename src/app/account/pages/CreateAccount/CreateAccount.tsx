@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
+import FormCheckBox from '@/components/FormCheckBox';
 import FormContainer from '@/components/FormContainer';
 import FormInput from '@/components/FormInput';
 import FormMoney from '@/components/FormMoney';
@@ -18,9 +19,10 @@ import { Month, MonthKey } from '../../domain/month.enum';
 import { useCreateAccountMutation } from '../../queries/account.query';
 
 const formSchema = z.object({
+  isMonthly: z.boolean().default(true),
   description: z.string().optional(),
-  month: commonValidators.month,
-  year: commonValidators.year,
+  month: commonValidators.month.optional(),
+  year: commonValidators.year.optional(),
   currency: commonValidators.currency,
   amount: commonValidators.money,
 });
@@ -34,12 +36,15 @@ export const CreateAccount: React.FC = () => {
     useCreateAccountMutation();
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      isMonthly: true,
       month: MonthKey.JANUARY,
       year: new Date().getFullYear().toString(),
       currency: CurrencyKey.PEN,
@@ -48,6 +53,8 @@ export const CreateAccount: React.FC = () => {
     delayError: 100,
     mode: 'onChange',
   });
+
+  const isMonthly = watch('isMonthly');
 
   useEffect(() => {
     if (accountCreated?.id) {
@@ -62,10 +69,24 @@ export const CreateAccount: React.FC = () => {
   }, [accountCreated]);
 
   const onSubmit = async (data: FormData) => {
+    const dateData: {
+      month?: MonthKey;
+      year?: number;
+    } = {
+      month: undefined,
+      year: undefined,
+    };
+
+    if (data.isMonthly) {
+      dateData.month = data.month;
+      dateData.year = Number(data.year);
+    }
+
     await createAccount({
       ...data,
       amount: moneyToNumber(data.amount),
-      year: Number(data.year),
+      month: dateData.month,
+      year: dateData.year,
     });
   };
 
@@ -78,30 +99,42 @@ export const CreateAccount: React.FC = () => {
         description={t('create_account_description')}
         buttonText={t('create_account')}
       >
-        <FormSelect
-          register={register}
-          name="month"
-          placeholder={t('select_month')}
-          error={errors.month?.message}
-          options={Object.values(MonthKey).map((month) => ({
-            value: month,
-            label: t(Month[month]),
-          }))}
-        />
-
-        <FormInput
-          register={register}
-          name="year"
-          placeholder={t('year')}
-          error={errors.year?.message}
-        />
-
         <FormInput
           register={register}
           name="description"
-          placeholder={t('description')}
+          placeholder={isMonthly ? t('description') : t('account_name')}
           error={errors.description?.message}
         />
+
+        <FormCheckBox
+          id="isMonthly"
+          control={control}
+          name="isMonthly"
+          label={t('is_monthly')}
+          error={errors.isMonthly?.message}
+        />
+
+        {isMonthly && (
+          <>
+            <FormSelect
+              register={register}
+              name="month"
+              placeholder={t('select_month')}
+              error={errors.month?.message}
+              options={Object.values(MonthKey).map((month) => ({
+                value: month,
+                label: t(Month[month]),
+              }))}
+            />
+
+            <FormInput
+              register={register}
+              name="year"
+              placeholder={t('year')}
+              error={errors.year?.message}
+            />
+          </>
+        )}
 
         <FormMoney
           register={register}

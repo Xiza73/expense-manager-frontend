@@ -23,8 +23,8 @@ import {
 
 const formSchema = z.object({
   description: z.string().optional(),
-  month: commonValidators.month,
-  year: commonValidators.year,
+  month: commonValidators.month.optional(),
+  year: commonValidators.year.optional(),
   currency: commonValidators.currency,
   amount: commonValidators.money,
 });
@@ -52,14 +52,18 @@ export const EditAccount: React.FC = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       description: account?.description ?? '',
-      month: getMonthKey(account?.month),
-      year: account?.year.toString(),
+      month: account?.month ? getMonthKey(account?.month) : MonthKey.JANUARY,
+      year: account?.year
+        ? account?.year.toString()
+        : new Date().getFullYear().toString(),
       currency: getCurrencyKey(account?.currency),
       amount: account?.amount.toString(),
     },
     delayError: 100,
     mode: 'onChange',
   });
+
+  const isMonthly = account?.isMonthly;
 
   useEffect(() => {
     if (accountEdited?.success) {
@@ -77,11 +81,26 @@ export const EditAccount: React.FC = () => {
   }, [accountEdited]);
 
   const onSubmit = async (data: FormData) => {
+    const dateData: {
+      month?: MonthKey;
+      year?: number;
+    } = {
+      month: undefined,
+      year: undefined,
+    };
+
+    if (isMonthly) {
+      dateData.month = data.month;
+      dateData.year = Number(data.year);
+    }
+
     await editAccount({
       id: accountId,
       ...data,
+      isMonthly,
       amount: moneyToNumber(data.amount),
-      year: Number(data.year),
+      month: dateData.month,
+      year: dateData.year,
     });
   };
 
@@ -94,30 +113,34 @@ export const EditAccount: React.FC = () => {
         description={t('edit_account_description')}
         buttonText={t('edit_account')}
       >
-        <FormSelect
-          register={register}
-          name="month"
-          placeholder="Month"
-          error={errors.month?.message}
-          options={Object.values(MonthKey).map((month) => ({
-            value: month,
-            label: t(Month[month]),
-          }))}
-        />
-
-        <FormInput
-          register={register}
-          name="year"
-          placeholder="Year"
-          error={errors.year?.message}
-        />
-
         <FormInput
           register={register}
           name="description"
-          placeholder="Description"
+          placeholder={isMonthly ? t('description') : t('account_name')}
           error={errors.description?.message}
         />
+
+        {isMonthly && (
+          <>
+            <FormSelect
+              register={register}
+              name="month"
+              placeholder={t('select_month')}
+              error={errors.month?.message}
+              options={Object.values(MonthKey).map((month) => ({
+                value: month,
+                label: t(Month[month]),
+              }))}
+            />
+
+            <FormInput
+              register={register}
+              name="year"
+              placeholder={t('year')}
+              error={errors.year?.message}
+            />
+          </>
+        )}
 
         <FormMoney
           register={register}

@@ -81,7 +81,11 @@ export const CustomTable = <T extends object>({
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="last:text-right"
+                  className={cn(
+                    'last:text-right',
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (header.column.columnDef.meta as any)?.isSortable && 'pl-0',
+                  )}
                 >
                   {header.isPlaceholder
                     ? null
@@ -155,7 +159,8 @@ export const CustomTable = <T extends object>({
               <PaginationItem key={i}>
                 <PaginationLink
                   className={cn(
-                    i + 1 === currentPage && 'font-bold bg-gray-200 dark:bg-gray-700',
+                    i + 1 === currentPage &&
+                      'font-bold bg-gray-200 dark:bg-gray-700',
                     i + 1 !== currentPage && 'cursor-pointer',
                   )}
                   onClick={() => setPage(i + 1)}

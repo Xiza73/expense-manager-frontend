@@ -38,6 +38,18 @@ function Calendar({
         ),
         nav_button_previous: 'absolute left-1',
         nav_button_next: 'absolute right-1',
+        button_previous: cn(
+          'flex items-center gap-1',
+          buttonVariants({ variant: 'outline' }),
+          'size-7 bg-transparent p-0 opacity-50 hover:opacity-100',
+          'absolute left-6 top-2',
+        ),
+        button_next: cn(
+          'flex items-center gap-1',
+          buttonVariants({ variant: 'outline' }),
+          'size-7 bg-transparent p-0 opacity-50 hover:opacity-100',
+          'absolute right-5 top-2',
+        ),
         table: 'w-full border-collapse space-x-1',
         head_row: 'flex',
         head_cell:

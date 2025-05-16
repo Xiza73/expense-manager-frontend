@@ -182,7 +182,7 @@ export const CreateTransaction: React.FC = () => {
           control={control}
           name="date"
           error={errors.date?.message}
-          disableNavigation
+          disableNavigation={account?.isMonthly}
           {...(isSameMonthAndYear ? {} : { defaultMonth: account?.date })}
         />
       </FormContainer>
