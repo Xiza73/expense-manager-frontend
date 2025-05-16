@@ -54,6 +54,17 @@ export const commonValidators = {
 
         return isValid;
       }, 'id_must_be_number'),
+  optionalId: (_name: string) =>
+    z
+      .string()
+      .refine((value) => {
+        if (!value) return true;
+
+        const isValid = Number.isInteger(Number(value));
+
+        return isValid;
+      }, 'id_must_be_number')
+      .optional(),
   token: z
     .string({ message: '' })
     .min(1, 'token_is_required')

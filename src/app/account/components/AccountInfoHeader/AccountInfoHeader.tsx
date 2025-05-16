@@ -6,6 +6,7 @@ import { Account } from '@/app/account/domain/account.interface';
 import { CustomTable } from '@/components/CustomTable/CustomTable';
 import { Text } from '@/components/ui/text';
 
+import { accountHeader } from '../../pages/utils/account-header.util';
 import { getColumns, InfoHeaderData } from './columns';
 
 export interface AccountInfoHeaderProps {
@@ -26,7 +27,7 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
     });
   };
 
-  const columns = getColumns({ t });
+  const columns = getColumns({ t, isMonthly: account.isMonthly });
 
   const data: InfoHeaderData[] = [
     {
@@ -37,6 +38,7 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
       idealDailyExpenditure: account.idealDailyExpenditure,
       realDailyExpenditure: account.realDailyExpenditure,
       realDaysSpent: account.realDaysSpent,
+      leftDailyExpenditure: account.leftDailyExpenditure,
       daysInDebt: account.daysInDebt,
       currency: account.currency,
     },
@@ -52,7 +54,11 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
           as="h2"
           className="text-center"
         >
-          {t(account.month)} - {account.year}
+          {accountHeader(
+            t(account.month || ''),
+            account.year,
+            account.description,
+          )}
         </Text>
         <Pencil
           className="pb-1 cursor-pointer"

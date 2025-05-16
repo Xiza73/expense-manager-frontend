@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { patternMoney } from '@/utils/money-format.util';
 
 import { Account } from '../../domain/account.interface';
+import { accountHeader } from '../utils/account-header.util';
 
 const columnHelper = createColumnHelper<Account>();
 
@@ -23,13 +24,17 @@ export const getColumns = ({
   onDelete,
   showAccount,
 }: ColumnsProps) => [
-  columnHelper.accessor('month', {
-    header: t('month'),
-    cell: (info) => t(info.getValue()),
-  }),
-  columnHelper.accessor('year', {
-    header: t('year'),
-    cell: (info) => info.getValue(),
+  columnHelper.accessor('description', {
+    header: t('account'),
+    cell: (info) => {
+      const month = info.row.original.month
+        ? t(info.row.original.month)
+        : undefined;
+
+      return (
+        <>{accountHeader(month, info.row.original.year, info.getValue())}</>
+      );
+    },
   }),
   columnHelper.accessor('balance', {
     header: t('balance'),

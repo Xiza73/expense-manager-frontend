@@ -45,6 +45,9 @@ export const getColumns = ({
         handleSearch={handleSearch}
       />
     ),
+    meta: {
+      isSortable: true,
+    },
     cell: (info) => getDate(info.getValue()),
   }),
   columnHelper.accessor('name', {
@@ -57,6 +60,9 @@ export const getColumns = ({
         handleSearch={handleSearch}
       />
     ),
+    meta: {
+      isSortable: true,
+    },
     cell: (info) => <TruncateTooltipText text={info.getValue()} />,
   }),
   columnHelper.accessor('description', {
@@ -73,6 +79,9 @@ export const getColumns = ({
         handleSearch={handleSearch}
       />
     ),
+    meta: {
+      isSortable: true,
+    },
     cell: (info) => t(info.getValue()),
   }),
   columnHelper.accessor('service.name', {
@@ -85,7 +94,10 @@ export const getColumns = ({
         handleSearch={handleSearch}
       />
     ),
-    cell: (info) => t(info.getValue()),
+    meta: {
+      isSortable: true,
+    },
+    cell: (info) => t(info.getValue() || ''),
   }),
   columnHelper.accessor('paymentMethod', {
     header: () => (
@@ -97,6 +109,9 @@ export const getColumns = ({
         handleSearch={handleSearch}
       />
     ),
+    meta: {
+      isSortable: true,
+    },
     cell: (info) => t(info.getValue()),
   }),
   columnHelper.accessor('type', {
@@ -109,6 +124,9 @@ export const getColumns = ({
         handleSearch={handleSearch}
       />
     ),
+    meta: {
+      isSortable: true,
+    },
     cell: (info) => {
       return (
         <TooltipProvider>
@@ -138,6 +156,9 @@ export const getColumns = ({
         handleSearch={handleSearch}
       />
     ),
+    meta: {
+      isSortable: true,
+    },
     cell: (info) =>
       patternMoney(info.getValue().toString(), {
         prefix: info.row.original.currency,

@@ -12,6 +12,9 @@
   "october": "Octubre",
   "november": "Noviembre",
   "december": "Diciembre",
+  "account": "Cuenta",
+  "account_name": "Nombre de la Cuenta",
+  "is_monthly": "Es Mensual",
   "amount": "Monto",
   "balance": "Balance",
   "expense": "Gasto",
@@ -105,5 +108,14 @@
   "edit_account": "Editar Cuenta",
   "edit_account_description": "Rellene el siguiente formulario para editar una cuenta.",
   "language": "Idioma",
-  "dark_mode": "Modo oscuro"
+  "dark_mode": "Modo oscuro",
+  "spent_days": "Días gastados",
+  "basic_information": "Información básica",
+  "daily_expenditure": "Gasto diario",
+  "real": "Real",
+  "ideal": "Ideal",
+  "left": "Restante",
+  "days": "Días",
+  "real_spent": "Reales Gastados",
+  "in_debt": "En deuda"
 }
