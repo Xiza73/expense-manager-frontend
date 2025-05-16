@@ -33,27 +33,26 @@ export const moneyFormat = (
 
 export function patternMoney(
   value: string,
-  options: PatterOptions = {
-    lenght: 10,
-    separator: ',',
-  },
+  { lenght = 10, separator = ',', prefix }: PatterOptions,
 ) {
-  const { lenght = 10, separator = ',', prefix } = options;
   const dot = separator === ',' ? '.' : ',';
-  const maxLength = lenght! + Math.ceil(lenght! / 3) - 1;
+  // const maxLength = lenght + Math.ceil(lenght / 3) - 1;
+  const maxLength = lenght;
 
   value = value
     .replace(new RegExp(`[^0-9${dot}]`, 'g'), '') // Remove all non-numeric characters
     .replace(new RegExp(`\\${dot}{2,}`, 'g'), dot) // Replace multiple decimal points with a single decimal point
-    .replace(new RegExp(`\\${dot}.*\\${dot}`, 'g'), dot) // Replace trailing decimal point with a single decimal point
-    .replace(/\B(?=(\d{3})+(?!\d))/g, separator!); // Insert commas every 3 digits
+    .replace(new RegExp(`\\${dot}.*\\${dot}`, 'g'), dot); // Replace trailing decimal point with a single decimal point
+  // .replace(/\B(?=(\d{3})+(?!\d))/g, separator!); // Insert commas every 3 digits
   value = value.replace(
     new RegExp(`\\${dot}\\d{3,}`, ''),
     dot + value.split(dot)[1]?.slice(0, 2),
   ); // Truncate trailing decimal to 2 digits
   if (value.length > 1 && value[1] !== dot) value = value.replace(/^0+/g, ''); // Remove leading zeros
-  if (value.split(dot)[0].length > maxLength) value = value.slice(0, maxLength); // Truncate to max length
-  value = value === '' ? '0' : value; // Ensure value is not empty
+  const onlyIntegerPart = value.split(dot)[0];
+  if (onlyIntegerPart.length > maxLength) value = value.slice(0, maxLength); // Truncate to max length
+  value = value.replace(/\B(?=(\d{3})+(?!\d))/g, separator!); // Insert commas every 3 digits
+  // value = value === '' ? '0' : value; // Ensure value is not empty
 
   return prefix ? `${prefix} ${value}` : value;
 }
