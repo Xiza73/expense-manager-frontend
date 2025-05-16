@@ -84,6 +84,8 @@ export const AccountInfoChart: React.FC<AccountInfoChartProps> = ({
     const service = transaction.service.name;
     const symbol = transaction.type === TransactionType.EXPENSE ? 1 : 0;
 
+    if (!service) return acc;
+
     if (acc[service]) {
       acc[service] += symbol * transaction.amount;
     } else {
