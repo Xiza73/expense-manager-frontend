@@ -36,7 +36,7 @@ const formSchema = z.object({
   paymentMethod: commonValidators.paymentMethod,
   date: commonValidators.date,
   categoryId: commonValidators.id('Category'),
-  serviceId: commonValidators.id('Service'),
+  serviceId: commonValidators.optionalId('Service'),
   accountId: commonValidators.id('Account'),
 });
 type FormSchema = z.infer<typeof formSchema>;
@@ -97,7 +97,7 @@ export const CreateTransaction: React.FC = () => {
       amount: moneyToNumber(data.amount),
       accountId: Number(data.accountId),
       categoryId: Number(data.categoryId),
-      serviceId: Number(data.serviceId),
+      serviceId: data.serviceId ? Number(data.serviceId) : undefined,
     });
   };
 
@@ -135,7 +135,7 @@ export const CreateTransaction: React.FC = () => {
         />
 
         <FormSelect
-          register={register}
+          control={control}
           name="type"
           placeholder={t('select_transaction_type')}
           error={errors.type?.message}
@@ -146,7 +146,7 @@ export const CreateTransaction: React.FC = () => {
         />
 
         <FormSelect
-          register={register}
+          control={control}
           name="paymentMethod"
           placeholder={t('select_payment_method')}
           error={errors.paymentMethod?.message}
@@ -157,7 +157,7 @@ export const CreateTransaction: React.FC = () => {
         />
 
         <FormSelect
-          register={register}
+          control={control}
           name="categoryId"
           placeholder={t('select_category')}
           error={errors.categoryId?.message}
@@ -168,10 +168,11 @@ export const CreateTransaction: React.FC = () => {
         />
 
         <FormSelect
-          register={register}
+          control={control}
           name="serviceId"
           placeholder={t('select_service')}
           error={errors.serviceId?.message}
+          enabledDefault
           options={(transactionServices || []).map((service) => ({
             value: service.id.toString(),
             label: t(service.name),

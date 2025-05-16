@@ -44,7 +44,7 @@ const formSchema = z.object({
   paymentMethod: commonValidators.paymentMethod,
   date: commonValidators.date,
   categoryId: commonValidators.id('Category'),
-  serviceId: commonValidators.id('Service'),
+  serviceId: commonValidators.optionalId('Service'),
   accountId: commonValidators.id('Account'),
 });
 type FormSchema = z.infer<typeof formSchema>;
@@ -91,7 +91,7 @@ export const UpdateTransaction: React.FC = () => {
       paymentMethod: getPaymentMethodKey(transaction?.paymentMethod) ?? '',
       date: transaction?.date ?? '',
       categoryId: transaction?.category.id.toString() ?? '',
-      serviceId: transaction?.service.id.toString() ?? '',
+      serviceId: transaction?.service.id?.toString() ?? '',
       accountId: account?.id.toString() ?? '',
     },
     delayError: 100,
@@ -114,7 +114,7 @@ export const UpdateTransaction: React.FC = () => {
   useEffect(() => {
     if (transaction) {
       setValue('categoryId', transaction.category.id.toString());
-      setValue('serviceId', transaction.service.id.toString());
+      setValue('serviceId', transaction.service.id?.toString());
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -128,7 +128,7 @@ export const UpdateTransaction: React.FC = () => {
       amount: moneyToNumber(data.amount),
       accountId: Number(data.accountId),
       categoryId: Number(data.categoryId),
-      serviceId: Number(data.serviceId),
+      serviceId: data.serviceId ? Number(data.serviceId) : undefined,
     });
   };
 
@@ -166,7 +166,7 @@ export const UpdateTransaction: React.FC = () => {
         />
 
         <FormSelect
-          register={register}
+          control={control}
           name="type"
           placeholder="Select Transaction Type"
           error={errors.type?.message}
@@ -177,7 +177,7 @@ export const UpdateTransaction: React.FC = () => {
         />
 
         <FormSelect
-          register={register}
+          control={control}
           name="paymentMethod"
           placeholder="Select Payment Method"
           error={errors.paymentMethod?.message}
@@ -188,7 +188,7 @@ export const UpdateTransaction: React.FC = () => {
         />
 
         <FormSelect
-          register={register}
+          control={control}
           name="categoryId"
           placeholder="Select Category"
           error={errors.categoryId?.message}
@@ -199,10 +199,11 @@ export const UpdateTransaction: React.FC = () => {
         />
 
         <FormSelect
-          register={register}
+          control={control}
           name="serviceId"
           placeholder="Select Service"
           error={errors.serviceId?.message}
+          enabledDefault
           options={(transactionServices || []).map((service) => ({
             value: service.id.toString(),
             label: t(service.name),

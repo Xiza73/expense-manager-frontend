@@ -97,7 +97,7 @@ export const getColumns = ({
     meta: {
       isSortable: true,
     },
-    cell: (info) => t(info.getValue()),
+    cell: (info) => t(info.getValue() || ''),
   }),
   columnHelper.accessor('paymentMethod', {
     header: () => (

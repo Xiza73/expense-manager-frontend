@@ -23,8 +23,8 @@ export const transactionAdapter = (
       name: transaction.category.name,
     },
     service: {
-      id: transaction.service.id,
-      name: transaction.service.name,
+      id: transaction.service?.id,
+      name: transaction.service?.name,
     },
   };
 };

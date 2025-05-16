@@ -45,6 +45,7 @@ export const EditAccount: React.FC = () => {
     useEditAccountMutation();
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -123,7 +124,7 @@ export const EditAccount: React.FC = () => {
         {isMonthly && (
           <>
             <FormSelect
-              register={register}
+              control={control}
               name="month"
               placeholder={t('select_month')}
               error={errors.month?.message}

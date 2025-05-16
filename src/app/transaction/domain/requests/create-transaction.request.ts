@@ -12,6 +12,6 @@ export interface CreateTransactionRequest {
   paymentMethod: PaymentMethodKey;
   date: string;
   categoryId: number;
-  serviceId: number;
+  serviceId?: number;
   accountId: number;
 }

@@ -17,7 +17,7 @@ export interface ApiTransaction {
     id: number;
     name: string;
   };
-  service: {
+  service?: {
     id: number;
     name: string;
   };
@@ -41,7 +41,7 @@ export interface Transaction {
     name: string;
   };
   service: {
-    id: number;
-    name: string;
+    id?: number;
+    name?: string;
   };
 }

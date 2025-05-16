@@ -117,7 +117,7 @@ export const CreateAccount: React.FC = () => {
         {isMonthly && (
           <>
             <FormSelect
-              register={register}
+              control={control}
               name="month"
               placeholder={t('select_month')}
               error={errors.month?.message}
