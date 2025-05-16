@@ -2,6 +2,20 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀 Version 0.7.0 – Released on 15th May, 2025
+
+**What's New:**
+
+💰 **Account Name** — You still can create accounts with Month/Year/Description. But now you can also add a new account with only the Account Name, setting it as the default account and start tracking your expenses without calendar limitations.
+
+👻 **Optional Service** — You can now create a transaction without a service.
+
+💵 **Left Daily Spent** — You can now see the left daily spent on your monthly account.
+
+**Fixes:**
+
+🐛 **Bug Fixes** — Fixed a minor bug with the money input.
+
 ### 🚀 Version 0.6.0 – Released on 03th May, 2025
 
 **What's New:**
