@@ -108,5 +108,14 @@
   "edit_account": "Edit Account",
   "edit_account_description": "Fill the form below to edit an account.",
   "language": "Language",
-  "dark_mode": "Dark Mode"
+  "dark_mode": "Dark Mode",
+  "spent_days": "Spent Days",
+  "basic_information": "Basic Information",
+  "daily_expenditure": "Daily Expenditure",
+  "real": "Real",
+  "ideal": "Ideal",
+  "left": "Left",
+  "days": "Days",
+  "real_spent": "Real Spent",
+  "in_debt": "In Debt"
 }

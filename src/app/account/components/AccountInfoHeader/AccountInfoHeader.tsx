@@ -38,6 +38,7 @@ export const AccountInfoHeader: React.FC<AccountInfoHeaderProps> = ({
       idealDailyExpenditure: account.idealDailyExpenditure,
       realDailyExpenditure: account.realDailyExpenditure,
       realDaysSpent: account.realDaysSpent,
+      leftDailyExpenditure: account.leftDailyExpenditure,
       daysInDebt: account.daysInDebt,
       currency: account.currency,
     },

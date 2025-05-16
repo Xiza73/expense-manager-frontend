@@ -41,6 +41,7 @@ export interface CustomTableProps<T> {
   limit?: number;
   withPagination?: boolean;
   withFooter?: boolean;
+  centerHeaders?: boolean;
   setPreviousPage?: () => void;
   setNextPage?: () => void;
   setPage?: (page: number) => void;
@@ -58,6 +59,7 @@ export const CustomTable = <T extends object>({
   limit = INITIAL_PAGINATOR.limit,
   withPagination = true,
   withFooter = true,
+  centerHeaders = false,
   setPreviousPage = noopFunction,
   setNextPage = noopFunction,
   setPage = noopFunction,
@@ -81,10 +83,14 @@ export const CustomTable = <T extends object>({
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
+                  colSpan={header.colSpan}
                   className={cn(
                     'last:text-right',
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     (header.column.columnDef.meta as any)?.isSortable && 'pl-0',
+                    header.colSpan > 1 &&
+                      'border-b-0 text-center last:text-center',
+                    centerHeaders && 'text-center last:text-center',
                   )}
                 >
                   {header.isPlaceholder
