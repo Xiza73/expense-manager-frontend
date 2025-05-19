@@ -137,7 +137,6 @@ export const CreateTransaction: React.FC = () => {
         <FormSelect
           control={control}
           name="type"
-          placeholder={t('select_transaction_type')}
           error={errors.type?.message}
           options={Object.values(TransactionTypeKey).map((type) => ({
             value: type,
@@ -148,7 +147,6 @@ export const CreateTransaction: React.FC = () => {
         <FormSelect
           control={control}
           name="paymentMethod"
-          placeholder={t('select_payment_method')}
           error={errors.paymentMethod?.message}
           options={Object.values(PaymentMethodKey).map((method) => ({
             value: method,

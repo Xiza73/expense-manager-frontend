@@ -37,7 +37,7 @@ export const FormSelect = <TFieldValues extends FieldValues>({
               'w-full border p-2 appearance-none',
               error ? 'border-red-500' : 'border-gray-300',
               className,
-              !selectedValue && 'text-muted-foreground',
+              !selectedValue && placeholder && 'text-muted-foreground',
             )}
             {...props}
             onChange={onChange}
