@@ -117,5 +117,11 @@
   "left": "Restante",
   "days": "Días",
   "real_spent": "Reales Gastados",
-  "in_debt": "En deuda"
+  "in_debt": "En deuda",
+  "page_size": "Tamaño de página",
+  "debt": "Deuda",
+  "loan": "Préstamo",
+  "pay_debt": "Pagar deuda",
+  "pay_loan": "Cobrar préstamo",
+  "pay_debt_loan_description": "¿Estás seguro de que deseas pagar/cobrar este registro?"
 }

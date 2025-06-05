@@ -72,6 +72,8 @@ export const CreateTransaction: React.FC = () => {
       serviceId: '',
       date: isSameMonthAndYear ? new Date() : account?.date,
       currency: getCurrencyKey(account?.currency),
+      type: TransactionTypeKey.EXPENSE,
+      paymentMethod: PaymentMethodKey.CASH,
     },
     delayError: 100,
     mode: 'onChange',
@@ -137,7 +139,6 @@ export const CreateTransaction: React.FC = () => {
         <FormSelect
           control={control}
           name="type"
-          placeholder={t('select_transaction_type')}
           error={errors.type?.message}
           options={Object.values(TransactionTypeKey).map((type) => ({
             value: type,
@@ -148,7 +149,6 @@ export const CreateTransaction: React.FC = () => {
         <FormSelect
           control={control}
           name="paymentMethod"
-          placeholder={t('select_payment_method')}
           error={errors.paymentMethod?.message}
           options={Object.values(PaymentMethodKey).map((method) => ({
             value: method,

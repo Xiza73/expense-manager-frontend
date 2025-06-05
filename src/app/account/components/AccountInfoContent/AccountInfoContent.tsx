@@ -9,6 +9,7 @@ import {
 import {
   useDeleteTransactionMutation,
   useGetTransactionsQuery,
+  usePayDebtLoanTransactionMutation,
 } from '@/app/transaction/queries/transaction.query';
 import { CustomTable } from '@/components/CustomTable/CustomTable';
 import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
@@ -33,7 +34,20 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   const navigate = useNavigate();
   const { openModal } = useModal();
 
+  const { mutateAsync: payDebtLoanTransaction } =
+    usePayDebtLoanTransactionMutation();
   const { mutateAsync: deleteTransaction } = useDeleteTransactionMutation();
+
+  const payDebtLoan = (id: string, title: string) => {
+    openModal({
+      title,
+      description: t('pay_debt_loan_description'),
+      primaryLabel: title,
+      primaryAction: async () => {
+        await payDebtLoanTransaction(id);
+      },
+    });
+  };
 
   const goToEdit = (id: string) => {
     navigate({
@@ -65,6 +79,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     setPreviousPage,
     setPage,
     setTotalPages,
+    setPageSize,
     totalPages,
   } = usePagination({
     initialPage: INITIAL_PAGINATOR.page,
@@ -96,16 +111,18 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     }));
   };
 
-  const [columns, setColumns] = useState(
+  const handleGetColumns = () =>
     getColumns({
       fieldOrder: search.fieldOrder,
       order: search.order,
+      payDebtLoan,
       goToEdit,
       onDelete,
       handleSearch,
       t,
-    }),
-  );
+    });
+
+  const [columns, setColumns] = useState(handleGetColumns());
 
   const {
     data: res,
@@ -136,19 +153,16 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   }, [res?.pages]);
 
   useEffect(() => {
+    setPage(INITIAL_PAGINATOR.page);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageSize]);
+
+  useEffect(() => {
     if (res?.data?.length) {
       refetch();
 
-      setColumns(
-        getColumns({
-          fieldOrder: search.fieldOrder,
-          order: search.order,
-          goToEdit,
-          onDelete,
-          handleSearch,
-          t,
-        }),
-      );
+      setColumns(handleGetColumns());
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -169,6 +183,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
       setPreviousPage={setPreviousPage}
       setNextPage={setNextPage}
       setPage={setPage}
+      setLimit={setPageSize}
     />
   );
 };

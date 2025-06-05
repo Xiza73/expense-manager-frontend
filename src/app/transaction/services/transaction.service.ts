@@ -41,6 +41,12 @@ export const updateTransaction = async ({
   return data;
 };
 
+export const payDebtLoanTransaction = async (id: string) => {
+  const { data } = await api.post<NullApiResponse>(`${MODULE}/${id}/pay`);
+
+  return data;
+};
+
 export const deleteTransaction = async (id: string) => {
   const { data } = await api.delete<NullApiResponse>(`${MODULE}/${id}`);
 

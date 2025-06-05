@@ -76,6 +76,7 @@ export const ServicesTable: React.FC = () => {
         isFetching={isFetching}
         totalPages={1}
         currentPage={1}
+        withPagination={false}
       />
     </PageContainer>
   );

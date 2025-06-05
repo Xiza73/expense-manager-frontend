@@ -21,6 +21,7 @@ import {
   deleteTransaction,
   getTransaction,
   getTransactions,
+  payDebtLoanTransaction,
   updateTransaction,
 } from '../services/transaction.service';
 
@@ -87,6 +88,31 @@ export const useUpdateTransactionMutation = () =>
     },
     mutationFn: async (request) => {
       const data = await updateTransaction(request);
+
+      return {
+        message: data.message,
+        success: data.success,
+      };
+    },
+  });
+
+export const usePayDebtLoanTransactionMutation = () =>
+  useMutation<NullResponse, string>({
+    showError: true,
+    showSuccess: true,
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['get-transactions'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['get-account'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['get-latest-account'],
+      });
+    },
+    mutationFn: async (id) => {
+      const data = await payDebtLoanTransaction(id);
 
       return {
         message: data.message,

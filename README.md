@@ -2,6 +2,18 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀Version 0.8.0 – Released on 05th June, 2025
+
+**What's New:**
+
+💰 **Debt and Loan** — You can now create a debt or loan transaction.
+
+🔢 **Page Size** — You can now change the page size from tables.
+
+**Fixes:**
+
+🐛 **Bug Fixes** — Fixed a bug with initial values on the transaction creation form.
+
 ### 🚀 Version 0.7.0 – Released on 15th May, 2025
 
 **What's New:**
