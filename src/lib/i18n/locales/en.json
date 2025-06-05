@@ -120,5 +120,8 @@
   "in_debt": "In Debt",
   "page_size": "Page Size",
   "debt": "Debt",
-  "loan": "Loan"
+  "loan": "Loan",
+  "pay_debt": "Pay Debt",
+  "pay_loan": "Collect Loan",
+  "pay_debt_loan_description": "Are you sure you want to pay/collect this record?"
 }

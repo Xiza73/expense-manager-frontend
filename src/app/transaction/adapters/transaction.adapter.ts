@@ -18,6 +18,8 @@ export const transactionAdapter = (
     date: new Date(transaction.date),
     paymentMethod: PaymentMethod[transaction.paymentMethod],
     isActive: transaction.isActive,
+    isDebtLoan: transaction.isDebtLoan,
+    isPaid: transaction.isPaid,
     category: {
       id: transaction.category.id,
       name: transaction.category.name,

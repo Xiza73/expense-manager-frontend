@@ -13,6 +13,8 @@ export interface ApiTransaction {
   paymentMethod: PaymentMethodKey;
   date: string;
   isActive: boolean;
+  isDebtLoan: boolean;
+  isPaid: boolean;
   category: {
     id: number;
     name: string;
@@ -36,6 +38,8 @@ export interface Transaction {
   date: Date;
   paymentMethod: PaymentMethod;
   isActive: boolean;
+  isDebtLoan: boolean;
+  isPaid: boolean;
   category: {
     id: number;
     name: string;

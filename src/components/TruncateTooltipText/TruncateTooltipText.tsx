@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { truncate } from '@/utils/truncate.util';
 
 import {
@@ -10,11 +11,13 @@ import {
 export interface TruncateTooltipTextProps {
   text: string;
   maxLength?: number;
+  lineThrough?: boolean;
 }
 
 export const TruncateTooltipText: React.FC<TruncateTooltipTextProps> = ({
   text,
   maxLength = 20,
+  lineThrough = false,
 }) => {
   const { isTruncated, value } = truncate(text, maxLength);
 
@@ -24,12 +27,14 @@ export const TruncateTooltipText: React.FC<TruncateTooltipTextProps> = ({
     return (
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger>{value}</TooltipTrigger>
+          <TooltipTrigger className={cn(lineThrough && 'text-paid')}>
+            {value}
+          </TooltipTrigger>
           <TooltipContent>{text}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     );
   }
 
-  return <>{text}</>;
+  return <div className={cn(lineThrough && 'text-paid')}>{text}</div>;
 };

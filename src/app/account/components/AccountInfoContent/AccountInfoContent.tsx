@@ -9,6 +9,7 @@ import {
 import {
   useDeleteTransactionMutation,
   useGetTransactionsQuery,
+  usePayDebtLoanTransactionMutation,
 } from '@/app/transaction/queries/transaction.query';
 import { CustomTable } from '@/components/CustomTable/CustomTable';
 import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
@@ -33,7 +34,20 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   const navigate = useNavigate();
   const { openModal } = useModal();
 
+  const { mutateAsync: payDebtLoanTransaction } =
+    usePayDebtLoanTransactionMutation();
   const { mutateAsync: deleteTransaction } = useDeleteTransactionMutation();
+
+  const payDebtLoan = (id: string, title: string) => {
+    openModal({
+      title,
+      description: t('pay_debt_loan_description'),
+      primaryLabel: title,
+      primaryAction: async () => {
+        await payDebtLoanTransaction(id);
+      },
+    });
+  };
 
   const goToEdit = (id: string) => {
     navigate({
@@ -101,6 +115,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     getColumns({
       fieldOrder: search.fieldOrder,
       order: search.order,
+      payDebtLoan,
       goToEdit,
       onDelete,
       handleSearch,
