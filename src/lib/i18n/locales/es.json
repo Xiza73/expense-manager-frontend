@@ -118,5 +118,7 @@
   "days": "Días",
   "real_spent": "Reales Gastados",
   "in_debt": "En deuda",
-  "page_size": "Tamaño de página"
+  "page_size": "Tamaño de página",
+  "debt": "Deuda",
+  "loan": "Préstamo"
 }

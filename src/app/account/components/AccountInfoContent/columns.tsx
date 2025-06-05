@@ -1,5 +1,12 @@
 import { createColumnHelper } from '@tanstack/react-table';
-import { BanknoteArrowDown, BanknoteArrowUp, Edit, Trash } from 'lucide-react';
+import {
+  BanknoteArrowDown,
+  BanknoteArrowUp,
+  Edit,
+  HandCoins,
+  Handshake,
+  Trash,
+} from 'lucide-react';
 
 import { GetTransactionsFieldOrder } from '@/app/transaction/domain/requests/get-transactions.request';
 import { Transaction } from '@/app/transaction/domain/transaction.interface';
@@ -26,6 +33,13 @@ interface ColumnsProps {
   onDelete: (id: string) => void;
   handleSearch: (value: GetTransactionsFieldOrder, order?: Order) => void;
 }
+
+const TransactionTypeIcon = {
+  [TransactionType.EXPENSE]: <BanknoteArrowDown className="text-red-500" />,
+  [TransactionType.INCOME]: <BanknoteArrowUp className="text-green-500" />,
+  [TransactionType.DEBT]: <HandCoins className="text-red-500" />,
+  [TransactionType.LOAN]: <Handshake className="text-green-500" />,
+};
 
 export const getColumns = ({
   order,
@@ -132,11 +146,7 @@ export const getColumns = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              {info.getValue() === TransactionType.EXPENSE ? (
-                <BanknoteArrowDown className="text-red-500" />
-              ) : (
-                <BanknoteArrowUp className="text-green-500" />
-              )}
+              {TransactionTypeIcon[info.getValue()]}
             </TooltipTrigger>
             <TooltipContent>
               <p>{t(info.getValue())}</p>
