@@ -117,5 +117,6 @@
   "left": "Left",
   "days": "Days",
   "real_spent": "Real Spent",
-  "in_debt": "In Debt"
+  "in_debt": "In Debt",
+  "page_size": "Page Size"
 }

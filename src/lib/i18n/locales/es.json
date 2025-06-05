@@ -117,5 +117,6 @@
   "left": "Restante",
   "days": "Días",
   "real_spent": "Reales Gastados",
-  "in_debt": "En deuda"
+  "in_debt": "En deuda",
+  "page_size": "Tamaño de página"
 }

@@ -28,11 +28,12 @@ export const AccountsTable: React.FC = () => {
     nextEnabled,
     previousEnabled,
     pageSize,
+    totalPages,
     setNextPage,
     setPreviousPage,
     setPage,
     setTotalPages,
-    totalPages,
+    setPageSize,
   } = usePagination({
     initialPage: INITIAL_PAGINATOR.page,
     initialPageSize: INITIAL_PAGINATOR.limit,
@@ -116,6 +117,12 @@ export const AccountsTable: React.FC = () => {
     showAccount,
   });
 
+  useEffect(() => {
+    setPage(INITIAL_PAGINATOR.page);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageSize]);
+
   if (!res) return null;
 
   return (
@@ -138,6 +145,7 @@ export const AccountsTable: React.FC = () => {
         setPreviousPage={setPreviousPage}
         setNextPage={setNextPage}
         setPage={setPage}
+        setLimit={setPageSize}
       />
     </PageContainer>
   );

@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useTranslation } from 'react-i18next';
 
 import {
   Pagination,
@@ -12,6 +13,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  paginationValues,
 } from '@/components/ui/pagination';
 import {
   Table,
@@ -26,6 +28,14 @@ import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
 import { cn } from '@/lib/utils';
 import { noopFunction } from '@/utils/noop-function.util';
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 import { Skeleton } from '../ui/skeleton';
 
 export interface CustomTableProps<T> {
@@ -45,6 +55,7 @@ export interface CustomTableProps<T> {
   setPreviousPage?: () => void;
   setNextPage?: () => void;
   setPage?: (page: number) => void;
+  setLimit?: (limit: number) => void;
 }
 
 export const CustomTable = <T extends object>({
@@ -63,7 +74,10 @@ export const CustomTable = <T extends object>({
   setPreviousPage = noopFunction,
   setNextPage = noopFunction,
   setPage = noopFunction,
+  setLimit = noopFunction,
 }: CustomTableProps<T>) => {
+  const { t } = useTranslation();
+
   const table = useReactTable({
     data: data || [],
     columns,
@@ -150,42 +164,70 @@ export const CustomTable = <T extends object>({
         )}
       </Table>
       {withPagination && (
-        <Pagination className="mt-4">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                className={cn(
-                  !previousEnabled && 'cursor-not-allowed',
-                  previousEnabled && 'cursor-pointer',
-                )}
-                onClick={() => setPreviousPage()}
-              />
-            </PaginationItem>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <PaginationItem key={i}>
-                <PaginationLink
+        <div className="flex w-full justify-between items-center mt-4">
+          <div className="flex items-center">
+            {t('page_size')}
+            <Select
+              value={limit.toString()}
+              onValueChange={(value) => setLimit(Number(value))}
+            >
+              <SelectTrigger
+                size="sm"
+                className="ml-2"
+              >
+                <SelectValue placeholder="Select a fruit" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {Object.values(paginationValues).map((limit) => (
+                    <SelectItem
+                      key={limit}
+                      value={limit.toString()}
+                    >
+                      {limit}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <Pagination className="flex m-0 w-min">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
                   className={cn(
-                    i + 1 === currentPage &&
-                      'font-bold bg-gray-200 dark:bg-gray-700',
-                    i + 1 !== currentPage && 'cursor-pointer',
+                    !previousEnabled && 'cursor-not-allowed',
+                    previousEnabled && 'cursor-pointer',
                   )}
-                  onClick={() => setPage(i + 1)}
-                >
-                  {i + 1}
-                </PaginationLink>
+                  onClick={() => setPreviousPage()}
+                />
               </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationNext
-                className={cn(
-                  !nextEnabled && 'cursor-not-allowed',
-                  nextEnabled && 'cursor-pointer',
-                )}
-                onClick={() => setNextPage()}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    className={cn(
+                      i + 1 === currentPage &&
+                        'font-bold bg-gray-200 dark:bg-gray-700',
+                      i + 1 !== currentPage && 'cursor-pointer',
+                    )}
+                    onClick={() => setPage(i + 1)}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext
+                  className={cn(
+                    !nextEnabled && 'cursor-not-allowed',
+                    nextEnabled && 'cursor-pointer',
+                  )}
+                  onClick={() => setNextPage()}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       )}
     </>
   );

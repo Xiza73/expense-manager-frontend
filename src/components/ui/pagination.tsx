@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+export const paginationValues = [5, 10, 15, 20, 25];
+
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
     <nav

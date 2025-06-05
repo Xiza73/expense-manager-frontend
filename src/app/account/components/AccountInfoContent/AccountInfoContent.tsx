@@ -65,6 +65,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     setPreviousPage,
     setPage,
     setTotalPages,
+    setPageSize,
     totalPages,
   } = usePagination({
     initialPage: INITIAL_PAGINATOR.page,
@@ -96,7 +97,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     }));
   };
 
-  const [columns, setColumns] = useState(
+  const handleGetColumns = () =>
     getColumns({
       fieldOrder: search.fieldOrder,
       order: search.order,
@@ -104,8 +105,9 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
       onDelete,
       handleSearch,
       t,
-    }),
-  );
+    });
+
+  const [columns, setColumns] = useState(handleGetColumns());
 
   const {
     data: res,
@@ -136,19 +138,16 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   }, [res?.pages]);
 
   useEffect(() => {
+    setPage(INITIAL_PAGINATOR.page);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageSize]);
+
+  useEffect(() => {
     if (res?.data?.length) {
       refetch();
 
-      setColumns(
-        getColumns({
-          fieldOrder: search.fieldOrder,
-          order: search.order,
-          goToEdit,
-          onDelete,
-          handleSearch,
-          t,
-        }),
-      );
+      setColumns(handleGetColumns());
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -169,6 +168,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
       setPreviousPage={setPreviousPage}
       setNextPage={setNextPage}
       setPage={setPage}
+      setLimit={setPageSize}
     />
   );
 };

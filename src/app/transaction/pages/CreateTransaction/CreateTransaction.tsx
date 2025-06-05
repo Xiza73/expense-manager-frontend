@@ -72,6 +72,8 @@ export const CreateTransaction: React.FC = () => {
       serviceId: '',
       date: isSameMonthAndYear ? new Date() : account?.date,
       currency: getCurrencyKey(account?.currency),
+      type: TransactionTypeKey.EXPENSE,
+      paymentMethod: PaymentMethodKey.CASH,
     },
     delayError: 100,
     mode: 'onChange',
