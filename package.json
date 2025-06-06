@@ -1,5 +1,6 @@
 {
-  "name": "expense-manager-frontend",
+  "name": "habit-sumaq-frontend",
+  "description": "A modern app for organizing your expenses, schedules, and more.",
   "private": true,
   "version": "0.8.0",
   "type": "module",

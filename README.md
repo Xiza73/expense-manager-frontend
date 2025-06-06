@@ -1,8 +1,8 @@
-# [Expense Manager](https://xiza-expense-manager.vercel.app/) 💰
+# [Habit Sumaq](https://habit-sumaq.vercel.app/) 💰
 
 ## 📝 Changelog – Latest Updates
 
-### 🚀Version 0.8.0 – Released on 05th June, 2025
+### 🚀 Version 0.8.0 – Released on 05th June, 2025
 
 **What's New:**
 

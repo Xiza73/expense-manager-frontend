@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { ChevronUp, Languages, Moon, Sun, User2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+import HabitSumaqLogo from '@/assets/logo/habit-sumaq-logo-xl.png';
 import {
   Sidebar,
   SidebarContent,
@@ -60,7 +61,15 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>{t('expense_manager')}</SidebarGroupLabel>
+          <SidebarGroupLabel className="flex items-center justify-center gap-2 py-2 rounded-t-lg h-fit">
+            <Link to="/">
+              <img
+                src={HabitSumaqLogo}
+                alt="Habit Sumaq Logo"
+                className="w-10"
+              />
+            </Link>
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {sidebarData.map(
