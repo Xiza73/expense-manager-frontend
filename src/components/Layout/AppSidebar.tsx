@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { ChevronUp, Languages, Moon, Sun, User2 } from 'lucide-react';
+import { Fragment } from 'react/jsx-runtime';
 import { useTranslation } from 'react-i18next';
 
 import HabitSumaqLogo from '@/assets/logo/habit-sumaq-logo-xl.png';
@@ -32,7 +33,12 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Separator } from '../ui/separator';
-import { getSidebarData } from './app-sidebar-data';
+import {
+  CollapsibleSidebarItem,
+  getSidebarData,
+  SidebarItem,
+  SidebarLabel,
+} from './app-sidebar-data';
 
 export function AppSidebar() {
   const {
@@ -72,48 +78,61 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {sidebarData.map(
-                ({ title, path, icon: Icon, isCollapsible, options }) =>
-                  !isCollapsible ? (
-                    <SidebarMenuItem key={title}>
-                      <SidebarMenuButton asChild>
-                        <Link to={path}>
-                          <Icon />
-                          <span>{t(title)}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ) : (
-                    <Collapsible
-                      key={title}
-                      defaultOpen
-                      className="group/collapsible"
-                    >
-                      <SidebarMenuItem>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuButton>
-                            <Icon />
-                            <span>{t(title)}</span>
-                          </SidebarMenuButton>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          {options?.map(({ title, path }) => (
-                            <SidebarMenuSub key={title}>
-                              <SidebarMenuSubItem>
-                                <SidebarMenuButton asChild>
-                                  <Link to={path}>
-                                    <span>{t(title)}</span>
-                                  </Link>
-                                </SidebarMenuButton>
-                              </SidebarMenuSubItem>
-                            </SidebarMenuSub>
-                          ))}
-                        </CollapsibleContent>
+              {sidebarData.map((data) => {
+                return (
+                  <Fragment key={data.title}>
+                    {data instanceof SidebarLabel && (
+                      <SidebarGroupLabel key={data.title}>
+                        {t(data.title)}
+                      </SidebarGroupLabel>
+                    )}
+
+                    {data instanceof SidebarItem && (
+                      <SidebarMenuItem key={data.title}>
+                        <SidebarMenuButton asChild>
+                          <Link to={data.path || '/'}>
+                            {data.icon && <data.icon />}
+                            <span>{t(data.title)}</span>
+                          </Link>
+                        </SidebarMenuButton>
                       </SidebarMenuItem>
-                    </Collapsible>
-                  ),
-              )}
-              <Separator />
+                    )}
+
+                    {data instanceof CollapsibleSidebarItem && (
+                      <Collapsible
+                        key={data.title}
+                        defaultOpen
+                        className="group/collapsible"
+                      >
+                        <SidebarMenuItem>
+                          <CollapsibleTrigger asChild>
+                            <SidebarMenuButton>
+                              {data.icon && <data.icon />}
+                              <span>{t(data.title)}</span>
+                            </SidebarMenuButton>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent>
+                            {data.options?.map(({ title, path }) => (
+                              <SidebarMenuSub key={title}>
+                                <SidebarMenuSubItem>
+                                  <SidebarMenuButton asChild>
+                                    <Link to={path}>
+                                      <span>{t(title)}</span>
+                                    </Link>
+                                  </SidebarMenuButton>
+                                </SidebarMenuSubItem>
+                              </SidebarMenuSub>
+                            ))}
+                          </CollapsibleContent>
+                        </SidebarMenuItem>
+                      </Collapsible>
+                    )}
+                  </Fragment>
+                );
+              })}
+
+              <Separator className="my-2" />
+
               <SidebarMenuItem>
                 <SidebarMenuButton
                   className="cursor-pointer"

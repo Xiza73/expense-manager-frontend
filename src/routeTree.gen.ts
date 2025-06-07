@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as TransactionImport } from './routes/transaction'
 import { Route as ServicetImport } from './routes/servicet'
+import { Route as ExpenseManagerImport } from './routes/expense-manager'
 import { Route as AuthImport } from './routes/auth'
 import { Route as AccountImport } from './routes/account'
 import { Route as IndexImport } from './routes/index'
@@ -46,6 +47,12 @@ const TransactionRoute = TransactionImport.update({
 const ServicetRoute = ServicetImport.update({
   id: '/servicet',
   path: '/servicet',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ExpenseManagerRoute = ExpenseManagerImport.update({
+  id: '/expense-manager',
+  path: '/expense-manager',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -175,6 +182,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/expense-manager': {
+      id: '/expense-manager'
+      path: '/expense-manager'
+      fullPath: '/expense-manager'
+      preLoaderRoute: typeof ExpenseManagerImport
       parentRoute: typeof rootRoute
     }
     '/servicet': {
@@ -338,6 +352,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/expense-manager': typeof ExpenseManagerRoute
   '/servicet': typeof ServicetRoute
   '/transaction': typeof TransactionRouteWithChildren
   '/account/$accountId': typeof AccountAccountIdRoute
@@ -357,6 +372,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/expense-manager': typeof ExpenseManagerRoute
   '/servicet': typeof ServicetRoute
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
@@ -378,6 +394,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/expense-manager': typeof ExpenseManagerRoute
   '/servicet': typeof ServicetRoute
   '/transaction': typeof TransactionRouteWithChildren
   '/account/$accountId': typeof AccountAccountIdRoute
@@ -401,6 +418,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/auth'
+    | '/expense-manager'
     | '/servicet'
     | '/transaction'
     | '/account/$accountId'
@@ -419,6 +437,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/expense-manager'
     | '/servicet'
     | '/account/$accountId'
     | '/account/create'
@@ -438,6 +457,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/auth'
+    | '/expense-manager'
     | '/servicet'
     | '/transaction'
     | '/account/$accountId'
@@ -460,6 +480,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
+  ExpenseManagerRoute: typeof ExpenseManagerRoute
   ServicetRoute: typeof ServicetRoute
   TransactionRoute: typeof TransactionRouteWithChildren
   ServiceCreateLazyRoute: typeof ServiceCreateLazyRoute
@@ -471,6 +492,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRoute: AccountRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
+  ExpenseManagerRoute: ExpenseManagerRoute,
   ServicetRoute: ServicetRoute,
   TransactionRoute: TransactionRouteWithChildren,
   ServiceCreateLazyRoute: ServiceCreateLazyRoute,
@@ -491,6 +513,7 @@ export const routeTree = rootRoute
         "/",
         "/account",
         "/auth",
+        "/expense-manager",
         "/servicet",
         "/transaction",
         "/service/create",
@@ -517,6 +540,9 @@ export const routeTree = rootRoute
         "/auth/login",
         "/auth/"
       ]
+    },
+    "/expense-manager": {
+      "filePath": "expense-manager.tsx"
     },
     "/servicet": {
       "filePath": "servicet.tsx"

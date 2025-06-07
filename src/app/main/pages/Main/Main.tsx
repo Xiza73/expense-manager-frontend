@@ -18,7 +18,7 @@ export const Main: React.FC = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
-  const { method } = useSearch({ from: '/' });
+  const { method } = useSearch({ from: '/expense-manager' });
 
   const { data: account, refetch } = useGetLatestAccountQuery();
 
@@ -28,7 +28,7 @@ export const Main: React.FC = () => {
     if (method === 'crt' || method === 'edt') {
       refetch();
 
-      navigate({ to: '/' });
+      navigate({ to: '/expense-manager' });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
