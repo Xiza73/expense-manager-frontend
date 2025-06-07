@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TransactionImport } from './routes/transaction'
+import { Route as TaskSchedulerImport } from './routes/task-scheduler'
 import { Route as ServicetImport } from './routes/servicet'
 import { Route as ExpenseManagerImport } from './routes/expense-manager'
 import { Route as AuthImport } from './routes/auth'
@@ -41,6 +42,12 @@ const AccountCreateLazyImport = createFileRoute('/account/create')()
 const TransactionRoute = TransactionImport.update({
   id: '/transaction',
   path: '/transaction',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TaskSchedulerRoute = TaskSchedulerImport.update({
+  id: '/task-scheduler',
+  path: '/task-scheduler',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -196,6 +203,13 @@ declare module '@tanstack/react-router' {
       path: '/servicet'
       fullPath: '/servicet'
       preLoaderRoute: typeof ServicetImport
+      parentRoute: typeof rootRoute
+    }
+    '/task-scheduler': {
+      id: '/task-scheduler'
+      path: '/task-scheduler'
+      fullPath: '/task-scheduler'
+      preLoaderRoute: typeof TaskSchedulerImport
       parentRoute: typeof rootRoute
     }
     '/transaction': {
@@ -354,6 +368,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/expense-manager': typeof ExpenseManagerRoute
   '/servicet': typeof ServicetRoute
+  '/task-scheduler': typeof TaskSchedulerRoute
   '/transaction': typeof TransactionRouteWithChildren
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
@@ -374,6 +389,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/expense-manager': typeof ExpenseManagerRoute
   '/servicet': typeof ServicetRoute
+  '/task-scheduler': typeof TaskSchedulerRoute
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
@@ -396,6 +412,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteWithChildren
   '/expense-manager': typeof ExpenseManagerRoute
   '/servicet': typeof ServicetRoute
+  '/task-scheduler': typeof TaskSchedulerRoute
   '/transaction': typeof TransactionRouteWithChildren
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
@@ -420,6 +437,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/expense-manager'
     | '/servicet'
+    | '/task-scheduler'
     | '/transaction'
     | '/account/$accountId'
     | '/account/create'
@@ -439,6 +457,7 @@ export interface FileRouteTypes {
     | '/'
     | '/expense-manager'
     | '/servicet'
+    | '/task-scheduler'
     | '/account/$accountId'
     | '/account/create'
     | '/auth/login'
@@ -459,6 +478,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/expense-manager'
     | '/servicet'
+    | '/task-scheduler'
     | '/transaction'
     | '/account/$accountId'
     | '/account/create'
@@ -482,6 +502,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   ExpenseManagerRoute: typeof ExpenseManagerRoute
   ServicetRoute: typeof ServicetRoute
+  TaskSchedulerRoute: typeof TaskSchedulerRoute
   TransactionRoute: typeof TransactionRouteWithChildren
   ServiceCreateLazyRoute: typeof ServiceCreateLazyRoute
   ServiceIndexRoute: typeof ServiceIndexRoute
@@ -494,6 +515,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   ExpenseManagerRoute: ExpenseManagerRoute,
   ServicetRoute: ServicetRoute,
+  TaskSchedulerRoute: TaskSchedulerRoute,
   TransactionRoute: TransactionRouteWithChildren,
   ServiceCreateLazyRoute: ServiceCreateLazyRoute,
   ServiceIndexRoute: ServiceIndexRoute,
@@ -515,6 +537,7 @@ export const routeTree = rootRoute
         "/auth",
         "/expense-manager",
         "/servicet",
+        "/task-scheduler",
         "/transaction",
         "/service/create",
         "/service/",
@@ -546,6 +569,9 @@ export const routeTree = rootRoute
     },
     "/servicet": {
       "filePath": "servicet.tsx"
+    },
+    "/task-scheduler": {
+      "filePath": "task-scheduler.tsx"
     },
     "/transaction": {
       "filePath": "transaction.tsx",

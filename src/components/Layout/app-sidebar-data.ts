@@ -1,4 +1,10 @@
-import { ChartCandlestick, Home, Server, Wallet } from 'lucide-react';
+import {
+  CalendarHeart,
+  ChartCandlestick,
+  Home,
+  Server,
+  Wallet,
+} from 'lucide-react';
 
 import { AppRoute } from '@/domain/app-route.type';
 
@@ -37,4 +43,6 @@ export const getSidebarData = (): (
   new SidebarItem('main_account', '/expense-manager', ChartCandlestick),
   new SidebarItem('all_accounts', '/account', Wallet),
   new SidebarItem('my_services', '/service', Server),
+  new SidebarLabel('task_scheduler'),
+  new SidebarItem('schedule', '/task-scheduler', CalendarHeart),
 ];

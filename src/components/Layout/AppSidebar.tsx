@@ -82,7 +82,10 @@ export function AppSidebar() {
                 return (
                   <Fragment key={data.title}>
                     {data instanceof SidebarLabel && (
-                      <SidebarGroupLabel key={data.title}>
+                      <SidebarGroupLabel
+                        key={data.title}
+                        className="mt-2"
+                      >
                         {t(data.title)}
                       </SidebarGroupLabel>
                     )}
