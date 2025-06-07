@@ -2,6 +2,14 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀 Version 0.9.0 – Released on 06th June, 2025
+
+**What's New:**
+
+❤ **Rebranding** — We've rebranded our app to Habit Sumaq. We hope you like the new name!
+
+💰 **Expense Manager** — Expense Manager is now a module of Habit Sumaq, don't worry, all your data is still there!
+
 ### 🚀 Version 0.8.0 – Released on 05th June, 2025
 
 **What's New:**
