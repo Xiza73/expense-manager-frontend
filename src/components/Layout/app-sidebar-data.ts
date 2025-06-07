@@ -1,30 +1,40 @@
-import { Home, Server, Wallet } from 'lucide-react';
+import { ChartCandlestick, Home, Server, Wallet } from 'lucide-react';
 
 import { AppRoute } from '@/domain/app-route.type';
 
-export const getSidebarData = (): {
-  title: string;
-  path: AppRoute;
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  isCollapsible?: boolean;
-  options?: {
-    title: string;
-    path: AppRoute;
-  }[];
-}[] => [
-  {
-    title: 'home',
-    path: '/',
-    icon: Home,
-  },
-  {
-    title: 'my_accounts',
-    path: '/account',
-    icon: Wallet,
-  },
-  {
-    title: 'services',
-    path: '/service',
-    icon: Server,
-  },
+export type SidebarType = 'collapsible' | 'item' | 'label';
+
+export class SidebarItem {
+  constructor(
+    public title: string,
+    public path: AppRoute,
+    public icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>,
+  ) {}
+}
+
+export class CollapsibleSidebarItem extends SidebarItem {
+  constructor(
+    public title: string,
+    public path: AppRoute,
+    public icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>,
+    public options?: SidebarItem[],
+  ) {
+    super(title, path, icon);
+  }
+}
+
+export class SidebarLabel {
+  constructor(public title: string) {}
+}
+
+export const getSidebarData = (): (
+  | SidebarItem
+  | CollapsibleSidebarItem
+  | SidebarLabel
+)[] => [
+  new SidebarItem('home', '/', Home),
+  new SidebarLabel('expense_manager'),
+  new SidebarItem('main_account', '/expense-manager', ChartCandlestick),
+  new SidebarItem('all_accounts', '/account', Wallet),
+  new SidebarItem('my_services', '/service', Server),
 ];

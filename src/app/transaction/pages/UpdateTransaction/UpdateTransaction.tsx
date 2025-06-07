@@ -102,7 +102,7 @@ export const UpdateTransaction: React.FC = () => {
     if (transactionUpdated?.success) {
       navigate({
         from: '/transaction/edit/$transactionId',
-        to: redirect === 'main' ? '/' : `/account/$accountId`,
+        to: redirect === 'main' ? '/expense-manager' : `/account/$accountId`,
         params: { accountId: transaction?.account.id.toString() },
         search: { method: 'edt' },
       });

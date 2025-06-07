@@ -83,7 +83,7 @@ export const CreateTransaction: React.FC = () => {
     if (transactionCreated?.success) {
       navigate({
         from: '/transaction/create/$accountId',
-        to: redirect === 'main' ? '/' : `/account/$accountId`,
+        to: redirect === 'main' ? '/expense-manager' : `/account/$accountId`,
         params: { accountId },
         search: { method: 'crt' },
       });
