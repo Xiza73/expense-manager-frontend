@@ -21,6 +21,7 @@ import { Route as AuthImport } from './routes/auth'
 import { Route as AccountImport } from './routes/account'
 import { Route as IndexImport } from './routes/index'
 import { Route as TransactionIndexImport } from './routes/transaction.index'
+import { Route as TaskSchedulerIndexImport } from './routes/task-scheduler.index'
 import { Route as ServiceIndexImport } from './routes/service.index'
 import { Route as AuthIndexImport } from './routes/auth.index'
 import { Route as AccountIndexImport } from './routes/account.index'
@@ -85,6 +86,12 @@ const TransactionIndexRoute = TransactionIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => TransactionRoute,
+} as any)
+
+const TaskSchedulerIndexRoute = TaskSchedulerIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TaskSchedulerRoute,
 } as any)
 
 const ServiceIndexRoute = ServiceIndexImport.update({
@@ -268,6 +275,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServiceIndexImport
       parentRoute: typeof rootRoute
     }
+    '/task-scheduler/': {
+      id: '/task-scheduler/'
+      path: '/'
+      fullPath: '/task-scheduler/'
+      preLoaderRoute: typeof TaskSchedulerIndexImport
+      parentRoute: typeof TaskSchedulerImport
+    }
     '/transaction/': {
       id: '/transaction/'
       path: '/'
@@ -346,6 +360,18 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface TaskSchedulerRouteChildren {
+  TaskSchedulerIndexRoute: typeof TaskSchedulerIndexRoute
+}
+
+const TaskSchedulerRouteChildren: TaskSchedulerRouteChildren = {
+  TaskSchedulerIndexRoute: TaskSchedulerIndexRoute,
+}
+
+const TaskSchedulerRouteWithChildren = TaskSchedulerRoute._addFileChildren(
+  TaskSchedulerRouteChildren,
+)
+
 interface TransactionRouteChildren {
   TransactionIndexRoute: typeof TransactionIndexRoute
   TransactionCreateAccountIdRoute: typeof TransactionCreateAccountIdRoute
@@ -368,7 +394,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/expense-manager': typeof ExpenseManagerRoute
   '/servicet': typeof ServicetRoute
-  '/task-scheduler': typeof TaskSchedulerRoute
+  '/task-scheduler': typeof TaskSchedulerRouteWithChildren
   '/transaction': typeof TransactionRouteWithChildren
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
@@ -377,6 +403,7 @@ export interface FileRoutesByFullPath {
   '/account/': typeof AccountIndexRoute
   '/auth/': typeof AuthIndexRoute
   '/service': typeof ServiceIndexRoute
+  '/task-scheduler/': typeof TaskSchedulerIndexRoute
   '/transaction/': typeof TransactionIndexRoute
   '/account/edit/$accountId': typeof AccountEditAccountIdRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
@@ -389,7 +416,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/expense-manager': typeof ExpenseManagerRoute
   '/servicet': typeof ServicetRoute
-  '/task-scheduler': typeof TaskSchedulerRoute
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
@@ -397,6 +423,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountIndexRoute
   '/auth': typeof AuthIndexRoute
   '/service': typeof ServiceIndexRoute
+  '/task-scheduler': typeof TaskSchedulerIndexRoute
   '/transaction': typeof TransactionIndexRoute
   '/account/edit/$accountId': typeof AccountEditAccountIdRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
@@ -412,7 +439,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteWithChildren
   '/expense-manager': typeof ExpenseManagerRoute
   '/servicet': typeof ServicetRoute
-  '/task-scheduler': typeof TaskSchedulerRoute
+  '/task-scheduler': typeof TaskSchedulerRouteWithChildren
   '/transaction': typeof TransactionRouteWithChildren
   '/account/$accountId': typeof AccountAccountIdRoute
   '/account/create': typeof AccountCreateLazyRoute
@@ -421,6 +448,7 @@ export interface FileRoutesById {
   '/account/': typeof AccountIndexRoute
   '/auth/': typeof AuthIndexRoute
   '/service/': typeof ServiceIndexRoute
+  '/task-scheduler/': typeof TaskSchedulerIndexRoute
   '/transaction/': typeof TransactionIndexRoute
   '/account/edit/$accountId': typeof AccountEditAccountIdRoute
   '/account/update/$accountId': typeof AccountUpdateAccountIdRoute
@@ -446,6 +474,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/auth/'
     | '/service'
+    | '/task-scheduler/'
     | '/transaction/'
     | '/account/edit/$accountId'
     | '/account/update/$accountId'
@@ -457,7 +486,6 @@ export interface FileRouteTypes {
     | '/'
     | '/expense-manager'
     | '/servicet'
-    | '/task-scheduler'
     | '/account/$accountId'
     | '/account/create'
     | '/auth/login'
@@ -465,6 +493,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/auth'
     | '/service'
+    | '/task-scheduler'
     | '/transaction'
     | '/account/edit/$accountId'
     | '/account/update/$accountId'
@@ -487,6 +516,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/auth/'
     | '/service/'
+    | '/task-scheduler/'
     | '/transaction/'
     | '/account/edit/$accountId'
     | '/account/update/$accountId'
@@ -502,7 +532,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   ExpenseManagerRoute: typeof ExpenseManagerRoute
   ServicetRoute: typeof ServicetRoute
-  TaskSchedulerRoute: typeof TaskSchedulerRoute
+  TaskSchedulerRoute: typeof TaskSchedulerRouteWithChildren
   TransactionRoute: typeof TransactionRouteWithChildren
   ServiceCreateLazyRoute: typeof ServiceCreateLazyRoute
   ServiceIndexRoute: typeof ServiceIndexRoute
@@ -515,7 +545,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   ExpenseManagerRoute: ExpenseManagerRoute,
   ServicetRoute: ServicetRoute,
-  TaskSchedulerRoute: TaskSchedulerRoute,
+  TaskSchedulerRoute: TaskSchedulerRouteWithChildren,
   TransactionRoute: TransactionRouteWithChildren,
   ServiceCreateLazyRoute: ServiceCreateLazyRoute,
   ServiceIndexRoute: ServiceIndexRoute,
@@ -571,7 +601,10 @@ export const routeTree = rootRoute
       "filePath": "servicet.tsx"
     },
     "/task-scheduler": {
-      "filePath": "task-scheduler.tsx"
+      "filePath": "task-scheduler.tsx",
+      "children": [
+        "/task-scheduler/"
+      ]
     },
     "/transaction": {
       "filePath": "transaction.tsx",
@@ -606,6 +639,10 @@ export const routeTree = rootRoute
     },
     "/service/": {
       "filePath": "service.index.tsx"
+    },
+    "/task-scheduler/": {
+      "filePath": "task-scheduler.index.tsx",
+      "parent": "/task-scheduler"
     },
     "/transaction/": {
       "filePath": "transaction.index.tsx",

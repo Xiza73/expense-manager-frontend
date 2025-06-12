@@ -1,14 +1,17 @@
-import { createFileRoute, Navigate } from '@tanstack/react-router';
+import { createFileRoute, Navigate, Outlet } from '@tanstack/react-router';
 
-import TaskSchedule from '@/app/task-schedule/pages/TaskSchedule';
+import { CalendarProvider } from '@/app/dnd-calendar/context/calendar/CalendarProvider';
+import { CalendarType } from '@/app/dnd-calendar/domain/calendar-type.enum';
 
 import PrivateRoute from '../components/Route/PrivateRoute';
 
 export const RouteComponent: React.FC = () => {
   return (
-    <PrivateRoute>
-      <TaskSchedule />
-    </PrivateRoute>
+    <CalendarProvider defaultCalendarType={CalendarType.WEEK}>
+      <PrivateRoute>
+        <Outlet />
+      </PrivateRoute>
+    </CalendarProvider>
   );
 };
 
