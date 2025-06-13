@@ -4,10 +4,10 @@ import { CalendarType } from '../../domain/calendar-type.enum';
 import { CalendarContextProps, CalendarState } from './calendar.interface';
 
 export const initialState: CalendarState = {
-  defaultCalendarType: CalendarType.MONTH,
+  defaultCalendarType: CalendarType.DAY,
   dateInfo: '',
   date: new Date(),
-  calendarType: CalendarType.MONTH,
+  calendarType: CalendarType.DAY,
 };
 
 export const [CalendarContext, useCalendar] =

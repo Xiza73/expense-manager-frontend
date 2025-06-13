@@ -16,11 +16,12 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
+import { Format, Hour } from '../../constants/hour.constant';
 import { useCalendar } from '../../context/calendar/calendar.context';
 import { PartialData } from '../../domain/calendar-day.interface';
 import { CalendarType } from '../../domain/calendar-type.enum';
-import { CalendarDay, CalendarDayProps } from './CalendarDay';
-import { CalendarMonth, CalendarMonthProps } from './CalendarMonth';
+import { CalendarDay } from './CalendarDay';
+import { CalendarMonth } from './CalendarMonth';
 import { CalendarWeek } from './CalendarWeek';
 
 export const Calendar: React.FC<React.ComponentProps<'div'>> = ({
@@ -59,8 +60,17 @@ export const CalendarHeader: React.FC<React.ComponentProps<'div'>> = ({
   );
 };
 
-type CalendarTableProps<T extends PartialData> = CalendarMonthProps<T> &
-  CalendarDayProps<T>;
+export interface CalendarTableProps<T extends PartialData>
+  extends React.ComponentProps<'table'> {
+  data: T[];
+  startTime?: Hour;
+  endTime?: Hour;
+  format?: Format;
+  startsOnMonday?: boolean;
+  onAddItem?: (item: T) => void;
+  onDeleteItem?: (item: T) => void;
+  onUpdateItem?: (item: T) => void;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CalendarTableHandler: Record<CalendarType, React.FC<any>> = {

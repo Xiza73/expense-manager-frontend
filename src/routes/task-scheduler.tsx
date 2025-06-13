@@ -7,7 +7,7 @@ import PrivateRoute from '../components/Route/PrivateRoute';
 
 export const RouteComponent: React.FC = () => {
   return (
-    <CalendarProvider defaultCalendarType={CalendarType.WEEK}>
+    <CalendarProvider defaultCalendarType={CalendarType.DAY}>
       <PrivateRoute>
         <Outlet />
       </PrivateRoute>

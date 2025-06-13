@@ -7,19 +7,14 @@ import { WeekShort } from '../../constants/week.constant';
 import { useCalendar } from '../../context/calendar/calendar.context';
 import { CalendarDay, PartialData } from '../../domain/calendar-day.interface';
 import { getDateId, isSameDate } from '../../utils/get-date-id.util';
-
-export interface CalendarMonthProps<T extends PartialData>
-  extends React.ComponentProps<'table'> {
-  startsOnMonday?: boolean;
-  data: T[];
-}
+import { CalendarTableProps } from './Calendar';
 
 export const CalendarMonth = <T extends PartialData>({
   startsOnMonday = false,
   className,
   data,
   ...props
-}: CalendarMonthProps<T>) => {
+}: CalendarTableProps<T>) => {
   const { t } = useTranslation();
   const { date } = useCalendar();
 

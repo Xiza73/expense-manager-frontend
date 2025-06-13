@@ -3,16 +3,10 @@ import { cn } from '@/lib/utils';
 import { Format, getHours, Hour, Hour12 } from '../../constants/hour.constant';
 import { useCalendar } from '../../context/calendar/calendar.context';
 import { PartialData } from '../../domain/calendar-day.interface';
+import { calcDuration } from '../../utils/calc-duration.util';
 import { getDateId } from '../../utils/get-date-id.util';
 import { CalendarDayCard } from '../CalendarCard/CalendarCard';
-
-export interface CalendarDayProps<T extends PartialData>
-  extends React.ComponentProps<'table'> {
-  data: T[];
-  startTime?: Hour;
-  endTime?: Hour;
-  format?: Format;
-}
+import { CalendarTableProps } from './Calendar';
 
 interface HourData<T> {
   hour: string;
@@ -25,8 +19,8 @@ export const CalendarDay = <T extends PartialData>({
   startTime = Hour['00:00'],
   endTime = Hour['23:30'],
   format = Format.HOUR_24,
-  ...props
-}: CalendarDayProps<T>) => {
+  onUpdateItem,
+}: CalendarTableProps<T>) => {
   const { date } = useCalendar();
   const dateId = getDateId(date);
 
@@ -37,7 +31,14 @@ export const CalendarDay = <T extends PartialData>({
     data: data.filter((data) => data.hourId === id && data.dayId === dateId),
   }));
 
-  const maxDuration = Math.max(...hourData.map(({ data }) => data.length + 1));
+  // const maxDuration = Math.max(...hourData.map(({ data }) => data.length + 1));
+  const hourWithMaxDuration = hourData.reduce(
+    (acc, curr) =>
+      calcDuration(curr.data) > calcDuration(acc.data) ? curr : acc,
+    hourData[0],
+  );
+  const maxDuration = calcDuration(hourWithMaxDuration.data);
+  const maxLength = hourWithMaxDuration.data.length;
 
   const HourHandler = format === Format.HOUR_12 ? Hour12 : Hour;
 
@@ -49,10 +50,9 @@ export const CalendarDay = <T extends PartialData>({
           className,
         )}
         style={{
-          width: `${(maxDuration + 1) * 8 + maxDuration * 0.5}rem`,
+          width: `${(maxLength + 1) * 8 + maxDuration * 4}rem`,
           minWidth: '100%',
         }}
-        {...props}
       >
         <tbody>
           {hourData.map(({ hour, data }) => (
@@ -79,12 +79,14 @@ export const CalendarDay = <T extends PartialData>({
                 {data.map((el, index) => (
                   <CalendarDayCard
                     key={index}
+                    item={el}
                     name={el.name}
                     duration={el.duration}
                     prevDuration={data[index - 1]?.duration || 1}
                     left={index}
                     startTime={el.hourId}
                     hourHandler={HourHandler}
+                    onUpdateItem={onUpdateItem}
                   />
                 ))}
               </td>

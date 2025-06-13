@@ -1,6 +1,7 @@
 import { HourKey } from '../constants/hour.constant';
 
 export interface PartialData {
+  id: string;
   dayId: string;
   hourId: HourKey;
   duration: number;

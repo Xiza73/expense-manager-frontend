@@ -1,4 +1,4 @@
-import { ChartCandlestick } from 'lucide-react';
+import { Calendar, ChartCandlestick } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import PageContainer from '@/components/PageContainer';
@@ -23,6 +23,11 @@ export const Home: React.FC = () => {
           title={t('expense_manager')}
           Icon={ChartCandlestick}
           to="/expense-manager"
+        />
+        <Card
+          title={t('task_scheduler')}
+          Icon={Calendar}
+          to="/task-scheduler"
         />
       </div>
     </PageContainer>
