@@ -6,8 +6,10 @@ import {
   CalendarHeader,
   CalendarTable,
   CalendarTodayButton,
-  CalendarTypeSelector,
+  // CalendarTypeSelector,
 } from '@/app/dnd-calendar/components/Calendar/Calendar';
+import CalendarTask from '@/app/dnd-calendar/components/CalendarTask';
+import { CalendarTaskCard } from '@/app/dnd-calendar/components/CalendarTask/CalendarTask';
 import { Hour } from '@/app/dnd-calendar/constants/hour.constant';
 import PageContainer from '@/components/PageContainer';
 
@@ -16,7 +18,7 @@ import { Task } from '../../domain/task.interface';
 const mockTasks: Task[] = [
   {
     id: '1',
-    dayId: '13-06-2025',
+    dayId: '17-06-2025',
     hourId: Hour['08:00'],
     duration: 1,
     userId: '1',
@@ -25,7 +27,7 @@ const mockTasks: Task[] = [
   },
   {
     id: '2',
-    dayId: '13-06-2025',
+    dayId: '17-06-2025',
     hourId: Hour['09:00'],
     duration: 1,
     userId: '1',
@@ -34,7 +36,7 @@ const mockTasks: Task[] = [
   },
   {
     id: '3',
-    dayId: '13-06-2025',
+    dayId: '17-06-2025',
     hourId: Hour['10:00'],
     duration: 2,
     userId: '1',
@@ -43,7 +45,7 @@ const mockTasks: Task[] = [
   },
   {
     id: '4',
-    dayId: '13-06-2025',
+    dayId: '17-06-2025',
     hourId: Hour['10:00'],
     duration: 1,
     userId: '1',
@@ -52,7 +54,7 @@ const mockTasks: Task[] = [
   },
   {
     id: '5',
-    dayId: '13-06-2025',
+    dayId: '17-06-2025',
     hourId: Hour['10:30'],
     duration: 1,
     userId: '1',
@@ -77,16 +79,25 @@ export const TaskSchedule: React.FC = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer className="">
       {/* TODO: Tasks on mobile */}
       {/* TODO: Tasks on desktop */}
-      {/* TODO: Schedule responsiveness */}
+      <CalendarHeader>
+        <CalendarDateInfo />
+        <CalendarTodayButton />
+        {/* <CalendarDateInfo className="order-2 md:order-1" /> */}
+        {/* <CalendarTypeSelector className="order-1 md:order-2" /> */}
+      </CalendarHeader>
       <Calendar>
-        <CalendarHeader>
-          <CalendarTodayButton />
-          <CalendarTypeSelector className="order-1 md:order-2" />
-          <CalendarDateInfo className="order-2 md:order-1" />
-        </CalendarHeader>
+        <CalendarTask>
+          <CalendarTaskCard
+            name="Task 1"
+            startTime="08:00"
+            hourHandler={Hour}
+            duration={1}
+          />
+        </CalendarTask>
+        {/* TODO: Schedule responsiveness */}
         <CalendarTable
           data={tasks}
           startsOnMonday
