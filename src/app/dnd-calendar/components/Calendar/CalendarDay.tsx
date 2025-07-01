@@ -1,3 +1,6 @@
+import { SortableContext } from '@dnd-kit/sortable';
+import { useMemo } from 'react';
+
 import { cn } from '@/lib/utils';
 
 import { Format, getHours, Hour, Hour12 } from '../../constants/hour.constant';
@@ -30,6 +33,8 @@ export const CalendarDay = <T extends PartialData>({
     hour,
     data: data.filter((data) => data.hourId === id && data.dayId === dateId),
   }));
+
+  const dataIds = useMemo(() => data.map((item) => item.id), [data]);
 
   // const maxDuration = Math.max(...hourData.map(({ data }) => data.length + 1));
   const hourWithMaxDuration = hourData.reduce(
@@ -76,19 +81,19 @@ export const CalendarDay = <T extends PartialData>({
                   'text-gray-800 dark:text-gray-200',
                 )}
               >
-                {data.map((el, index) => (
-                  <CalendarDayCard
-                    key={index}
-                    item={el}
-                    name={el.name}
-                    duration={el.duration}
-                    prevDuration={data[index - 1]?.duration || 1}
-                    left={index}
-                    startTime={el.hourId}
-                    hourHandler={HourHandler}
-                    onUpdateItem={onUpdateItem}
-                  />
-                ))}
+                <SortableContext items={dataIds}>
+                  {data.map((el, index) => (
+                    <CalendarDayCard
+                      key={el.id}
+                      item={el}
+                      prevDuration={data[index - 1]?.duration}
+                      left={index}
+                      // startTime={el.hourId}
+                      hourHandler={HourHandler}
+                      onUpdateItem={onUpdateItem}
+                    />
+                  ))}
+                </SortableContext>
               </td>
             </tr>
           ))}

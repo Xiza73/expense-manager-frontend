@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { DndContext, DragOverlay, DragStartEvent } from '@dnd-kit/core';
+import { useCallback, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 import {
   Calendar,
@@ -8,6 +10,7 @@ import {
   CalendarTodayButton,
   // CalendarTypeSelector,
 } from '@/app/dnd-calendar/components/Calendar/Calendar';
+import { CalendarDayCard } from '@/app/dnd-calendar/components/CalendarCard/CalendarCard';
 import CalendarTask from '@/app/dnd-calendar/components/CalendarTask';
 import { CalendarTaskCard } from '@/app/dnd-calendar/components/CalendarTask/CalendarTask';
 import { Hour } from '@/app/dnd-calendar/constants/hour.constant';
@@ -18,7 +21,7 @@ import { Task } from '../../domain/task.interface';
 const mockTasks: Task[] = [
   {
     id: '1',
-    dayId: '17-06-2025',
+    dayId: '19-06-2025',
     hourId: Hour['08:00'],
     duration: 1,
     userId: '1',
@@ -27,7 +30,7 @@ const mockTasks: Task[] = [
   },
   {
     id: '2',
-    dayId: '17-06-2025',
+    dayId: '19-06-2025',
     hourId: Hour['09:00'],
     duration: 1,
     userId: '1',
@@ -36,7 +39,7 @@ const mockTasks: Task[] = [
   },
   {
     id: '3',
-    dayId: '17-06-2025',
+    dayId: '19-06-2025',
     hourId: Hour['10:00'],
     duration: 2,
     userId: '1',
@@ -45,7 +48,7 @@ const mockTasks: Task[] = [
   },
   {
     id: '4',
-    dayId: '17-06-2025',
+    dayId: '19-06-2025',
     hourId: Hour['10:00'],
     duration: 1,
     userId: '1',
@@ -54,7 +57,7 @@ const mockTasks: Task[] = [
   },
   {
     id: '5',
-    dayId: '17-06-2025',
+    dayId: '19-06-2025',
     hourId: Hour['10:30'],
     duration: 1,
     userId: '1',
@@ -65,6 +68,7 @@ const mockTasks: Task[] = [
 
 export const TaskSchedule: React.FC = () => {
   const [tasks, setTasks] = useState(mockTasks);
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const handleAddTask = (task: Task) => {
     setTasks([...tasks, task]);
@@ -78,36 +82,58 @@ export const TaskSchedule: React.FC = () => {
     setTasks(tasks.map((el) => (el.id === task.id ? task : el)));
   };
 
+  const onDragStart = useCallback((elem: DragStartEvent) => {
+    if (elem.active.data.current?.type === 'calendar-item') {
+      setActiveTask(elem.active.data.current.item);
+
+      return;
+    }
+  }, []);
+
   return (
-    <PageContainer className="">
-      {/* TODO: Tasks on mobile */}
-      {/* TODO: Tasks on desktop */}
-      <CalendarHeader>
-        <CalendarDateInfo />
-        <CalendarTodayButton />
-        {/* <CalendarDateInfo className="order-2 md:order-1" /> */}
-        {/* <CalendarTypeSelector className="order-1 md:order-2" /> */}
-      </CalendarHeader>
-      <Calendar>
-        <CalendarTask>
-          <CalendarTaskCard
-            name="Task 1"
-            startTime="08:00"
-            hourHandler={Hour}
-            duration={1}
+    <DndContext onDragStart={onDragStart}>
+      <PageContainer className="">
+        {/* TODO: Tasks on mobile */}
+        {/* TODO: Tasks on desktop */}
+        <CalendarHeader>
+          <CalendarDateInfo />
+          <CalendarTodayButton />
+          {/* <CalendarDateInfo className="order-2 md:order-1" /> */}
+          {/* <CalendarTypeSelector className="order-1 md:order-2" /> */}
+        </CalendarHeader>
+        <Calendar>
+          <CalendarTask>
+            <CalendarTaskCard
+              name="Task 1"
+              startTime="08:00"
+              hourHandler={Hour}
+              duration={1}
+            />
+          </CalendarTask>
+          {/* TODO: Schedule responsiveness */}
+          <CalendarTable
+            data={tasks}
+            startsOnMonday
+            startTime={Hour['08:00']}
+            endTime={Hour['23:30']}
+            onAddItem={handleAddTask}
+            onDeleteItem={handleDeleteTask}
+            onUpdateItem={handleUpdateTask}
           />
-        </CalendarTask>
-        {/* TODO: Schedule responsiveness */}
-        <CalendarTable
-          data={tasks}
-          startsOnMonday
-          startTime={Hour['08:00']}
-          endTime={Hour['23:30']}
-          onAddItem={handleAddTask}
-          onDeleteItem={handleDeleteTask}
-          onUpdateItem={handleUpdateTask}
-        />
-      </Calendar>
-    </PageContainer>
+        </Calendar>
+      </PageContainer>
+      {createPortal(
+        <DragOverlay>
+          {activeTask && (
+            <CalendarDayCard
+              item={activeTask}
+              hourHandler={Hour}
+              left={0}
+            />
+          )}
+        </DragOverlay>,
+        document.body,
+      )}
+    </DndContext>
   );
 };

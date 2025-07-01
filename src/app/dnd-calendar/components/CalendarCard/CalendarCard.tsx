@@ -1,3 +1,5 @@
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { Resizable, ResizeCallback, Size } from 're-resizable';
 import { useCallback, useState } from 'react';
 
@@ -27,27 +29,43 @@ export const CalendarCard: React.FC<CalendarCardProps> = ({ name }) => {
 interface CalendarDayCardProps<T extends PartialData>
   extends React.ComponentProps<'div'> {
   item: T;
-  duration: number;
-  prevDuration: number;
+  prevDuration?: number;
   left: number;
-  startTime: string;
-  name: string;
   hourHandler: Record<string, string>;
   onUpdateItem?: (item: T) => void;
 }
 
 export const CalendarDayCard = <T extends PartialData>({
   item,
-  name,
-  duration,
-  prevDuration,
+  prevDuration = 1,
   left,
-  startTime,
   hourHandler,
   onUpdateItem,
 }: CalendarDayCardProps<T>) => {
+  const { name, duration, hourId: startTime } = item;
+
   const width = calcWidth(duration);
   const height = calcHeight(duration);
+
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: item.id,
+    data: {
+      type: 'calendar-item',
+      item,
+    },
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   const defaultSize = {
     width,
@@ -92,47 +110,83 @@ export const CalendarDayCard = <T extends PartialData>({
     [dragStartSize],
   );
 
+  if (isDragging)
+    return (
+      <div
+        className={cn(
+          'min-w-[128px] min-h-[54.4px]',
+          'absolute top-1 left-1 z-10',
+          'border border-gray-300 dark:border-gray-800 rounded',
+          'bg-gray-200 dark:bg-gray-700',
+        )}
+        style={{
+          position: 'absolute',
+          left: `${left * 8 + (left + 1) * 0.3 + (prevDuration - 1) * 4}rem`,
+          width,
+          height,
+          ...style,
+        }}
+      ></div>
+    );
+
   return (
-    <Resizable
+    <div
+      ref={setNodeRef}
       className={cn(
-        'p-1',
-        'overflow-hidden truncate',
+        'min-w-[128px] min-h-[54.4px]',
         'absolute top-1 left-1 z-10',
-        'flex flex-col justify-center items-start',
-        'text-sm',
-        'border border-gray-300 dark:border-gray-800 rounded',
-        'bg-gray-200 dark:bg-gray-700',
-        'text-gray-800 dark:text-gray-200',
       )}
       style={{
         position: 'absolute',
         left: `${left * 8 + (left + 1) * 0.3 + (prevDuration - 1) * 4}rem`,
         width,
         height,
-      }}
-      minWidth={128}
-      minHeight={54.4}
-      defaultSize={defaultSize}
-      size={size}
-      onResizeStart={() => {
-        setDragStartSize(size);
-      }}
-      onResize={onResize}
-      onResizeStop={(_e, _direction, _ref, _delta) => {
-        const { duration } = ceilHeight(size.height as number);
-
-        onUpdateItem?.({
-          ...item,
-          duration,
-        });
-
-        setDragStartSize(null);
+        ...style,
       }}
     >
-      <p>
-        {startTime} - {getEndTime(hourHandler, startTime, duration)}
-      </p>
-      <p className="flex-1">{value}</p>
-    </Resizable>
+      <Resizable
+        className={cn(
+          'p-1',
+          'overflow-hidden truncate',
+          'flex flex-col justify-center items-start',
+          'text-sm',
+          'border border-gray-300 dark:border-gray-800 rounded',
+          'bg-gray-200 dark:bg-gray-700',
+          'text-gray-800 dark:text-gray-200',
+        )}
+        style={{
+          position: 'absolute',
+          width,
+          height,
+        }}
+        minWidth={128}
+        minHeight={54.4}
+        defaultSize={defaultSize}
+        size={size}
+        onResizeStart={() => {
+          setDragStartSize(size);
+        }}
+        onResize={onResize}
+        onResizeStop={(_e, _direction, _ref, _delta) => {
+          const { duration } = ceilHeight(size.height as number);
+
+          onUpdateItem?.({
+            ...item,
+            duration,
+          });
+
+          setDragStartSize(null);
+        }}
+      >
+        <p
+          className={cn('cursor-pointer', 'flex items-center')}
+          {...attributes}
+          {...listeners}
+        >
+          {startTime} - {getEndTime(hourHandler, startTime, duration)}
+        </p>
+        <p className="flex-1">{value}</p>
+      </Resizable>
+    </div>
   );
 };
