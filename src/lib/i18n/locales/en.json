@@ -128,5 +128,10 @@
   "loan": "Loan",
   "pay_debt": "Pay Debt",
   "pay_loan": "Collect Loan",
-  "pay_debt_loan_description": "Are you sure you want to pay/collect this record?"
+  "pay_debt_loan_description": "Are you sure you want to pay/collect this record?",
+  "filters": "Filters",
+  "name_description": "Name/Description",
+  "apply": "Apply",
+  "pay": "Pay now",
+  "is_partial": "Is partial"
 }

@@ -2,23 +2,21 @@ import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  GetTransactionsFieldOrder,
-  GetTransactionsRequest,
-} from '@/app/transaction/domain/requests/get-transactions.request';
+import { GetTransactionsFieldOrder } from '@/app/transaction/domain/requests/get-transactions.request';
 import {
   useDeleteTransactionMutation,
   useGetTransactionsQuery,
-  usePayDebtLoanTransactionMutation,
 } from '@/app/transaction/queries/transaction.query';
 import { CustomTable } from '@/components/CustomTable/CustomTable';
 import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
 import { getNextOrder, Order } from '@/domain/order.enum';
 import { usePagination } from '@/hooks/usePagination';
 import { useModal } from '@/store/modal/useModal';
+import { useTransactionSearch } from '@/store/transactionSearch/useTransactionSearch';
 
 import { Account } from '../../domain/account.interface';
 import { getColumns } from './columns';
+import PartialPaymentModal from './PartialPaymentModal';
 
 export interface AccountInfoContentProps {
   account: Account;
@@ -32,20 +30,25 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   const { t } = useTranslation();
 
   const navigate = useNavigate();
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
-  const { mutateAsync: payDebtLoanTransaction } =
-    usePayDebtLoanTransactionMutation();
   const { mutateAsync: deleteTransaction } = useDeleteTransactionMutation();
 
   const payDebtLoan = (id: string, title: string) => {
     openModal({
-      title,
-      description: t('pay_debt_loan_description'),
-      primaryLabel: title,
-      primaryAction: async () => {
-        await payDebtLoanTransaction(id);
-      },
+      // title,
+      // primaryLabel: title,
+      // primaryAction: async () => {
+      //   await payDebtLoanTransaction(id);
+      // },
+      component: (
+        <PartialPaymentModal
+          id={id}
+          title={title}
+          currency={account.currency}
+          closeModal={closeModal}
+        />
+      ),
     });
   };
 
@@ -86,17 +89,23 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     initialPageSize: INITIAL_PAGINATOR.limit,
   });
 
-  const [search, setSearch] = useState<GetTransactionsRequest>({
-    accountId: account.id,
-  });
+  const { search, setSearch } = useTransactionSearch();
+
+  useEffect(() => {
+    setSearch({
+      accountId: account.id,
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account.id]);
 
   const handleSearch = (value: GetTransactionsFieldOrder, order?: Order) => {
     if (search.fieldOrder !== value) {
-      setSearch((prev) => ({
-        ...prev,
+      setSearch({
+        ...search,
         fieldOrder: value,
         order: Order.ASC,
-      }));
+      });
 
       return;
     }
@@ -104,17 +113,18 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     const newOrder = getNextOrder(order || 'NULL');
     const fieldOrder = newOrder ? value : undefined;
 
-    setSearch((prev) => ({
-      ...prev,
+    setSearch({
+      ...search,
       fieldOrder,
       order: newOrder,
-    }));
+    });
   };
 
   const handleGetColumns = () =>
     getColumns({
       fieldOrder: search.fieldOrder,
       order: search.order,
+      currency: account?.currency,
       payDebtLoan,
       goToEdit,
       onDelete,
@@ -129,7 +139,7 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     isFetching,
     refetch,
   } = useGetTransactionsQuery({
-    enabled: Boolean(account?.id),
+    enabled: Boolean(search.accountId),
     showLoading: false,
     params: {
       page: currentPage,
@@ -137,14 +147,6 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
       ...search,
     },
   });
-
-  useEffect(() => {
-    if (!res?.data?.length) {
-      refetch();
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     setTotalPages(res?.pages || 1);
@@ -166,7 +168,17 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, pageSize, search]);
+  }, [currentPage, pageSize]);
+
+  useEffect(() => {
+    if (!search.accountId) return;
+
+    refetch();
+
+    setColumns(handleGetColumns());
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   if (!res) return null;
 

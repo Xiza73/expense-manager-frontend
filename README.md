@@ -2,6 +2,20 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀 Version 0.10.0 – Released on 11th July, 2025
+
+**What's New:**
+
+💰 **Partial Payments** — You can now pay partial debts and loans.
+
+📈 **Filters** — You can now filter your transactions by name, description, category, service, payment method and type.
+
+**Fixes:**
+
+🐛 **Bug Fixes** — Minor bug fixes.
+
+---
+
 ### 🚀 Version 0.9.0 – Released on 06th June, 2025
 
 **What's New:**
@@ -9,6 +23,8 @@
 ❤ **Rebranding** — We've rebranded our app to Habit Sumaq. We hope you like the new name!
 
 💰 **Expense Manager** — Expense Manager is now a module of Habit Sumaq, don't worry, all your data is still there!
+
+---
 
 ### 🚀 Version 0.8.0 – Released on 05th June, 2025
 
@@ -21,6 +37,8 @@
 **Fixes:**
 
 🐛 **Bug Fixes** — Fixed a bug with initial values on the transaction creation form.
+
+---
 
 ### 🚀 Version 0.7.0 – Released on 15th May, 2025
 
@@ -35,6 +53,8 @@
 **Fixes:**
 
 🐛 **Bug Fixes** — Fixed a minor bug with the money input.
+
+---
 
 ### 🚀 Version 0.6.0 – Released on 03th May, 2025
 

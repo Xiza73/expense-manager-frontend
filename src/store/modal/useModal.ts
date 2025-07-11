@@ -4,6 +4,8 @@ export const useModal = () => {
   const {
     isOpen,
     component,
+    componentClassName,
+    children,
     title,
     description,
     primaryLabel,
@@ -18,6 +20,8 @@ export const useModal = () => {
   return {
     isOpen,
     component,
+    componentClassName,
+    children,
     title,
     description,
     primaryLabel,

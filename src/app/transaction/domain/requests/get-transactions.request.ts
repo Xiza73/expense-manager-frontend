@@ -1,4 +1,5 @@
 import { Order } from '@/domain/order.enum';
+import { PaymentMethodKey } from '@/domain/payment-method.enum';
 
 import { TransactionTypeKey } from '../transaction-type.enum';
 
@@ -17,7 +18,9 @@ export type GetTransactionsFieldOrder =
 export interface GetTransactionsRequest {
   page?: number;
   limit?: number;
+  search?: string;
   type?: TransactionTypeKey;
+  paymentMethod?: PaymentMethodKey;
   accountId?: number;
   categoryId?: number;
   serviceId?: number;

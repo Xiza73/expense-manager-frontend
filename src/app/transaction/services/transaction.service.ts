@@ -4,6 +4,7 @@ import { buildQueryParams } from '@/utils/build-query-params.util';
 
 import { CreateTransactionRequest } from '../domain/requests/create-transaction.request';
 import { GetTransactionsRequest } from '../domain/requests/get-transactions.request';
+import { PayDebtLoanRequest } from '../domain/requests/pay-debt-loan.request';
 import { UpdateTransactionRequest } from '../domain/requests/update-transaction.request';
 import { GetTransactionApiResponse } from '../domain/responses/get-transaction.response';
 import { GetTransactionsApiResponse } from '../domain/responses/get-transactions.response';
@@ -41,8 +42,14 @@ export const updateTransaction = async ({
   return data;
 };
 
-export const payDebtLoanTransaction = async (id: string) => {
-  const { data } = await api.post<NullApiResponse>(`${MODULE}/${id}/pay`);
+export const payDebtLoanTransaction = async ({
+  id,
+  ...request
+}: PayDebtLoanRequest) => {
+  const { data } = await api.post<NullApiResponse>(
+    `${MODULE}/${id}/pay`,
+    request,
+  );
 
   return data;
 };

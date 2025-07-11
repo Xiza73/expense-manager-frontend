@@ -8,6 +8,7 @@ import { AccountInfoContent } from '@/app/account/components/AccountInfoContent/
 import AccountInfoHeader from '@/app/account/components/AccountInfoHeader';
 import GoToTransactionButton from '@/app/account/components/GoToTransactionButton';
 import { useGetLatestAccountQuery } from '@/app/account/queries/account.query';
+import FiltersDrawer from '@/app/transaction/components/FiltersDrawer';
 import PageContainer from '@/components/PageContainer';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
@@ -53,6 +54,7 @@ export const Main: React.FC = () => {
           {t('transactions')}
         </Text>
         <div className="flex ml-auto gap-2">
+          {!showChart && <FiltersDrawer />}
           <Button
             className="ml-auto"
             onClick={handleShowChart}

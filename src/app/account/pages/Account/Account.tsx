@@ -4,6 +4,7 @@ import { ChartArea, Table } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import FiltersDrawer from '@/app/transaction/components/FiltersDrawer';
 import PageContainer from '@/components/PageContainer';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
@@ -55,10 +56,8 @@ export const Account: React.FC = () => {
           {t('transactions')}
         </Text>
         <div className="flex ml-auto gap-2">
-          <Button
-            className="ml-auto"
-            onClick={handleShowChart}
-          >
+          {!showChart && <FiltersDrawer />}
+          <Button onClick={handleShowChart}>
             {showChart ? (
               <Table className="w-5 h-5" />
             ) : (

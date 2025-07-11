@@ -149,7 +149,10 @@ export const CustomTable = <T extends object>({
             {table.getFooterGroups().map((footerGroup) => (
               <TableRow key={footerGroup.id}>
                 {footerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className={'[&>div]:!text-left'}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(

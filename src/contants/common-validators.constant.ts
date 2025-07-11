@@ -8,6 +8,12 @@ import { moneyToNumber } from '@/utils/money-format.util';
 
 export const commonValidators = {
   minCharacters: (min: number) => z.string().min(min, 'too_low'),
+  optionalMinCharacters: (min: number) =>
+    z.string().refine((value) => {
+      if (!value) return true;
+
+      return value.length >= min;
+    }, 'too_low'),
   money: z
     .string()
     .min(1, 'enter_valid_amount')
@@ -15,6 +21,12 @@ export const commonValidators = {
       const numberValue = moneyToNumber(value, ',');
       return !isNaN(numberValue) && numberValue > 0;
     }, 'invalid_amount'),
+  optionalMoney: z.string().refine((value) => {
+    if (!value || value === '' || value === '0') return true;
+
+    const numberValue = moneyToNumber(value, ',');
+    return !isNaN(numberValue) && numberValue > 0;
+  }, 'invalid_amount'),
   currency: z.nativeEnum(CurrencyKey, {
     invalid_type_error: 'invalid_currency',
     required_error: 'currency_is_required',
@@ -23,10 +35,26 @@ export const commonValidators = {
     invalid_type_error: 'invalid_transaction_type',
     required_error: 'transaction_type_is_required',
   }),
+  optionalTransactionType: z
+    .string()
+    .optional()
+    .refine((value) => {
+      if (!value) return true;
+
+      return Object.values<string>(TransactionTypeKey).includes(value);
+    }),
   paymentMethod: z.nativeEnum(PaymentMethodKey, {
     invalid_type_error: 'invalid_payment_method',
     required_error: 'payment_method_is_required',
   }),
+  optionalPaymentMethod: z
+    .string()
+    .optional()
+    .refine((value) => {
+      if (!value) return true;
+
+      return Object.values<string>(PaymentMethodKey).includes(value);
+    }),
   month: z.nativeEnum(MonthKey, {
     invalid_type_error: 'invalid_month',
     required_error: 'month_is_required',
