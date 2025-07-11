@@ -1,12 +1,18 @@
+import { HTMLAttributes } from 'react';
+
 interface ModalStateOptions {
   minWidth?: number;
 }
+
+type ClassName = HTMLAttributes<HTMLDivElement>['className'];
 
 export interface ModalState {
   isOpen: boolean;
   options: ModalStateOptions;
   showCloseIcon?: boolean;
   component?: React.ReactNode;
+  componentClassName?: ClassName;
+  children?: React.ReactNode;
   title?: string;
   description?: string;
   primaryLabel?: string;
@@ -17,6 +23,7 @@ export interface ModalState {
 
 interface SetModal {
   component?: React.ReactNode;
+  children?: React.ReactNode;
   options?: ModalState['options'];
   title?: string;
   description?: string;

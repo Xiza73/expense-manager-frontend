@@ -1,13 +1,13 @@
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { useTranslation } from 'react-i18next';
 
+import { cn } from '@/lib/utils';
 import { useModal } from '@/store/modal/useModal';
 import { noopFunction } from '@/utils/noop-function.util';
 
 import Backdrop from '../Backdrop';
 import { Button } from '../ui/button';
 import { Text } from '../ui/text';
-import { Container } from './Container';
 
 export interface ModalProps {
   open?: boolean;
@@ -19,6 +19,8 @@ export const Modal: React.FC<ModalProps> = ({ open }) => {
   const {
     isOpen,
     component,
+    componentClassName,
+    children,
     title,
     description,
     primaryLabel,
@@ -34,25 +36,37 @@ export const Modal: React.FC<ModalProps> = ({ open }) => {
   if (component)
     return (
       <Backdrop>
-        <Container>
-          <button onClick={closeModal}>Close</button>
+        <div
+          className={cn(
+            'w-auto max-w-full sm:max-w-[90%] md:max-w-[50%] flex flex-col relative',
+            'bg-white border border-gray-200 rounded-md',
+            'dark:bg-gray-800 dark:border-gray-700',
+            'dark:text-gray-200',
+            componentClassName || '',
+          )}
+        >
           {component}
-        </Container>
+        </div>
       </Backdrop>
     );
 
   return (
     <Backdrop>
-      <div className="w-auto max-w-full sm:max-w-[90%] md:max-w-[50%] flex flex-col relative bg-white border border-gray-200 rounded-md">
+      <div
+        className={cn(
+          'w-auto max-w-full sm:max-w-[90%] md:max-w-[50%] flex flex-col relative',
+          'bg-white border border-gray-200 rounded-md',
+          'dark:bg-gray-800 dark:border-gray-700',
+          'dark:text-gray-200',
+        )}
+      >
         {title && (
-          <>
-            <Text
-              as="h2"
-              className="py-2 px-5 sm:px-12 md:px-16 border-b border-gray-200 text-center"
-            >
-              {title}
-            </Text>
-          </>
+          <Text
+            as="h2"
+            className="py-2 px-5 sm:px-12 md:px-16 border-b border-gray-200 text-center"
+          >
+            {title}
+          </Text>
         )}
         {description && (
           <Text
@@ -62,6 +76,7 @@ export const Modal: React.FC<ModalProps> = ({ open }) => {
             {description}
           </Text>
         )}
+        {children && <>{children}</>}
         <div className="flex justify-end gap-4 p-5">
           {primaryLabel && (
             <Button

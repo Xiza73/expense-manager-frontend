@@ -6,7 +6,6 @@ import { GetTransactionsFieldOrder } from '@/app/transaction/domain/requests/get
 import {
   useDeleteTransactionMutation,
   useGetTransactionsQuery,
-  usePayDebtLoanTransactionMutation,
 } from '@/app/transaction/queries/transaction.query';
 import { CustomTable } from '@/components/CustomTable/CustomTable';
 import { INITIAL_PAGINATOR } from '@/contants/initial-paginator.constant';
@@ -17,6 +16,7 @@ import { useTransactionSearch } from '@/store/transactionSearch/useTransactionSe
 
 import { Account } from '../../domain/account.interface';
 import { getColumns } from './columns';
+import PartialPaymentModal from './PartialPaymentModal';
 
 export interface AccountInfoContentProps {
   account: Account;
@@ -30,20 +30,25 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
   const { t } = useTranslation();
 
   const navigate = useNavigate();
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
-  const { mutateAsync: payDebtLoanTransaction } =
-    usePayDebtLoanTransactionMutation();
   const { mutateAsync: deleteTransaction } = useDeleteTransactionMutation();
 
   const payDebtLoan = (id: string, title: string) => {
     openModal({
-      title,
-      description: t('pay_debt_loan_description'),
-      primaryLabel: title,
-      primaryAction: async () => {
-        await payDebtLoanTransaction(id);
-      },
+      // title,
+      // primaryLabel: title,
+      // primaryAction: async () => {
+      //   await payDebtLoanTransaction(id);
+      // },
+      component: (
+        <PartialPaymentModal
+          id={id}
+          title={title}
+          currency={account.currency}
+          closeModal={closeModal}
+        />
+      ),
     });
   };
 

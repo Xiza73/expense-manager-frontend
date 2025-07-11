@@ -131,5 +131,7 @@
   "pay_debt_loan_description": "¿Estás seguro de que deseas pagar/cobrar este registro?",
   "filters": "Filtros",
   "name_description": "Nombre/Descripción",
-  "apply": "Aplicar"
+  "apply": "Aplicar",
+  "pay": "Pagar",
+  "is_partial": "Es parcial"
 }

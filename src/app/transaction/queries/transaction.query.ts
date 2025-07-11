@@ -13,6 +13,7 @@ import {
 } from '../adapters/transaction.adapter';
 import { CreateTransactionRequest } from '../domain/requests/create-transaction.request';
 import { GetTransactionsRequest } from '../domain/requests/get-transactions.request';
+import { PayDebtLoanRequest } from '../domain/requests/pay-debt-loan.request';
 import { UpdateTransactionRequest } from '../domain/requests/update-transaction.request';
 import { GetTransactionResponse } from '../domain/responses/get-transaction.response';
 import { GetTransactionsResponse } from '../domain/responses/get-transactions.response';
@@ -97,7 +98,7 @@ export const useUpdateTransactionMutation = () =>
   });
 
 export const usePayDebtLoanTransactionMutation = () =>
-  useMutation<NullResponse, string>({
+  useMutation<NullResponse, PayDebtLoanRequest>({
     showError: true,
     showSuccess: true,
     onSettled: () => {
@@ -111,8 +112,8 @@ export const usePayDebtLoanTransactionMutation = () =>
         queryKey: ['get-latest-account'],
       });
     },
-    mutationFn: async (id) => {
-      const data = await payDebtLoanTransaction(id);
+    mutationFn: async (request) => {
+      const data = await payDebtLoanTransaction(request);
 
       return {
         message: data.message,

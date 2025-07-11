@@ -21,6 +21,12 @@ export const commonValidators = {
       const numberValue = moneyToNumber(value, ',');
       return !isNaN(numberValue) && numberValue > 0;
     }, 'invalid_amount'),
+  optionalMoney: z.string().refine((value) => {
+    if (!value || value === '' || value === '0') return true;
+
+    const numberValue = moneyToNumber(value, ',');
+    return !isNaN(numberValue) && numberValue > 0;
+  }, 'invalid_amount'),
   currency: z.nativeEnum(CurrencyKey, {
     invalid_type_error: 'invalid_currency',
     required_error: 'currency_is_required',
