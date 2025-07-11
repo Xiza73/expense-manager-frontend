@@ -10,8 +10,9 @@ export interface FormContainerProps extends ChildrenProps {
   onSubmit: (data: any) => Promise<void>;
   handleSubmit: UseFormHandleSubmit<any>;
   title: string;
-  description: string;
+  description?: string;
   buttonText: string;
+  withoutButtonBackground?: boolean;
 }
 
 export const FormContainer: React.FC<FormContainerProps> = ({
@@ -21,6 +22,7 @@ export const FormContainer: React.FC<FormContainerProps> = ({
   title,
   description,
   buttonText,
+  withoutButtonBackground = false,
 }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -31,15 +33,19 @@ export const FormContainer: React.FC<FormContainerProps> = ({
         >
           {title}
         </Text>
-        <Text
-          as="p"
-          className="text-center"
-        >
-          {description}
-        </Text>
+        {description && (
+          <Text
+            as="p"
+            className="text-center"
+          >
+            {description}
+          </Text>
+        )}
         {children}
       </div>
-      <FormButton>{buttonText}</FormButton>
+      <FormButton withoutBackground={withoutButtonBackground}>
+        {buttonText}
+      </FormButton>
     </form>
   );
 };

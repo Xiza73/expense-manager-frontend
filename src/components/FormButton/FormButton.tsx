@@ -1,9 +1,21 @@
 import { ChildrenProps } from '@/domain/children-props.interface';
 import { cn } from '@/lib/utils';
 
-export const FormButton: React.FC<ChildrenProps> = ({ children }) => {
+export interface FormButtonProps extends ChildrenProps {
+  withoutBackground?: boolean;
+}
+
+export const FormButton: React.FC<FormButtonProps> = ({
+  withoutBackground = false,
+  children,
+}) => {
   return (
-    <div className="flex justify-center w-full p-4 mt-2 bg-gray-100 dark:bg-gray-700">
+    <div
+      className={cn(
+        'flex justify-center w-full p-4 mt-2',
+        !withoutBackground && 'bg-gray-100 dark:bg-gray-700',
+      )}
+    >
       <button
         type="submit"
         className={cn(

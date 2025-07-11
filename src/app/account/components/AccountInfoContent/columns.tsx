@@ -13,6 +13,7 @@ import { GetTransactionsFieldOrder } from '@/app/transaction/domain/requests/get
 import { Transaction } from '@/app/transaction/domain/transaction.interface';
 import { TransactionType } from '@/app/transaction/domain/transaction-type.enum';
 import OrderArea from '@/components/OrderArea';
+import ShowHideEye from '@/components/ShowHideEye';
 import TruncateTooltipText from '@/components/TruncateTooltipText';
 import {
   Tooltip,
@@ -20,6 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { Currency } from '@/domain/currency.enum';
 import { Order } from '@/domain/order.enum';
 import { cn } from '@/lib/utils';
 import { getDate } from '@/utils/date.util';
@@ -30,6 +32,7 @@ const columnHelper = createColumnHelper<Transaction>();
 interface ColumnsProps {
   order?: Order;
   fieldOrder?: GetTransactionsFieldOrder;
+  currency: Currency;
   t: (key: string) => string;
   payDebtLoan: (id: string, title: string) => void;
   goToEdit: (id: string) => void;
@@ -47,6 +50,7 @@ const TransactionTypeIcon = {
 export const getColumns = ({
   order,
   fieldOrder,
+  currency,
   t,
   payDebtLoan,
   goToEdit,
@@ -189,9 +193,7 @@ export const getColumns = ({
       return (
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger
-              className={cn(lineThrough && 'text-paid')}
-            >
+            <TooltipTrigger className={cn(lineThrough && 'text-paid')}>
               {TransactionTypeIcon[info.getValue()]}
             </TooltipTrigger>
             <TooltipContent>
@@ -214,6 +216,17 @@ export const getColumns = ({
     ),
     meta: {
       isSortable: true,
+    },
+    footer: (info) => {
+      const total = info.table
+        .getFilteredRowModel()
+        .rows.reduce((acc, row) => acc + (row.getValue('amount') as number), 0);
+
+      const value = patternMoney(total.toString(), {
+        prefix: currency,
+      });
+
+      return <ShowHideEye text={value} />;
     },
     cell: (info) => {
       const lineThrough =
