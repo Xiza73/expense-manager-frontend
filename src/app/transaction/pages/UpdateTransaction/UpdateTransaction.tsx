@@ -73,6 +73,7 @@ export const UpdateTransaction: React.FC = () => {
   const isSameMonthAndYear =
     dateNow.getMonth() === account?.date.getMonth() &&
     dateNow.getFullYear() === account?.date.getFullYear();
+  const isMonthly = account?.isMonthly;
 
   const {
     control,
@@ -214,8 +215,10 @@ export const UpdateTransaction: React.FC = () => {
           control={control}
           name="date"
           error={errors.date?.message}
-          disableNavigation
-          {...(isSameMonthAndYear ? {} : { defaultMonth: account?.date })}
+          disableNavigation={isMonthly}
+          {...(isSameMonthAndYear && isMonthly
+            ? {}
+            : { defaultMonth: account?.date })}
         />
       </FormContainer>
     </PageContainer>
