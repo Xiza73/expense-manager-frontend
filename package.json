@@ -2,7 +2,7 @@
   "name": "habit-sumaq-frontend",
   "description": "A modern app for organizing your expenses, schedules, and more.",
   "private": true,
-  "version": "0.10.0",
+  "version": "0.11.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
