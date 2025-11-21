@@ -137,5 +137,6 @@
   "select_pay_status": "Select Pay Status",
   "pending": "Pending",
   "paid": "Paid",
-  "clear_filters": "Clear Filters"
+  "clear_filters": "Clear Filters",
+  "pay_transaction_description_helper": "Add or change the description of the loan/debt payment"
 }

@@ -137,5 +137,6 @@
   "select_pay_status": "Seleccionar estado de pago",
   "pending": "Pendiente",
   "paid": "Pagado",
-  "clear_filters": "Borrar filtros"
+  "clear_filters": "Borrar filtros",
+  "pay_transaction_description_helper": "Agregue o cambie la descripción del pago del préstamo/deuda"
 }

@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 export interface FormInputProps<TFieldValues extends FieldValues>
   extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
+  helperoText?: string;
   register: UseFormRegister<TFieldValues>;
   name: Path<TFieldValues>;
 }
@@ -14,6 +15,7 @@ export const FormInput = <TFieldValues extends FieldValues>({
   register,
   name,
   error,
+  helperoText,
   className,
   ...props
 }: FormInputProps<TFieldValues>) => {
@@ -31,6 +33,9 @@ export const FormInput = <TFieldValues extends FieldValues>({
         {...register(name)}
       />
       {error && <span className="text-red-500 text-sm">* {t(error)}</span>}
+      {helperoText && !error && (
+        <span className="text-gray-400 text-sm">{t(helperoText)}</span>
+      )}
     </div>
   );
 };
