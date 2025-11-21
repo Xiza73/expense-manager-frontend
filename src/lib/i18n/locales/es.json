@@ -133,5 +133,9 @@
   "name_description": "Nombre/Descripción",
   "apply": "Aplicar",
   "pay": "Pagar",
-  "is_partial": "Es parcial"
+  "is_partial": "Es parcial",
+  "select_pay_status": "Seleccionar estado de pago",
+  "pending": "Pendiente",
+  "paid": "Pagado",
+  "clear_filters": "Borrar filtros"
 }

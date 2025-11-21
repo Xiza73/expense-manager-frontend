@@ -12,6 +12,7 @@ import FormSelect from '@/components/FormSelect';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { commonValidators } from '@/contants/common-validators.constant';
+import { PayStatusKey, PayStatusLabel } from '@/domain/pay-status.enum';
 import { PaymentMethod, PaymentMethodKey } from '@/domain/payment-method.enum';
 import { useTransactionSearch } from '@/store/transactionSearch/useTransactionSearch';
 
@@ -29,6 +30,7 @@ const formSchema = z.object({
   serviceId: commonValidators.optionalId('Service'),
   type: commonValidators.optionalTransactionType,
   paymentMethod: commonValidators.optionalPaymentMethod,
+  payStatus: commonValidators.optionalPayStatus,
 });
 type FormSchema = z.infer<typeof formSchema>;
 
@@ -44,6 +46,7 @@ export const FiltersDrawer: React.FC = () => {
   const {
     control,
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<FormSchema>({
@@ -56,12 +59,42 @@ export const FiltersDrawer: React.FC = () => {
       serviceId: search.serviceId?.toString() || '',
       type: search.type || undefined,
       paymentMethod: search.paymentMethod || undefined,
+      payStatus:
+        search.isPaid !== undefined
+          ? search.isPaid
+            ? PayStatusKey.PAID
+            : PayStatusKey.PENDING
+          : undefined,
     },
   });
 
+  const clearFilters = () => {
+    reset();
+
+    setSearch({
+      ...search,
+      search: undefined,
+      categoryId: undefined,
+      serviceId: undefined,
+      type: undefined,
+      paymentMethod: undefined,
+      isPaid: undefined,
+    });
+
+    setOpen(false);
+  };
+
   const onSubmit = async (data: FormSchema) => {
-    const { nameDescription, categoryId, serviceId, type, paymentMethod } =
-      data;
+    const {
+      nameDescription,
+      categoryId,
+      serviceId,
+      type,
+      paymentMethod,
+      payStatus,
+    } = data;
+
+    const isPaid = payStatus === PayStatusKey.PAID;
 
     setSearch({
       ...search,
@@ -72,6 +105,7 @@ export const FiltersDrawer: React.FC = () => {
       paymentMethod: paymentMethod
         ? (paymentMethod as PaymentMethodKey)
         : undefined,
+      ...(payStatus && { isPaid }),
     });
 
     setOpen(false);
@@ -96,6 +130,8 @@ export const FiltersDrawer: React.FC = () => {
             onSubmit={onSubmit}
             title={t('filters')}
             buttonText={t('apply')}
+            cancelText={t('clear_filters')}
+            cancelAction={clearFilters}
             withoutButtonBackground
           >
             <FormInput
@@ -150,6 +186,18 @@ export const FiltersDrawer: React.FC = () => {
               options={Object.values(PaymentMethodKey).map((method) => ({
                 value: method,
                 label: t(PaymentMethod[method]),
+              }))}
+            />
+
+            <FormSelect
+              control={control}
+              name="payStatus"
+              placeholder={t('select_pay_status')}
+              error={errors.payStatus?.message}
+              enabledDefault
+              options={Object.values(PayStatusKey).map((status) => ({
+                value: status,
+                label: t(PayStatusLabel[status]),
               }))}
             />
           </FormContainer>

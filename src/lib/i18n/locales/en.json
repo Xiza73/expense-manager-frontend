@@ -133,5 +133,9 @@
   "name_description": "Name/Description",
   "apply": "Apply",
   "pay": "Pay now",
-  "is_partial": "Is partial"
+  "is_partial": "Is partial",
+  "select_pay_status": "Select Pay Status",
+  "pending": "Pending",
+  "paid": "Paid",
+  "clear_filters": "Clear Filters"
 }

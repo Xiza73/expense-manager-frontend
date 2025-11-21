@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { MonthKey } from '@/app/account/domain/month.enum';
 import { TransactionTypeKey } from '@/app/transaction/domain/transaction-type.enum';
 import { CurrencyKey } from '@/domain/currency.enum';
+import { PayStatusKey } from '@/domain/pay-status.enum';
 import { PaymentMethodKey } from '@/domain/payment-method.enum';
 import { moneyToNumber } from '@/utils/money-format.util';
 
@@ -42,6 +43,14 @@ export const commonValidators = {
       if (!value) return true;
 
       return Object.values<string>(TransactionTypeKey).includes(value);
+    }),
+  optionalPayStatus: z
+    .string()
+    .optional()
+    .refine((value) => {
+      if (!value) return true;
+
+      return Object.values<string>(PayStatusKey).includes(value);
     }),
   paymentMethod: z.nativeEnum(PaymentMethodKey, {
     invalid_type_error: 'invalid_payment_method',
