@@ -34,17 +34,45 @@ interface ColumnsProps {
   fieldOrder?: GetTransactionsFieldOrder;
   currency: Currency;
   t: (key: string) => string;
-  payDebtLoan: (id: string, title: string) => void;
+  payDebtLoan: (
+    id: string,
+    title: string,
+    transactionDescription: string,
+  ) => void;
   goToEdit: (id: string) => void;
   onDelete: (id: string) => void;
   handleSearch: (value: GetTransactionsFieldOrder, order?: Order) => void;
 }
 
 const TransactionTypeIcon = {
-  [TransactionType.EXPENSE]: <BanknoteArrowDown className="text-red-500" />,
-  [TransactionType.INCOME]: <BanknoteArrowUp className="text-green-500" />,
-  [TransactionType.DEBT]: <HandCoins className="text-red-500" />,
-  [TransactionType.LOAN]: <Handshake className="text-green-500" />,
+  [TransactionType.EXPENSE]: {
+    Icon: BanknoteArrowDown,
+    color: 'text-red-500',
+  },
+  [TransactionType.INCOME]: {
+    Icon: BanknoteArrowUp,
+    color: 'text-green-500',
+  },
+  [TransactionType.DEBT]: {
+    Icon: HandCoins,
+    color: 'text-red-500',
+  },
+  [TransactionType.LOAN]: {
+    Icon: Handshake,
+    color: 'text-green-500',
+  },
+} as const;
+type TransactionTypeIconKey = keyof typeof TransactionTypeIcon;
+
+const transactionTypeIconHandler = (
+  type: TransactionTypeIconKey,
+  disabled?: boolean,
+) => {
+  const component = TransactionTypeIcon[type];
+  const Icon = component.Icon;
+  const color = disabled ? 'text-paid' : component.color;
+
+  return <Icon className={cn(color)} />;
 };
 
 export const getColumns = ({
@@ -194,7 +222,7 @@ export const getColumns = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger className={cn(lineThrough && 'text-paid')}>
-              {TransactionTypeIcon[info.getValue()]}
+              {transactionTypeIconHandler(info.getValue(), lineThrough)}
             </TooltipTrigger>
             <TooltipContent>
               <p>{t(info.getValue())}</p>
@@ -253,6 +281,7 @@ export const getColumns = ({
         info.row.original.type === TransactionType.DEBT
           ? t('pay_debt')
           : t('pay_loan');
+      const description = info.row.original.description || '';
 
       if (info.row.original.isDebtLoan && info.row.original.isPaid) return null;
 
@@ -263,7 +292,7 @@ export const getColumns = ({
               <Tooltip>
                 <TooltipTrigger>
                   <Coins
-                    onClick={() => payDebtLoan(id, title)}
+                    onClick={() => payDebtLoan(id, title, description)}
                     className="cursor-pointer"
                   />
                 </TooltipTrigger>

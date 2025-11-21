@@ -34,18 +34,18 @@ export const AccountInfoContent: React.FC<AccountInfoContentProps> = ({
 
   const { mutateAsync: deleteTransaction } = useDeleteTransactionMutation();
 
-  const payDebtLoan = (id: string, title: string) => {
+  const payDebtLoan = (
+    id: string,
+    title: string,
+    transactionDescription: string,
+  ) => {
     openModal({
-      // title,
-      // primaryLabel: title,
-      // primaryAction: async () => {
-      //   await payDebtLoanTransaction(id);
-      // },
       component: (
         <PartialPaymentModal
           id={id}
           title={title}
           currency={account.currency}
+          transactionDescription={transactionDescription}
           closeModal={closeModal}
         />
       ),

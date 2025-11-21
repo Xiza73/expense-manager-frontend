@@ -24,6 +24,7 @@ export interface GetTransactionsRequest {
   accountId?: number;
   categoryId?: number;
   serviceId?: number;
+  isPaid?: boolean;
   fieldOrder?: GetTransactionsFieldOrder;
   order?: Order;
 }

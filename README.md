@@ -2,6 +2,24 @@
 
 ## 📝 Changelog – Latest Updates
 
+### 🚀 Version 0.11.0 – Released on 21st November, 2025
+
+**What's New:**
+
+💰 **Partial Payments** — Can modify the description of the partial payment.
+
+📈 **Filters** — Added paid/pending filter on transactions.
+
+**Fixes:**
+
+🐛 **Bug Fix** — Bugs about dates on create and edit transactions were fixed.
+
+🐛 **Bug Fix** — Minor visual bugs were fixed.
+
+---
+
+## 📝 Changelog – Latest Updates
+
 ### 🚀 Version 0.10.0 – Released on 11th July, 2025
 
 **What's New:**
