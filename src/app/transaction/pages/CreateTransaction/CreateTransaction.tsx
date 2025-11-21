@@ -60,6 +60,9 @@ export const CreateTransaction: React.FC = () => {
     dateNow.getFullYear() === account?.date.getFullYear();
   const isMonthly = account?.isMonthly;
 
+  const defaultDate =
+    isSameMonthAndYear || !isMonthly ? new Date() : account?.date;
+
   const {
     control,
     register,
@@ -71,7 +74,7 @@ export const CreateTransaction: React.FC = () => {
       accountId: account?.id.toString(),
       categoryId: '',
       serviceId: '',
-      date: isSameMonthAndYear ? new Date() : account?.date,
+      date: defaultDate,
       currency: getCurrencyKey(account?.currency),
       type: TransactionTypeKey.EXPENSE,
       paymentMethod: PaymentMethodKey.CASH,
@@ -185,9 +188,7 @@ export const CreateTransaction: React.FC = () => {
           name="date"
           error={errors.date?.message}
           disableNavigation={isMonthly}
-          {...(isSameMonthAndYear
-            ? {}
-            : { defaultMonth: isMonthly ? account?.date : new Date() })}
+          defaultMonth={defaultDate}
         />
       </FormContainer>
     </PageContainer>
